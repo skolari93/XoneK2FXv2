@@ -1,56 +1,40 @@
-from ableton.v3.control_surface.elements import Color
+from ableton.v3.control_surface.elements import Color, SimpleColor
 CHANNEL = 15
 import logging
 logger = logging.getLogger("XoneK2FXv2")
+# RED = 0
+# AMBER = 36
+# GREEN = 72
+BLACK = 1
+
+
+RED = 0
+AMBER = 4
+GREEN = 8
+
+DEFAULTVALUE=127
 
 class K2Color(Color):
-    def __init__(self, button_note, color, channel=CHANNEL, *a, **k):
+    def __init__(self, value, color=RED, channel=None, *a, **k):
         (super().__init__)(*a, **k)
-        self._color = color
-        self.button_note = button_note
+        self._value = value
         self._channel = channel
-        logger.info("trytodraw")
+        self._color = color
 
     @property
     def midi_value(self):
-        logger.info("trytodraw")
-        return self._color
+        return self._value
 
     def draw(self, interface):
-        logger.info("trytodraw")
-        data_byte1 = interface._original_identifier + self._color
-        data_byte2 = self.button_note
-        status_byte = interface._status_byte(self._channel)
-        # interface.send_midi((status_byte, data_byte1, data_byte2))
-        if self._msg_type == 2:
-            data_byte1 = self.button_note & 127
-            data_byte2 = self.button_note >> 7 & 127
-        if interface.send_midi((status_byte, data_byte1, data_byte2)):
-            interface._last_sent_message = (data_byte2, self._channel)
-            if interface._report_output:
-                is_input = True
-                interface._report_value(data_byte2, not is_input) 
+        interface.send_value((self._value), channel=(self._channel))
 
-RED = 0
-AMBER = 36
-GREEN = 72
-BLACK = 1
+
 
 class Rgb:
     logger.info("rgb init")
-    def amberfun(button_note):
-        K2Color(button_note, AMBER)
-    
-    def redfun(button_note):
-        K2Color(button_note, RED)
 
-    def greenfun(button_note):
-        logger.info("ggreenfun")
-        K2Color(button_note, GREEN)
-
-    def blackfun(button_note):
-        K2Color(button_note, BLACK)
-
-    amber = amberfun(12)
-    green = greenfun(12)
-    red = redfun(12)
+    amber = SimpleColor(AMBER)
+    green = SimpleColor(GREEN)
+    red = SimpleColor(RED)
+    black = SimpleColor(1)
+    # black = SimpleColor(0)

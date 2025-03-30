@@ -1,9 +1,9 @@
 from ableton.v3.control_surface import MIDI_NOTE_TYPE, ElementsBase, MapMode
+from ableton.v3.control_surface.elements import ButtonElement
+
 from functools import partial
-
+from .k2_button import create_k2_button
 CHANNEL = 14
-
-
 
 class Elements(ElementsBase):
     def __init__(self, *a, **k):
@@ -47,8 +47,8 @@ class Elements(ElementsBase):
             map_mode=MapMode.Absolute,
         )
 
-        self.add_button(12, "play_button", channel=CHANNEL, msg_type=MIDI_NOTE_TYPE)
-        self.add_button(15, "stop_button", channel=CHANNEL, msg_type=MIDI_NOTE_TYPE)
+        #self.add_button(12, "play_button", channel=CHANNEL, msg_type=MIDI_NOTE_TYPE)
+        #self.add_button(15, "stop_button", channel=CHANNEL, msg_type=MIDI_NOTE_TYPE)
+        self.add_element("stop_button", create_k2_button, 15, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE)
+        self.add_element("play_button", create_k2_button, 12, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE)
 
-
-  

@@ -2,13 +2,20 @@ from .colors import Rgb
 
 
 class Skin:
-    class PlayButton:
-        On = Rgb.green
-        Off = Rgb.red
+    print(1)
+    # class PlayButton:
+    #     On = Rgb.green
+    #     Off = Rgb.red
+    
+    # class StopButton:
+    #     On = Rgb.green
+    #     Off = Rgb.red
 
     class Transport:
         PlayOn = Rgb.green
-        PlayOff = Rgb.red
+        PlayOff = Rgb.black
+        StopOn = Rgb.black
+        #StopOff = Rgb.red
     # class StopButton:
-    #     On = Rgb.amber
-    #     Off = Rgb.red
+    #     On = Rgb.red
+    #     Off = Rgb.black
