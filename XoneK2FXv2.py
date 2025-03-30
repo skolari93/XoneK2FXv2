@@ -10,6 +10,7 @@ from .special_mixer_component import SpecialMixerComponent
 from .elements import Elements
 from .mappings import create_mappings
 from .skin import Skin
+from .colors import Rgb
 from ableton.v3.control_surface.components import TransportComponent
 
 logger = logging.getLogger("XoneK2FXv2")
@@ -34,8 +35,8 @@ class XoneK2FXv2(ControlSurface):
     def init(self):
         logger.info("init started:")
         with self.component_guard():
-            logger.info("   adding sking")
-            # self._skin = create_skin(skin=ara.Skin, colors=ara.Rgb)
+            logger.info("   adding skin")
+            self._skin = create_skin(skin=Skin, colors=Rgb)
 
     def start_logging(self):
         module_path = os.path.dirname(os.path.realpath(__file__))
@@ -61,7 +62,7 @@ class XoneK2FXv2(ControlSurface):
     
 class Specification(ControlSurfaceSpecification):
     elements_type = Elements
-    control_surface_skin = create_skin(skin=Skin)
+    control_surface_skin = create_skin(skin=Skin, colors=Rgb)
     create_mappings_function = create_mappings
     component_map = {
         'Transport': TransportComponent

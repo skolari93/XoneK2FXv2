@@ -3,8 +3,12 @@ from .colors import Rgb
 
 class Skin:
     class PlayButton:
-        On = Rgb.ambar
-        Off = Rgb.black
-    class StopButton:
-        On = Rgb.ambar
-        Off = Rgb.black
+        On = Rgb.green
+        Off = Rgb.red
+
+    class Transport:
+        PlayOn = Rgb.green
+        PlayOff = Rgb.red
+    # class StopButton:
+    #     On = Rgb.amber
+    #     Off = Rgb.red

@@ -1,21 +1,56 @@
-from ableton.v3.control_surface.elements import SimpleColor
+from ableton.v3.control_surface.elements import Color
+CHANNEL = 15
+import logging
+logger = logging.getLogger("XoneK2FXv2")
 
-LED_CHANNEL = 0
+class K2Color(Color):
+    def __init__(self, button_note, color, channel=CHANNEL, *a, **k):
+        (super().__init__)(*a, **k)
+        self._color = color
+        self.button_note = button_note
+        self._channel = channel
+        logger.info("trytodraw")
 
+    @property
+    def midi_value(self):
+        logger.info("trytodraw")
+        return self._color
+
+    def draw(self, interface):
+        logger.info("trytodraw")
+        data_byte1 = interface._original_identifier + self._color
+        data_byte2 = self.button_note
+        status_byte = interface._status_byte(self._channel)
+        # interface.send_midi((status_byte, data_byte1, data_byte2))
+        if self._msg_type == 2:
+            data_byte1 = self.button_note & 127
+            data_byte2 = self.button_note >> 7 & 127
+        if interface.send_midi((status_byte, data_byte1, data_byte2)):
+            interface._last_sent_message = (data_byte2, self._channel)
+            if interface._report_output:
+                is_input = True
+                interface._report_value(data_byte2, not is_input) 
+
+RED = 0
+AMBER = 36
+GREEN = 72
+BLACK = 1
 
 class Rgb:
-    black = SimpleColor(0, channel=LED_CHANNEL)
-    ambar = SimpleColor(1, channel=LED_CHANNEL)
-    ambar_w = SimpleColor(2, channel=LED_CHANNEL)
+    logger.info("rgb init")
+    def amberfun(button_note):
+        K2Color(button_note, AMBER)
+    
+    def redfun(button_note):
+        K2Color(button_note, RED)
 
-    cherry = SimpleColor(3, channel=LED_CHANNEL)
-    cherry_w = SimpleColor(4, channel=LED_CHANNEL)
+    def greenfun(button_note):
+        logger.info("ggreenfun")
+        K2Color(button_note, GREEN)
 
-    peach = SimpleColor(5, channel=LED_CHANNEL)
-    peach_w = SimpleColor(6, channel=LED_CHANNEL)
+    def blackfun(button_note):
+        K2Color(button_note, BLACK)
 
-    purple = SimpleColor(7, channel=LED_CHANNEL)
-    purple_w = SimpleColor(8, channel=LED_CHANNEL)
-
-    pink = SimpleColor(9, channel=LED_CHANNEL)
-    pink_w = SimpleColor(10, channel=LED_CHANNEL)
+    amber = amberfun(12)
+    green = greenfun(12)
+    red = redfun(12)
