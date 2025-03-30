@@ -1,8 +1,5 @@
 from ableton.v3.control_surface.elements import ButtonElement
 from ableton.v2.control_surface import MIDI_PB_TYPE, MIDI_NOTE_TYPE
-import logging
-
-logger = logging.getLogger("XoneK2FXv2")
 
 # Offsets for buttons
 COLOR_OFFSETS = {
@@ -39,7 +36,6 @@ class K2ButtonElement(ButtonElement):
 
     def _do_send_value(self, value, channel=None):
         """Handles sending the value."""
-        logger.info(value)
 
         if value == BLACK:
             velocity = 0
