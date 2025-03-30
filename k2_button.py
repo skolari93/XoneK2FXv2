@@ -18,13 +18,13 @@ class K2ButtonElement(ButtonElement):
         super().__init__(identifier, channel, msg_type, is_momentary, led_channel, **k)
 
     def _do_send_value(self, value, channel = CHANNEL, color=RED):
-        logger.info(value)
-        # data_byte2 = 0
         # if int(value) == 1: 
         #     data_byte2 = 0
 
         data_byte1 = self._original_identifier + value # <---------------
-        data_byte2 = value
+        data_byte2 = 0
+        if value == 666: 
+            data_byte2 = 0
         status_byte = self._status_byte(self._original_channel if channel is None else channel)
         if self._msg_type == MIDI_PB_TYPE:
             data_byte1 = value & 127

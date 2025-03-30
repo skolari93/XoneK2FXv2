@@ -15,7 +15,7 @@ class Skin:
         PlayOn = Rgb.green
         PlayOff = Rgb.black
         StopOn = Rgb.black
-        #StopOff = Rgb.red
+        StopOff = Rgb.black
     # class StopButton:
     #     On = Rgb.red
     #     Off = Rgb.black
