@@ -1,6 +1,8 @@
 from ableton.v3.control_surface.elements import ButtonElement
 from ableton.v2.control_surface import MIDI_PB_TYPE, MIDI_NOTE_TYPE
+from ableton.v2.base import BooleanContext, const, has_event, in_range, listens, old_hasattr
 import logging
+from past.builtins import long
 logger = logging.getLogger("XoneK2FXv2")
 
 
@@ -37,33 +39,19 @@ class K2ButtonElement(ButtonElement):
             if self._report_output:
                 self._report_value(value, False)
 
-    def light_off(self,channel):
+    def light_off(self,channel=CHANNEL):
         velocity = 0
         for color in (RED, GREEN, AMBER):
             self._send_midi_message(velocity, channel, self.get_color(color))   
           
     def _do_send_value(self, value, channel=None):
         """Handles sending the value."""
-        if value == BLACK:
+        logger.info(value)
+        if value == BLACK or value == 0: # sometimes it sends 0, i don't know from where
             self.light_off(channel)
         else:
             velocity = 127  # Example: Set velocity if the value is even
             self._send_midi_message(velocity, channel, self.get_color(value))
-
-
-    def disconnect(self):
-        logger.info("Disconnect button element...")
-        velocity = 0
-        for color in (RED, GREEN, AMBER):
-                self._send_midi_message(velocity, CHANNEL, self.get_color(color))     
-        super(K2ButtonElement, self).disconnect()
-
-    def reset(self):
-        velocity = 0
-        for color in (RED, GREEN, AMBER):
-                self._send_midi_message(velocity, CHANNEL, self.get_color(color))   
-        self.use_default_message()
-        self.suppress_script_forwarding = False
 
 def create_k2_button(identifier, **k):
     """Factory function to create a K2ButtonElement with default parameters."""

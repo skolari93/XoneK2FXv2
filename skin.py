@@ -23,6 +23,3 @@ class Skin:
         Selected = Rgb.amber
         NotSelected = OFF
         Empty = OFF
-
-#    class Zooming:
-#        Empty = OFF
