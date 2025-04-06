@@ -1,16 +1,28 @@
 from .colors import Rgb
 
 
+OFF = Rgb.black
+ON = Rgb.red
+
 class Skin:
+    class DefaultButton:
+        On = ON
+        Off = OFF
+        Disabled = OFF
+
     class Transport:
         PlayOn = Rgb.green
-        PlayOff = Rgb.black
-        StopOn = Rgb.black
-        StopOff = Rgb.black
+        PlayOff = OFF
+        StopOn = OFF
+        StopOff = OFF
     class Mixer:
         MuteOn = Rgb.amber
-        MuteOff = Rgb.black
+        MuteOff = OFF
         SoloOn = Rgb.amber
-        SoloOff = Rgb.black
+        SoloOff = OFF
         Selected = Rgb.amber
-        NotSelected = Rgb.black
+        NotSelected = OFF
+        Empty = OFF
+
+#    class Zooming:
+#        Empty = OFF

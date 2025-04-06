@@ -12,8 +12,11 @@ from .mappings import create_mappings
 from .skin import Skin
 from .colors import Rgb
 from ableton.v3.control_surface.components import TransportComponent
-from .mixer import MixerComponent
-#from ableton.v3.control_surface.components import MixerComponent
+#from .mixer import MixerComponent
+from ableton.v3.control_surface.components import MixerComponent
+
+from functools import partial
+
 
 logger = logging.getLogger("XoneK2FXv2")
 
@@ -55,11 +58,6 @@ class XoneK2FXv2(ControlSurface):
     def stop_logging(self):
         logger.removeHandler(self.log_file_handler)
 
-    def disconnect(self):
-        self.show_message("Disconnecting...")
-        logger.info("Disconnecting...")
-        self.stop_logging()
-        super().disconnect()
 
     # @lazy_attribute
     # def _create_session_ring(self):
@@ -78,5 +76,5 @@ class Specification(ControlSurfaceSpecification):
     create_mappings_function = create_mappings
     component_map = {
         'Transport': TransportComponent,
-        'Mixer': MixerComponent
+        'Mixer': MixerComponent, 
     }

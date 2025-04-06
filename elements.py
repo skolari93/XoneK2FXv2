@@ -8,23 +8,13 @@ CHANNEL = 14
 class Elements(ElementsBase):
     def __init__(self, *a, **k):
         super().__init__(*a, **k)
-        add_button_matrix = partial(
-            (self.add_button_matrix),
-            msg_type=MIDI_NOTE_TYPE,
-            led_channel=0,
-            is_rgb=True,
-            is_momentary=True,
-        )
 
-        # add_button_matrix([range(44, 46)], base_name="solo_buttons", channels=CHANNEL)
-        #add_button_matrix([range(40, 42)], base_name="mute_buttons", channels=CHANNEL)
-        # add_button_matrix([range(52, 54)], base_name="TrackSelect_Buttons", channels=CHANNEL)
-        self.add_matrix([range(44, 46)], "solo_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        self.add_matrix([range(40, 42)], "mute_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        self.add_matrix([range(52, 54)], "track_select_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_matrix([range(44, 47)], "solo_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_matrix([range(40, 43)], "mute_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_matrix([range(52, 55)], "track_select_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_encoder_matrix(
-            [range(4, 6)],
-            base_name="SendA_Encoder_Matrix",
+            [range(4, 7)],
+            base_name="send_a_encoders",
             channels=CHANNEL,
             is_feedback_enabled=True,
             needs_takeover=True,
@@ -32,8 +22,8 @@ class Elements(ElementsBase):
         )
 
         self.add_encoder_matrix(
-            [range(8, 10)],
-            base_name="SendB_Encoder_Matrix",
+            [range(8, 11)],
+            base_name="send_b_encoders",
             channels=CHANNEL,
             is_feedback_enabled=True,
             needs_takeover=True,
@@ -41,16 +31,23 @@ class Elements(ElementsBase):
         )
 
         self.add_encoder_matrix(
-            [range(12, 14)],
-            base_name="SendC_Encoder_Matrix",
+            [range(12, 15)],
+            base_name="send_c_encoders",
             channels=CHANNEL,
             is_feedback_enabled=True,
             needs_takeover=True,
             map_mode=MapMode.Absolute,
         )
 
-        #self.add_button(12, "play_button", channel=CHANNEL, msg_type=MIDI_NOTE_TYPE)
-        #self.add_button(15, "stop_button", channel=CHANNEL, msg_type=MIDI_NOTE_TYPE)
+        self.add_encoder_matrix(
+            [range(16, 19)],
+            base_name="volume_faders",
+            channels=CHANNEL,
+            is_feedback_enabled=True,
+            needs_takeover=True,
+            map_mode=MapMode.Absolute,
+        )
+
         self.add_element("stop_button", create_k2_button, 15, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")
         self.add_element("play_button", create_k2_button, 12, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")
 
