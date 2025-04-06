@@ -46,8 +46,7 @@ class K2ButtonElement(ButtonElement):
           
     def _do_send_value(self, value, channel=None):
         """Handles sending the value."""
-        logger.info(value)
-        if value == BLACK or value == 0: # sometimes it sends 0, i don't know from where
+        if value == BLACK: # r value == 0:  sometimes it sends 0, i don't know from where 
             self.light_off(channel)
         else:
             velocity = 127  # Example: Set velocity if the value is even

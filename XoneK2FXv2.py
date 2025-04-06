@@ -11,9 +11,11 @@ from .elements import Elements
 from .mappings import create_mappings
 from .skin import Skin
 from .colors import Rgb
+from ableton.v3.control_surface import Layer
 from ableton.v3.control_surface.components import TransportComponent
-#from .mixer import MixerComponent
-from ableton.v3.control_surface.components import MixerComponent
+from .fx_mixer import FXMixerComponent
+from .master_track import MasterTrackComponent
+#from ableton.v3.control_surface.components import MixerComponent
 
 from functools import partial
 
@@ -33,6 +35,19 @@ class XoneK2FXv2(ControlSurface):
         self.show_message("XoneK2FXv2: init mate")
         logger.info("XoneK2FXv2: init started ...")
 
+        # with self.component_guard():
+            
+
+
+    def _create_components(self):
+        self.create_master_select()
+
+    def disconnect(self):
+        self.show_message("Disconnecting...")
+        logger.info("Disconnecting...")
+        self.stop_logging()
+        super().disconnect()
+
     def setup(self):
         super().setup()
         self.init()
@@ -42,6 +57,7 @@ class XoneK2FXv2(ControlSurface):
         with self.component_guard():
             logger.info("   adding skin")
             self._skin = create_skin(skin=Skin, colors=Rgb)
+            #self._create_components()
 
     def start_logging(self):
         module_path = os.path.dirname(os.path.realpath(__file__))
@@ -58,23 +74,24 @@ class XoneK2FXv2(ControlSurface):
     def stop_logging(self):
         logger.removeHandler(self.log_file_handler)
 
-
-    # @lazy_attribute
-    # def _create_session_ring(self):
-    #     self._session_ring = self._specification.session_ring_component_type(is_enabled=False,
-    #       num_tracks=(self._specification.num_tracks),
-    #       num_scenes=(self._specification.num_scenes),
-    #       include_returns=(self._specification.include_returns))
-    #     return self._session_ring
-
+    def create_master_select(self):
+        logger.info("init master select:")
+        self._master_selector = MasterTrackComponent(tracks_provider=(self._session_ring),
+          is_enabled=False,
+          
+          layer=Layer(toggle_button="master_select_button"))
+        self._master_selector.set_enabled(True)
     
 class Specification(ControlSurfaceSpecification):
     num_tracks = 3
     num_scenes = 0
+    include_returns = False
+    include_master = True
+    right_align_non_player_tracks = False
     elements_type = Elements
     control_surface_skin = create_skin(skin=Skin, colors=Rgb)
     create_mappings_function = create_mappings
     component_map = {
         'Transport': TransportComponent,
-        'Mixer': MixerComponent, 
+        'FXMixer': FXMixerComponent 
     }

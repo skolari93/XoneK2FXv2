@@ -15,6 +15,7 @@ class Skin:
         PlayOff = OFF
         StopOn = OFF
         StopOff = OFF
+
     class Mixer:
         MuteOn = Rgb.amber
         MuteOff = OFF
@@ -22,4 +23,4 @@ class Skin:
         SoloOff = OFF
         Selected = Rgb.amber
         NotSelected = OFF
-        Empty = OFF
+        NoTrack = OFF
