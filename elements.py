@@ -16,10 +16,12 @@ class Elements(ElementsBase):
             is_momentary=True,
         )
 
-        add_button_matrix([range(44, 46)], base_name="Solo_Buttons", channels=CHANNEL)
-        add_button_matrix([range(40, 42)], base_name="Mute_Buttons", channels=CHANNEL)
-        add_button_matrix([range(52, 54)], base_name="TrackSelect_Buttons", channels=CHANNEL)
-
+        # add_button_matrix([range(44, 46)], base_name="solo_buttons", channels=CHANNEL)
+        #add_button_matrix([range(40, 42)], base_name="mute_buttons", channels=CHANNEL)
+        # add_button_matrix([range(52, 54)], base_name="TrackSelect_Buttons", channels=CHANNEL)
+        self.add_matrix([range(44, 46)], "solo_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_matrix([range(40, 42)], "mute_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_matrix([range(52, 54)], "track_select_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_encoder_matrix(
             [range(4, 6)],
             base_name="SendA_Encoder_Matrix",

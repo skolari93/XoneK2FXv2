@@ -8,3 +8,8 @@ class Rgb:
     green = SimpleColor(GREEN)
     amber = SimpleColor(AMBER)
     black = SimpleColor(BLACK)
+
+
+class BasicColors:
+    OFF = Rgb.black
+    ON = Rgb.red
