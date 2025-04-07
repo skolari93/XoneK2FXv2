@@ -12,9 +12,10 @@ def create_mappings(cs):
             send_b_controls='send_b_encoders',
             send_c_controls='send_c_encoders',
             volume_controls='volume_faders',
-            master_track_volume_control='master_volume_fader',
         ),
-    #     'MasterTrack': dict(
-    #         master_select_button="master_select_button"
-    #     )
+        'MasterMixer': dict(
+            track_select_buttons='master_track_select_button',
+            volume_controls='master_volume_fader',
+            crossfader_control='crossfader_encoder'
+        ),
     }

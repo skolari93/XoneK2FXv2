@@ -48,8 +48,16 @@ class Elements(ElementsBase):
             map_mode=MapMode.Absolute,
         )
 
-        self.add_encoder(19, 'master_volume_fader', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.Absolute)
-        self.add_element("master_select_button", create_k2_button, 55, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_encoder_matrix(
+            [[19]],
+            base_name="master_volume_fader",
+            channels=CHANNEL,
+            is_feedback_enabled=True,
+            needs_takeover=True,
+            map_mode=MapMode.Absolute,
+        )
+        self.add_matrix([[55]], "master_track_select_button", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_encoder(15, 'crossfader_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.Absolute)
 
         self.add_element("stop_button", create_k2_button, 15, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")
         self.add_element("play_button", create_k2_button, 12, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")

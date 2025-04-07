@@ -1,7 +1,6 @@
 import logging
 import os
-from ableton.v3.base import lazy_attribute
-
+from ableton.v3.base import const
 from ableton.v3.control_surface import (
     ControlSurface,
     ControlSurfaceSpecification,
@@ -11,12 +10,10 @@ from .elements import Elements
 from .mappings import create_mappings
 from .skin import Skin
 from .colors import Rgb
-from ableton.v3.control_surface import Layer
 from ableton.v3.control_surface.components import TransportComponent
-#from .fx_mixer import FXMixerComponent
-#from .master_ring import MasterRing
-from ableton.v3.control_surface.components import MixerComponent,SessionRingComponent
-from ableton.v2.control_surface.components import SimpleTrackAssigner
+from .fx_mixer import FXMixerComponent
+from .master_mixer import MasterMixerComponent
+from ableton.v3.control_surface.components import SessionRingComponent
 
 from functools import partial
 
@@ -39,8 +36,6 @@ class XoneK2FXv2(ControlSurface):
         self.show_message("XoneK2FXv2: init mate")
         logger.info("XoneK2FXv2: init started ...")
 
-
-
     def disconnect(self):
         self.show_message("Disconnecting...")
         logger.info("Disconnecting...")
@@ -56,10 +51,6 @@ class XoneK2FXv2(ControlSurface):
         with self.component_guard():
             logger.info("   adding skin")
             self._skin = create_skin(skin=Skin, colors=Rgb)
-            #self._create_components()
-            #self.component_map["Mixer"].master_strip().layer = Layer(select_button="master_select_button")
-            #self.component_map["Mixer"].master_strip().layer = Layer(select_button="master_select_button")
-        #self.set_components_enabled(True)
 
     def _create_components(self):
         self._init_session_ring()
@@ -76,51 +67,6 @@ class XoneK2FXv2(ControlSurface):
             is_enabled=False
         )
 
-    def _create_mixer_volume_layer(self):
-        return Layer(track_select_buttons="track_select_buttons",
-          volume_controls="volume_faders",
-        )
-
-    def _create_mixer_mute_layer(self):
-        return Layer(mute_buttons="mute_buttons")
-
-    def set_components_enabled(self, enabled):
-        with self.component_guard():
-            for c in self._components:
-                c.set_enabled(enabled)
-    
-    def _init_mixer(self):
-
-        self._mixer = MixerComponent(
-            name="FXMixer",
-            session_ring=self._session_ring,
-            #track_assigner=SimpleTrackAssigner(),
-            is_enabled=False,
-            layer=Layer(mute_buttons="mute_buttons")
-        )
-        #self._mixer.set_enabled(False)
-        #self._mixer.name = "FXMixer"
-        #self._mixer_layer = self._create_mixer_layer()
-        #self._mixer_pan_send_layer = self._create_mixer_pan_send_layer()
-        #self._mixer_volume_layer = self._create_mixer_volume_layer()
-        #self._mixer_track_layer = self._create_mixer_track_layer()
-        #self._mixer_solo_layer = self._create_mixer_solo_layer()
-        #self._mixer_mute_layer = self._create_mixer_mute_layer()
-        # for track in range(self.elements.matrix.width()):
-        #     strip = self._mixer.channel_strip(track)
-        #     strip.name = "Channel_Strip_" + str(track)
-        #     strip.set_invert_mute_feedback(True)
-        #     strip.set_delete_handler(self._delete_component)
-        #     strip._do_select_track = self.on_select_track
-
-
-        # self._mixer.selected_strip().name = "Selected_Channel_strip"
-        # self._mixer.master_strip().name = "Master_Channel_strip"
-        # self._mixer.master_strip()._do_select_track = self.on_select_track
-        # self._mixer.master_strip().layer = Layer(select_button="master_select_button",
-        #   selector_button="select_button")
-        #self._mixer.set_enabled(True)
-
     def start_logging(self):
         module_path = os.path.dirname(os.path.realpath(__file__))
         log_dir = os.path.join(module_path, "logs")
@@ -136,25 +82,35 @@ class XoneK2FXv2(ControlSurface):
     def stop_logging(self):
         logger.removeHandler(self.log_file_handler)
 
-    # def create_master_select(self):
-    #     logger.info("init master select:")
-    #     self._master_selector = MasterTrackComponent(tracks_provider=(self._session_ring),
-    #       is_enabled=False,
-          
-    #       layer=Layer(toggle_button="master_select_button"))
-    #     self._master_selector.set_enabled(True)
-    # heeerre:
-    # def _get_additional_dependencies(self):
-    #     # Return dictionary of additional dependencies
-    #     return {
-    #         'master_ring': const(self._master_ring)
-    #     }
-    # this is an example
-    # def _get_additional_dependencies(self):
-        # setitngs = SettingsComponent()
-        # self.component_map["Settings"] = settings
-        # return {"settings_component": (const(settings))}
+    def _get_additional_dependencies(self):
+        fx_ring = SessionRingComponent(
+            name='fx_ring',
+            num_tracks=3,
+            num_scenes=0,
+            tracks_to_use=partial(fx_tracks, self.song),
+        )
+        self.component_map["FXRing"] = fx_ring
+
+        master_ring = SessionRingComponent(
+            name='master_ring',
+            num_tracks=1,
+            num_scenes=0,
+            tracks_to_use=partial(master_track, self.song),
+        )
+
+        self.component_map["MasterRing"] = master_ring
+        return {
+            "fx_ring": const(fx_ring),
+            "master_ring": const(master_ring)
+        }
     
+def fx_tracks(song):
+    return tuple(song.return_tracks)
+
+def master_track(song):
+    return (song.master_track,)
+
+
 class Specification(ControlSurfaceSpecification):
     num_tracks = 3
     num_scenes = 0
@@ -166,6 +122,6 @@ class Specification(ControlSurfaceSpecification):
     create_mappings_function = create_mappings
     component_map = {
         'Transport': TransportComponent,
-        #'Master_Ring': MasterRing,
-        'FXMixer': MixerComponent 
+        'FXMixer': FXMixerComponent,
+        'MasterMixer': MasterMixerComponent 
     }
