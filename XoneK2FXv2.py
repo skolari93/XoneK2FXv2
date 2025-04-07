@@ -1,6 +1,5 @@
-import logging
 import os
-from ableton.v3.base import const
+from ableton.v3.base import const, listens
 from ableton.v3.control_surface import (
     ControlSurface,
     ControlSurfaceSpecification,
@@ -10,14 +9,15 @@ from .elements import Elements
 from .mappings import create_mappings
 from .skin import Skin
 from .colors import Rgb
-from ableton.v3.control_surface.components import TransportComponent, ViewControlComponent, SessionComponent
+from ableton.v3.control_surface.components import TransportComponent, ViewControlComponent#, SessionComponent
+from .session import SessionComponent
 from .fx_mixer import FXMixerComponent
 from .master_mixer import MasterMixerComponent
 from ableton.v3.control_surface.components import SessionRingComponent
 
 from functools import partial
 
-
+import logging
 logger = logging.getLogger("XoneK2FXv2")
 
 
@@ -51,21 +51,6 @@ class XoneK2FXv2(ControlSurface):
         with self.component_guard():
             logger.info("   adding skin")
             self._skin = create_skin(skin=Skin, colors=Rgb)
-
-    def _create_components(self):
-        self._init_session_ring()
-        self._init_mixer()
-        
-
-    
-    def _init_session_ring(self):
-        self._session_ring = SessionRingComponent(
-            name="session_ring",
-            num_tracks=3,
-            num_scenes=0,
-            tracks_to_use=(partial(tracks_to_use_from_song, self.song)),
-            is_enabled=False
-        )
 
     def start_logging(self):
         module_path = os.path.dirname(os.path.realpath(__file__))
@@ -103,6 +88,7 @@ class XoneK2FXv2(ControlSurface):
             "fx_ring": const(fx_ring),
             "master_ring": const(master_ring)
         }
+
     
 def fx_tracks(song):
     return tuple(song.return_tracks)

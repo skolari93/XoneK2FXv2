@@ -23,6 +23,6 @@ def create_mappings(cs):
             scene_encoder='scene_select_encoder',
         ),
         'Session': dict(
-            selected_scene_launch_button='launch_scene_button'
+            launch_scene_and_advance='launch_scene_button'
         )
     }
