@@ -24,3 +24,6 @@ class Skin:
         Selected = Rgb.amber
         NotSelected = OFF
         NoTrack = OFF
+        CrossfadeA = Rgb.amber
+        CrossfadeB = Rgb.green
+        CrossfadeOff = OFF
