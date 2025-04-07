@@ -149,6 +149,11 @@ class XoneK2FXv2(ControlSurface):
     #     return {
     #         'master_ring': const(self._master_ring)
     #     }
+    # this is an example
+    # def _get_additional_dependencies(self):
+        # setitngs = SettingsComponent()
+        # self.component_map["Settings"] = settings
+        # return {"settings_component": (const(settings))}
     
 class Specification(ControlSurfaceSpecification):
     num_tracks = 3
