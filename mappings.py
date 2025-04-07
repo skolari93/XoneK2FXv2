@@ -19,4 +19,10 @@ def create_mappings(cs):
             volume_controls='master_volume_fader',
             crossfader_control='crossfader_encoder'
         ),
+        'ViewControl': dict(
+            scene_encoder='scene_select_encoder',
+        ),
+        'Session': dict(
+            selected_scene_launch_button='launch_scene_button'
+        )
     }

@@ -12,7 +12,6 @@ class Elements(ElementsBase):
         self.add_matrix([range(44, 47)], "solo_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_matrix([range(40, 43)], "mute_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_matrix([range(52, 55)], "track_select_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        self.add_matrix([range(48, 51)], "crossfade_assign_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
         self.add_encoder_matrix(
             [range(4, 7)],
@@ -50,6 +49,7 @@ class Elements(ElementsBase):
             map_mode=MapMode.Absolute,
         )
 
+        # master track
         self.add_encoder_matrix(
             [[19]],
             base_name="master_volume_fader",
@@ -59,8 +59,15 @@ class Elements(ElementsBase):
             map_mode=MapMode.Absolute,
         )
         self.add_matrix([[55]], "master_track_select_button", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        
+        # crossfader
         self.add_encoder(15, 'crossfader_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.Absolute)
+        self.add_matrix([range(48, 51)], "crossfade_assign_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
+        # transport
         self.add_element("stop_button", create_k2_button, 15, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")
         self.add_element("play_button", create_k2_button, 12, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")
 
+        # scene select
+        self.add_encoder(21, 'scene_select_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+        self.add_button(14, 'launch_scene_button', channel=CHANNEL, msg_type=MIDI_NOTE_TYPE)

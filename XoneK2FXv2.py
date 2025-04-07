@@ -10,7 +10,7 @@ from .elements import Elements
 from .mappings import create_mappings
 from .skin import Skin
 from .colors import Rgb
-from ableton.v3.control_surface.components import TransportComponent
+from ableton.v3.control_surface.components import TransportComponent, ViewControlComponent, SessionComponent
 from .fx_mixer import FXMixerComponent
 from .master_mixer import MasterMixerComponent
 from ableton.v3.control_surface.components import SessionRingComponent
@@ -123,5 +123,7 @@ class Specification(ControlSurfaceSpecification):
     component_map = {
         'Transport': TransportComponent,
         'FXMixer': FXMixerComponent,
-        'MasterMixer': MasterMixerComponent 
+        'MasterMixer': MasterMixerComponent,
+        'ViewControl': ViewControlComponent,
+        'Session': SessionComponent 
     }
