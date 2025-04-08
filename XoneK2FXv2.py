@@ -9,10 +9,10 @@ from .elements import Elements
 from .mappings import create_mappings
 from .skin import Skin
 from .colors import Rgb
-from ableton.v3.control_surface.components import TransportComponent, ViewControlComponent#, SessionComponent
 from .session import SessionComponent
 from .fx_mixer import FXMixerComponent
 from .master_mixer import MasterMixerComponent
+from ableton.v3.control_surface.components import TransportComponent, ViewControlComponent
 from ableton.v3.control_surface.components import SessionRingComponent
 
 from functools import partial

@@ -12,12 +12,14 @@ def create_mappings(cs):
             send_b_controls='send_b_encoders',
             send_c_controls='send_c_encoders',
             volume_controls='volume_faders',
-            crossfade_cycle_buttons='crossfade_assign_buttons'
+            gain_controls='gain_encoders',
+            crossfade_cycle_buttons='crossfade_assign_buttons',
         ),
         'MasterMixer': dict(
             track_select_buttons='master_track_select_button',
             volume_controls='master_volume_fader',
-            crossfader_control='crossfader_encoder'
+            crossfader_control='crossfader_encoder',
+            prehear_volume_control='cue_encoder'
         ),
         'ViewControl': dict(
             scene_encoder='scene_select_encoder',

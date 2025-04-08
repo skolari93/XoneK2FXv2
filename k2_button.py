@@ -1,8 +1,6 @@
 from ableton.v3.control_surface.elements import ButtonElement
 from ableton.v2.control_surface import MIDI_PB_TYPE, MIDI_NOTE_TYPE
-from ableton.v2.base import BooleanContext, const, has_event, in_range, listens, old_hasattr
 import logging
-from past.builtins import long
 logger = logging.getLogger("XoneK2FXv2")
 
 

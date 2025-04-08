@@ -49,6 +49,15 @@ class Elements(ElementsBase):
             map_mode=MapMode.Absolute,
         )
 
+        self.add_encoder_matrix(
+            [range(0, 3)],
+            base_name="gain_encoders",
+            channels=CHANNEL,
+            is_feedback_enabled=True,
+            needs_takeover=True,
+            map_mode=MapMode.AccelTwoCompliment,
+        )
+
         # master track
         self.add_encoder_matrix(
             [[19]],
@@ -59,7 +68,10 @@ class Elements(ElementsBase):
             map_mode=MapMode.Absolute,
         )
         self.add_matrix([[55]], "master_track_select_button", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        
+        # cue
+        self.add_encoder(11, 'cue_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.Absolute)
+
+
         # crossfader
         self.add_encoder(15, 'crossfader_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.Absolute)
         self.add_matrix([range(48, 51)], "crossfade_assign_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
