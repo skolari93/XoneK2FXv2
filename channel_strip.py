@@ -1,52 +1,44 @@
 from ableton.v3.control_surface.components import ChannelStripComponent as ChannelStripComponentBase
-from ableton.v3.control_surface.controls import EncoderControl
+from ableton.v3.control_surface.controls import MappedControl
+# from ableton.v3.control_surface.controls import find_instrument_devices
 #from ableton.v3.control_surface import create_parameter_bank, BankingInfo
 from ableton.v3.live import get_parameter_by_name
-from ableton.v3.control_surface.default_bank_definitions import (
-    BANK_DEFINITIONS,
-    BANK_MAIN_KEY,
-    BANK_PARAMETERS_KEY
-)
+from ableton.v3.base import listens_group
+
 from ableton.v3.live import liveobj_valid
+from itertools import chain
 
 import logging
 logger = logging.getLogger("XoneK2FXv2")
 
 
-
-
-
-
-# something with connect_to and get_parameter_by_name, _direct_mapping
-
-
-
-
-
-
-
 class ChannelStripComponent(ChannelStripComponentBase):
-    gain_control = EncoderControl()
+    gain_control = MappedControl()
+    def __init__(self,  *a, **k):
+        super().__init__( *a, **k)
 
-    @gain_control.value
-    def _on_gain_control_value_changed(self, value, encoder):
+    @listens_group("devices")
+    def __on_devices_changed(self, _):
+        self._connect_gain_control()
+
+    def _connect_parameters(self):
+        super()._connect_parameters()  # Call base method
+        self._connect_gain_control()
+
+    def _connect_gain_control(self):
         if self.check_if_last_device_is_utility():
             last_device = self._track.devices[-1]
-
-
-            # Create a banking info object
-            #banking_info = BankingInfo(BANK_DEFINITIONS["StereoGain"]["Utility"])
-
-
-            # Create a parameter bank for the device
-            #parameter_bank = create_parameter_bank(last_device, banking_info)
-
-            # Access the Gain parameter (it's at index 6 in the bank definition)
             gain_parameter = get_parameter_by_name("Gain", last_device)
-            self.print_all_parameter_names(last_device)
-            # Now you can use the gain parameter
-            if gain_parameter:
-                print(f"Current gain value: {gain_parameter.value}")
+            self.gain_control.mapped_parameter = gain_parameter
+    
+    def update(self):
+        super().update()
+        if self.is_enabled():
+            self._update_listeners()
+
+    def _update_listeners(self):
+        if self._track:
+            self._ChannelStripComponent__on_devices_changed.replace_subjects([self._track]) #ignore racks and chains
 
     def set_gain_control(self, encoder):
         self.gain_control.set_control_element(encoder)
@@ -58,13 +50,10 @@ class ChannelStripComponent(ChannelStripComponentBase):
             last_device = self._track.devices[-1]
             # Compare if the name of the last device is "Utility"
             if last_device.name == "Utility":
-                logger.info("The last device is a Utility device.")
                 return True
             else:
-                logger.info("The last device is NOT a Utility device.")
                 return False
         else:
-            logger.info("No devices in the list.")
             return False
         
     def print_all_parameter_names(self, device):
@@ -72,3 +61,7 @@ class ChannelStripComponent(ChannelStripComponentBase):
             for param in device.parameters:
                 if liveobj_valid(param):
                     logger.info(param.original_name)
+
+    def _all_controls(self):
+        return chain([
+         self.volume_control, self.pan_control, self.gain_control], self.send_controls, self.indexed_send_controls,)
