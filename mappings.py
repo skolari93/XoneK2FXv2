@@ -7,6 +7,7 @@ def create_mappings(cs):
             play_button='play_button',
             stop_button='stop_button',
             tempo_coarse_encoder="tempo_encoder",
+            tempo_fine_encoder="tempo_encoder_with_shift",
             re_enable_automation_button="automation_re-enable_button",
             automation_arm_button="automation_arm_button",
         ),

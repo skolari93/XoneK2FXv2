@@ -35,10 +35,12 @@ class Skin:
         NoScene = OFF
         StopAllClips = Rgb.red
         ClipPlaying = Rgb.green
-    
+        ClipTriggeredPlay = Rgb.green
+        
     class Zooming:
         Playing = Rgb.green
         Empty = OFF
+        Selected = Rgb.green
     
     class Recording:
         ArrangementRecordOn = ON
@@ -56,6 +58,11 @@ class Skin:
     class ModifierBackground:
         Shift = OFF
         ShiftPressed = Rgb.amber
+
+    class ViewControl:
+        ScenePressed = Rgb.green
+        Scene = Rgb.green
+
 
     class Variations:
         Off = OFF

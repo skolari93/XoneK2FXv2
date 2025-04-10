@@ -1,5 +1,5 @@
 import os
-from ableton.v3.base import const, listens
+from ableton.v3.base import const
 from ableton.v3.control_surface import (
     ControlSurface,
     ControlSurfaceSpecification,
@@ -12,7 +12,7 @@ from .colors import Rgb
 from .session import SessionComponent
 from .fx_mixer import FXMixerComponent
 from .master_mixer import MasterMixerComponent
-from ableton.v3.control_surface.components import TransportComponent, ViewControlComponent, SessionNavigationComponent, SessionRingComponent
+from ableton.v3.control_surface.components import ViewControlComponent, SessionRingComponent
 
 from functools import partial
 
@@ -101,15 +101,14 @@ class Specification(ControlSurfaceSpecification):
     num_scenes = 3
     include_returns = False
     include_master = False
-    right_align_non_player_tracks = False
+    #right_align_non_player_tracks = False
+    #link_session_ring_to_scene_selection = True
     elements_type = Elements
     control_surface_skin = create_skin(skin=Skin, colors=Rgb)
     create_mappings_function = create_mappings
     component_map = {
-        'Transport': TransportComponent,
         'FXMixer': FXMixerComponent,
         'MasterMixer': MasterMixerComponent,
         'ViewControl': ViewControlComponent,
         'Session': SessionComponent,
-        'Session_Navigation': SessionNavigationComponent
     }

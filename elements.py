@@ -80,7 +80,7 @@ class Elements(ElementsBase):
 
         # Tempo
         self.add_encoder(3, 'tempo_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
-
+        self.add_modified_control(control=(self.tempo_encoder), modifier=(self.shift_button))
 
         # crossfader
         self.add_encoder(15, 'crossfader_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.Absolute)
