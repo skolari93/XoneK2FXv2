@@ -12,8 +12,7 @@ from .colors import Rgb
 from .session import SessionComponent
 from .fx_mixer import FXMixerComponent
 from .master_mixer import MasterMixerComponent
-from ableton.v3.control_surface.components import TransportComponent, ViewControlComponent
-from ableton.v3.control_surface.components import SessionRingComponent
+from ableton.v3.control_surface.components import TransportComponent, ViewControlComponent, SessionNavigationComponent, SessionRingComponent
 
 from functools import partial
 
@@ -99,9 +98,9 @@ def master_track(song):
 
 class Specification(ControlSurfaceSpecification):
     num_tracks = 3
-    num_scenes = 0
+    num_scenes = 3
     include_returns = False
-    include_master = True
+    include_master = False
     right_align_non_player_tracks = False
     elements_type = Elements
     control_surface_skin = create_skin(skin=Skin, colors=Rgb)
@@ -111,5 +110,6 @@ class Specification(ControlSurfaceSpecification):
         'FXMixer': FXMixerComponent,
         'MasterMixer': MasterMixerComponent,
         'ViewControl': ViewControlComponent,
-        'Session': SessionComponent 
+        'Session': SessionComponent,
+        'Session_Navigation': SessionNavigationComponent
     }

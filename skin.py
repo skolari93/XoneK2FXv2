@@ -27,3 +27,13 @@ class Skin:
         CrossfadeA = Rgb.amber
         CrossfadeB = Rgb.green
         CrossfadeOff = OFF
+
+    class Session:
+        Scene = Rgb.amber
+        SceneTriggered = Rgb.green
+        NoScene = OFF
+        StopAllClips = Rgb.red
+        ClipPlaying = Rgb.green
+    
+    class Zooming:
+        Playing = Rgb.green

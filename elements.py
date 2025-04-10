@@ -80,9 +80,19 @@ class Elements(ElementsBase):
         self.add_matrix([range(48, 51)], "crossfade_assign_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
         # transport
-        self.add_element("stop_button", create_k2_button, 15, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")
-        self.add_element("play_button", create_k2_button, 12, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")
+        self.add_element("stop_button", create_k2_button, 24, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_element("play_button", create_k2_button, 25, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
         # scene select
         self.add_encoder(21, 'scene_select_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
         self.add_button(14, 'launch_scene_button', channel=CHANNEL, msg_type=MIDI_NOTE_TYPE)
+
+        self.add_matrix([[39,35,31]], "scene_launch_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_element("stop_all_clips_button", create_k2_button, 27, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
+
+        # scene nav
+        self.add_encoder(20, 'vertical_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+
+        # variations
+        self.add_button(13, 'variations_launch_button', channel=CHANNEL, msg_type=MIDI_NOTE_TYPE)
+        self.add_element("variations_stash_button", create_k2_button, 15, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")

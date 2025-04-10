@@ -20,12 +20,19 @@ def create_mappings(cs):
             track_select_buttons='master_track_select_button',
             volume_controls='master_volume_fader',
             crossfader_control='crossfader_encoder',
-            prehear_volume_control='cue_encoder'
+            prehear_volume_control='cue_encoder',
+            variations_stash_button='variations_stash_button',
+            variations_launch_button='variations_launch_button'
         ),
         'ViewControl': dict(
             scene_encoder='scene_select_encoder',
         ),
         'Session': dict(
-            launch_scene_and_advance='launch_scene_button'
+            launch_scene_and_advance='launch_scene_button',
+            scene_launch_buttons="scene_launch_buttons",
+            stop_all_clips_button="stop_all_clips_button"
+        ),
+        'Session_Navigation': dict(
+            vertical_encoder='vertical_encoder',
         )
     }
