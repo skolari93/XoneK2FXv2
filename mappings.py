@@ -1,5 +1,8 @@
 def create_mappings(cs):
     return {
+        'Modifier_Background': dict(
+            shift="shift_button"
+        ),
         'Transport': dict(
             play_button='play_button',
             stop_button='stop_button',
@@ -27,8 +30,10 @@ def create_mappings(cs):
             volume_controls='master_volume_fader',
             crossfader_control='crossfader_encoder',
             prehear_volume_control='cue_encoder',
-            variations_stash_button='variations_stash_button',
-            variations_launch_button='variations_launch_button'
+            variations_recall_button='variations_recall_button',
+            variations_stash_button='variations_recall_button_with_shift',
+            variations_launch_button='variations_launch_button',
+            variations_overwrite_button='variations_launch_button_with_shift'
         ),
         'ViewControl': dict(
             scene_encoder='scene_select_encoder',

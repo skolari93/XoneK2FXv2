@@ -13,7 +13,9 @@ logger = logging.getLogger("XoneK2FXv2")
 
 class ChannelStripComponent(ChannelStripComponentBase):
     variations_stash_button = MappedButtonControl()
+    variations_recall_button = MappedButtonControl()
     variations_launch_button = MappedButtonControl()
+    variations_overwrite_button = MappedButtonControl()
 
     def __init__(self,  *a, **k):
         super().__init__( *a, **k)
@@ -32,8 +34,12 @@ class ChannelStripComponent(ChannelStripComponentBase):
                 #logger.info(print_all_parameter_names(device))
                 stash_parameter = get_parameter_by_name("Stash", device)
                 self.variations_stash_button.mapped_parameter = stash_parameter
+                recall_parameter = get_parameter_by_name("Recall", device)
+                self.variations_recall_button.mapped_parameter = recall_parameter
                 launch_parameter = get_parameter_by_name("Launch", device)
                 self.variations_launch_button.mapped_parameter = launch_parameter
+                overwrite_parameter = get_parameter_by_name("Overwrite", device)
+                self.variations_overwrite_button.mapped_parameter = overwrite_parameter
                 break
     
     def update(self):
@@ -48,4 +54,6 @@ class ChannelStripComponent(ChannelStripComponentBase):
     def _disconnect_parameters(self):
         super()._disconnect_parameters()
         self.variations_stash_button.mapped_parameter = None
+        self.variations_recall_button.mapped_parameter = None
         self.variations_launch_button.mapped_parameter = None
+        self.variations_overwrite_button.mapped_parameter = None

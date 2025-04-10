@@ -12,8 +12,11 @@ class MasterMixerComponent(MixerComponentBase):
     def set_variations_stash_button(self, button):
         self._master_strip.variations_stash_button.set_control_element(button)
 
-    # def set_variations_recall_button(self, button):
-    #     self._master_strip.variations_recall_button.set_control_element(button)
+    def set_variations_recall_button(self, button):
+        self._master_strip.variations_recall_button.set_control_element(button)
 
     def set_variations_launch_button(self, button):
         self._master_strip.variations_launch_button.set_control_element(button)
+
+    def set_variations_overwrite_button(self, button):
+        self._master_strip.variations_overwrite_button.set_control_element(button)
