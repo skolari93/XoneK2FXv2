@@ -1,12 +1,9 @@
 
 from ableton.v3.control_surface.components import ChannelStripComponent as ChannelStripComponentBase
-# from ableton.v3.control_surface.controls import MappedButtonControl
 from .mappable_button_control import MappedButtonControlwithReleasedAction as MappedButtonControl
 from ableton.v3.live import get_parameter_by_name
 from ableton.v3.base import listens_group
 from .mapped_scroll_control import MappedScrollEncoderControl
-from .utils import print_all_parameter_names
-from itertools import chain
 
 import logging
 logger = logging.getLogger("XoneK2FXv2")
@@ -33,7 +30,6 @@ class ChannelStripComponent(ChannelStripComponentBase):
     def _connect_variations_buttons(self):
         for device in self._track.devices:
             if device.name == "Variations":
-                #logger.info(print_all_parameter_names(device))
                 stash_parameter = get_parameter_by_name("Stash", device)
                 self.variations_stash_button.mapped_parameter = stash_parameter
                 recall_parameter = get_parameter_by_name("Recall", device)
