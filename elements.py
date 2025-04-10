@@ -80,8 +80,14 @@ class Elements(ElementsBase):
         self.add_matrix([range(48, 51)], "crossfade_assign_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
         # transport
-        self.add_element("stop_button", create_k2_button, 24, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        self.add_element("play_button", create_k2_button, 25, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_element("play_button", create_k2_button, 24, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_element("stop_button", create_k2_button, 25, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_element("automation_arm_button", create_k2_button, 28, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_element("automation_re-enable_button", create_k2_button, 29, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
+
+        # recording
+        self.add_element("record_button", create_k2_button, 26, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_element("session_record_button", create_k2_button, 30, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
         # scene select
         self.add_encoder(21, 'scene_select_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)

@@ -4,6 +4,12 @@ def create_mappings(cs):
             play_button='play_button',
             stop_button='stop_button',
             tempo_coarse_encoder="tempo_encoder",
+            re_enable_automation_button="automation_re-enable_button",
+            automation_arm_button="automation_arm_button",
+        ),
+        'Recording': dict(
+            arrangement_record_button='record_button',
+            session_record_button='session_record_button',
         ),
         'FXMixer': dict(
             solo_buttons='solo_buttons',

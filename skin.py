@@ -15,6 +15,8 @@ class Skin:
         PlayOff = OFF
         StopOn = OFF
         StopOff = OFF
+        AutomationArmOn = Rgb.amber
+        AutomationArmOff = OFF
 
     class Mixer:
         MuteOn = Rgb.amber
@@ -37,3 +39,16 @@ class Skin:
     
     class Zooming:
         Playing = Rgb.green
+    
+    class Recording:
+        ArrangementRecordOn = ON
+        ArrangementRecordOff = OFF
+        ArrangementOverdubOn = ON
+        ArrangementOverdubOff = OFF
+        SessionRecordOn = ON
+        SessionRecordTransition = ON
+        SessionRecordOff = OFF
+        SessionOverdubOn = ON
+        SessionOverdubOff = OFF
+        NewPressed = ON
+        New = OFF
