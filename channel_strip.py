@@ -1,11 +1,8 @@
 from ableton.v3.control_surface.components import ChannelStripComponent as ChannelStripComponentBase
 from ableton.v3.control_surface.controls import MappedControl
-# from ableton.v3.control_surface.controls import find_instrument_devices
-#from ableton.v3.control_surface import create_parameter_bank, BankingInfo
 from ableton.v3.live import get_parameter_by_name
 from ableton.v3.base import listens_group
 
-from ableton.v3.live import liveobj_valid
 from itertools import chain
 
 import logging
@@ -56,11 +53,6 @@ class ChannelStripComponent(ChannelStripComponentBase):
         else:
             return False
         
-    def print_all_parameter_names(self, device):
-        if liveobj_valid(device):
-            for param in device.parameters:
-                if liveobj_valid(param):
-                    logger.info(param.original_name)
 
     def _all_controls(self):
         return chain([

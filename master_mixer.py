@@ -1,6 +1,4 @@
 from ableton.v3.control_surface.components import MixerComponent as MixerComponentBase
-
-
 from ableton.v3.base import depends
 
 class MasterMixerComponent(MixerComponentBase):

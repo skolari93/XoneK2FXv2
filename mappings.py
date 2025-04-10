@@ -3,6 +3,7 @@ def create_mappings(cs):
         'Transport': dict(
             play_button='play_button',
             stop_button='stop_button',
+            tempo_coarse_encoder="tempo_encoder",
         ),
         'FXMixer': dict(
             solo_buttons='solo_buttons',

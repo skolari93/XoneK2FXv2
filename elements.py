@@ -71,6 +71,9 @@ class Elements(ElementsBase):
         # cue
         self.add_encoder(11, 'cue_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.Absolute)
 
+        # Tempo
+        self.add_encoder(3, 'tempo_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+
 
         # crossfader
         self.add_encoder(15, 'crossfader_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.Absolute)
