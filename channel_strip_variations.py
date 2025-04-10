@@ -4,6 +4,7 @@ from ableton.v3.control_surface.components import ChannelStripComponent as Chann
 from .mappable_button_control import MappedButtonControlwithReleasedAction as MappedButtonControl
 from ableton.v3.live import get_parameter_by_name
 from ableton.v3.base import listens_group
+from .mapped_scroll_control import MappedScrollEncoderControl
 from .utils import print_all_parameter_names
 from itertools import chain
 
@@ -16,9 +17,7 @@ class ChannelStripComponent(ChannelStripComponentBase):
     variations_recall_button = MappedButtonControl()
     variations_launch_button = MappedButtonControl()
     variations_overwrite_button = MappedButtonControl()
-
-    variations_up_button = MappedButtonControl()
-    variations_down_button = MappedButtonControl()
+    variations_select_encoder = MappedScrollEncoderControl()
 
     def __init__(self,  *a, **k):
         super().__init__( *a, **k)
@@ -44,9 +43,10 @@ class ChannelStripComponent(ChannelStripComponentBase):
                 overwrite_parameter = get_parameter_by_name("Overwrite", device)
                 self.variations_overwrite_button.mapped_parameter = overwrite_parameter
                 up_parameter = get_parameter_by_name("Navigate Up", device)
-                self.variations_up_button.mapped_parameter = up_parameter
                 down_parameter = get_parameter_by_name("Navigate Down", device)
-                self.variations_down_button.mapped_parameter = down_parameter
+
+                self.variations_select_encoder.mapped_parameter_up = up_parameter
+                self.variations_select_encoder.mapped_parameter_down = down_parameter
                 break
     
     def update(self):
@@ -64,5 +64,6 @@ class ChannelStripComponent(ChannelStripComponentBase):
         self.variations_recall_button.mapped_parameter = None
         self.variations_launch_button.mapped_parameter = None
         self.variations_overwrite_button.mapped_parameter = None
-        self.variations_up_button.mapped_parameter = None
-        self.variations_down_button.mapped_parameter = None
+
+        self.variations_select_encoder.mapped_parameter_up = None
+        self.variations_select_encoder.mapped_parameter_down = None

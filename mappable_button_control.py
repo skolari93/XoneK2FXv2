@@ -1,7 +1,6 @@
 from ableton.v3.control_surface.controls import MappedButtonControl
 from ableton.v3.live import action
 
-
 # Erweiterung der ButtonControl mit doppeltem Action-Aufruf
 class MappedButtonControlwithReleasedAction(MappedButtonControl):
     class State(MappedButtonControl.State):

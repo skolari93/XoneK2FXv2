@@ -26,3 +26,6 @@ class MasterMixerComponent(MixerComponentBase):
 
     def set_variations_down_button(self, button):
         self._master_strip.variations_down_button.set_control_element(button)
+
+    def set_variations_select_encoder(self, encoder):
+        self._master_strip.variations_select_encoder.set_control_element(encoder)
