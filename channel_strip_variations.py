@@ -17,6 +17,9 @@ class ChannelStripComponent(ChannelStripComponentBase):
     variations_launch_button = MappedButtonControl()
     variations_overwrite_button = MappedButtonControl()
 
+    variations_up_button = MappedButtonControl()
+    variations_down_button = MappedButtonControl()
+
     def __init__(self,  *a, **k):
         super().__init__( *a, **k)
 
@@ -40,6 +43,10 @@ class ChannelStripComponent(ChannelStripComponentBase):
                 self.variations_launch_button.mapped_parameter = launch_parameter
                 overwrite_parameter = get_parameter_by_name("Overwrite", device)
                 self.variations_overwrite_button.mapped_parameter = overwrite_parameter
+                up_parameter = get_parameter_by_name("Navigate Up", device)
+                self.variations_up_button.mapped_parameter = up_parameter
+                down_parameter = get_parameter_by_name("Navigate Down", device)
+                self.variations_down_button.mapped_parameter = down_parameter
                 break
     
     def update(self):
@@ -57,3 +64,5 @@ class ChannelStripComponent(ChannelStripComponentBase):
         self.variations_recall_button.mapped_parameter = None
         self.variations_launch_button.mapped_parameter = None
         self.variations_overwrite_button.mapped_parameter = None
+        self.variations_up_button.mapped_parameter = None
+        self.variations_down_button.mapped_parameter = None

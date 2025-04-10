@@ -33,7 +33,9 @@ def create_mappings(cs):
             variations_recall_button='variations_recall_button',
             variations_stash_button='variations_recall_button_with_shift',
             variations_launch_button='variations_launch_button',
-            variations_overwrite_button='variations_launch_button_with_shift'
+            variations_overwrite_button='variations_launch_button_with_shift',
+            variations_up_button='variations_up_button',
+            variations_down_button='variations_down_button'
         ),
         'ViewControl': dict(
             scene_encoder='scene_select_encoder',

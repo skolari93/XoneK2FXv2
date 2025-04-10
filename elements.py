@@ -110,3 +110,5 @@ class Elements(ElementsBase):
         self.add_element("variations_recall_button", create_k2_button, 15, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")
         self.add_modified_control(control=(self.variations_recall_button), modifier=(self.shift_button))
         self.add_modified_control(control=(self.variations_launch_button), modifier=(self.shift_button))
+        self.add_element("variations_up_button", create_k2_button, 36, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_element("variations_down_button", create_k2_button, 37, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
