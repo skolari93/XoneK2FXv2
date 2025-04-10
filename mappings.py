@@ -25,6 +25,7 @@ def create_mappings(cs):
             volume_controls='volume_faders',
             gain_controls='gain_encoders',
             crossfade_cycle_buttons='crossfade_assign_buttons',
+            pan_controls='gain_encoders_with_shift'
         ),
         'MasterMixer': dict(
             track_select_buttons='master_track_select_button',

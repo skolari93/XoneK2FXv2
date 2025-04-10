@@ -64,6 +64,7 @@ class Elements(ElementsBase):
             needs_takeover=True,
             map_mode=MapMode.AccelTwoCompliment,
         )
+        self.add_modified_control(control=self.gain_encoders, modifier=self.shift_button)
 
         # master track
         self.add_encoder_matrix(

@@ -83,10 +83,20 @@ class XoneK2FXv2(ControlSurface):
         )
 
         self.component_map["MasterRing"] = master_ring
+
+        session_ring = SessionRingComponent(
+            name='session_ring',
+            num_tracks=8,
+            num_scenes=3,
+        )
+
         return {
             "fx_ring": const(fx_ring),
-            "master_ring": const(master_ring)
+            "master_ring": const(master_ring),
+            "session_ring": const(session_ring)
         }
+    
+
 
     
 def fx_tracks(song):
