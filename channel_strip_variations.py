@@ -13,8 +13,8 @@ logger = logging.getLogger("XoneK2FXv2")
 
 
 class ChannelStripComponent(ChannelStripComponentBase):
-    variations_stash_button = MappedButtonControl()
-    variations_recall_button = MappedButtonControl()
+    variations_stash_button = MappedButtonControl(color="Variations.Off", on_color="Variations.Stash")
+    variations_recall_button = MappedButtonControl(color="Variations.Off", on_color="Variations.Recall")
     variations_launch_button = MappedButtonControl()
     variations_overwrite_button = MappedButtonControl()
     variations_select_encoder = MappedScrollEncoderControl()

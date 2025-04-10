@@ -1,4 +1,4 @@
-from ableton.v3.control_surface import MIDI_NOTE_TYPE, ElementsBase, MapMode
+from ableton.v3.control_surface import MIDI_NOTE_TYPE, ElementsBase, MapMode, PrioritizedResource
 from ableton.v3.control_surface.elements import ButtonElement
 
 from functools import partial
@@ -13,7 +13,8 @@ class Elements(ElementsBase):
     def __init__(self, *a, **k):
         super().__init__(*a, **k)
 
-        self.add_modifier_button(12, "shift_button", channel=CHANNEL, msg_type=MIDI_NOTE_TYPE)
+        #self.add_modifier_button(12, "shift_button", channel=CHANNEL, msg_type=MIDI_NOTE_TYPE)
+        self.add_element("shift_button", create_k2_button, 12, resource_type=PrioritizedResource, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")
 
         self.add_matrix([range(44, 47)], "solo_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_matrix([range(40, 43)], "mute_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")

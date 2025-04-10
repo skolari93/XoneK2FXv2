@@ -39,6 +39,7 @@ class Skin:
     
     class Zooming:
         Playing = Rgb.green
+        Empty = OFF
     
     class Recording:
         ArrangementRecordOn = ON
@@ -52,3 +53,12 @@ class Skin:
         SessionOverdubOff = OFF
         NewPressed = ON
         New = OFF
+
+    class ModifierBackground:
+        Shift = OFF
+        ShiftPressed = Rgb.amber
+
+    class Variations:
+        Off = OFF
+        Recall = Rgb.green
+        Stash = Rgb.green
