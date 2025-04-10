@@ -13,7 +13,7 @@ class Skin:
     class Transport:
         PlayOn = Rgb.green
         PlayOff = OFF
-        StopOn = OFF
+        StopOn = ON
         StopOff = OFF
         AutomationArmOn = Rgb.amber
         AutomationArmOff = OFF
