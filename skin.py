@@ -1,6 +1,5 @@
 from .colors import Rgb
 
-
 OFF = Rgb.black
 ON = Rgb.red
 
@@ -12,7 +11,7 @@ class Skin:
 
     class Transport:
         PlayOn = Rgb.green
-        PlayOff = OFF
+        PlayOff = Rgb.green
         StopOn = ON
         StopOff = OFF
         AutomationArmOn = Rgb.amber

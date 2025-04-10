@@ -103,11 +103,12 @@ class Elements(ElementsBase):
         self.add_matrix([[39,35,31]], "scene_launch_buttons", channels=CHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_element("stop_all_clips_button", create_k2_button, 27, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
-        # scene nav
-        self.add_encoder(20, 'vertical_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
-
         # variations
         self.add_button(13, 'variations_launch_button', channel=CHANNEL, msg_type=MIDI_NOTE_TYPE)
         self.add_element("variations_recall_button", create_k2_button, 15, channel=CHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")
         self.add_modified_control(control=(self.variations_recall_button), modifier=(self.shift_button))
         self.add_modified_control(control=(self.variations_launch_button), modifier=(self.shift_button))
+        self.add_encoder(20, 'variations_select_encoder', channel=CHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+        
+        # scene nav
+        self.add_modified_control(control=(self.scene_select_encoder), modifier=(self.shift_button))

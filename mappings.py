@@ -34,7 +34,7 @@ def create_mappings(cs):
             variations_stash_button='variations_recall_button_with_shift',
             variations_launch_button='variations_launch_button',
             variations_overwrite_button='variations_launch_button_with_shift',
-            variations_select_encoder='vertical_encoder'
+            variations_select_encoder='variations_select_encoder'
         ),
         'ViewControl': dict(
             scene_encoder='scene_select_encoder',
@@ -44,7 +44,7 @@ def create_mappings(cs):
             scene_launch_buttons="scene_launch_buttons",
             stop_all_clips_button="stop_all_clips_button"
         ),
-        # 'Session_Navigation': dict(
-        #     vertical_encoder='vertical_encoder',
-        # )
+        'Session_Navigation': dict(
+            vertical_encoder='scene_select_encoder_with_shift',
+        )
     }
