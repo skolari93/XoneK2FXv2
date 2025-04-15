@@ -15,6 +15,7 @@ from .master_mixer import MasterMixerComponent
 from ableton.v3.control_surface.components import ViewControlComponent, SessionRingComponent
 
 from functools import partial
+#import Live
 
 import logging
 logger = logging.getLogger("XoneK2FXv2")
@@ -34,6 +35,8 @@ class XoneK2FXv2(ControlSurface):
 
         self.show_message("XoneK2FXv2: init mate")
         logger.info("XoneK2FXv2: init started ...")
+        #logger.info(dir(Live.Browser.Browser.audio_effects.children))
+
 
     def disconnect(self):
         self.show_message("Disconnecting...")

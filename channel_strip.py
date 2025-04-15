@@ -2,7 +2,6 @@ from ableton.v3.control_surface.components import ChannelStripComponent as Chann
 from ableton.v3.control_surface.controls import MappedControl
 from ableton.v3.live import get_parameter_by_name
 from ableton.v3.base import listens_group
-
 from itertools import chain
 
 import logging
