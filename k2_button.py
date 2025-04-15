@@ -11,7 +11,7 @@ COLOR_OFFSETS = {
 }
 
 # Selector integers
-RED, AMBER, GREEN, BLACK, CHANNEL = 1, 2, 3, 4, 14
+RED, AMBER, GREEN, BLACK, FXCHANNEL = 1, 2, 3, 4, 14
 
 class K2ButtonElement(ButtonElement):
     def __init__(self, identifier, button_type="small", channel=0, msg_type=MIDI_NOTE_TYPE, is_momentary=True, led_channel=None, **k):
@@ -37,7 +37,7 @@ class K2ButtonElement(ButtonElement):
             if self._report_output:
                 self._report_value(value, False)
 
-    def light_off(self,channel=CHANNEL):
+    def light_off(self,channel=FXCHANNEL):
         velocity = 0
         for color in (RED, GREEN, AMBER):
             self._send_midi_message(velocity, channel, self.get_color(color))   
@@ -55,7 +55,7 @@ def create_k2_button(identifier, **k):
     return K2ButtonElement(
         identifier,
         k.pop("button_type", "small"),  # Default: "small" button
-        k.pop("channel", CHANNEL),  # Default channel
+        k.pop("channel", FXCHANNEL),  # Default channel
         k.pop("msg_type", MIDI_NOTE_TYPE),  # Default MIDI message type
         k.pop("is_momentary", True),  # Default: momentary button
         k.pop("led_channel", None),  # Default: no LED channel
