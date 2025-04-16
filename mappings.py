@@ -4,7 +4,8 @@ def create_mappings(cs):
             shift="shift_button"
         ),
         'Transport': dict(
-            play_button='play_button',
+            play_pause_button='play_button',
+            play_button='play_button_with_shift',
             stop_button='stop_button',
             tempo_coarse_encoder="tempo_encoder",
             tempo_fine_encoder="tempo_encoder_with_shift",
@@ -14,6 +15,7 @@ def create_mappings(cs):
         'Recording': dict(
             arrangement_record_button='record_button',
             session_record_button='session_record_button',
+            new_button='new_button' # not working
         ),
         'FXMixer': dict(
             solo_buttons='solo_buttons',
@@ -38,15 +40,37 @@ def create_mappings(cs):
             variations_overwrite_button='variations_launch_button_with_shift',
             variations_select_encoder='variations_select_encoder'
         ),
+        'Mixer': dict(
+            solo_buttons='mixer_solo_buttons',
+            mute_buttons='mixer_mute_buttons',
+            arm_buttons='mixer_arm_buttons',
+            track_select_buttons='mixer_track_select_buttons',
+            send_a_controls='mixer_send_a_encoders',
+            send_b_controls='mixer_send_b_encoders',
+            send_c_controls='mixer_send_c_encoders',
+            volume_controls='mixer_volume_faders',
+            gain_controls='mixer_gain_encoders',
+            crossfade_cycle_buttons='mixer_solo_buttons_with_shift',
+            pan_controls='mixer_gain_encoders_with_shift'
+        ),
         'ViewControl': dict(
             scene_encoder='scene_select_encoder',
         ),
         'Session': dict(
             launch_scene_and_advance='launch_scene_button',
             scene_launch_buttons="scene_launch_buttons",
-            stop_all_clips_button="stop_all_clips_button"
+            stop_all_clips_button="stop_all_clips_button",
+            clip_launch_buttons="mixer_clip_launch_buttons",
+            stop_track_clip_buttons="mixer_stop_track_clip_buttons"
         ),
         'Session_Navigation': dict(
-            vertical_encoder='scene_select_encoder_with_shift',
+            vertical_encoder='vertical_scene_select_encoder',
+            horizontal_encoder='horizontal_scene_select_encoder',
+
+        ),
+        'Undo_Redo': dict(
+            undo_button='undo_button',
+            redo_button='redo_button'
+
         )
     }

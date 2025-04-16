@@ -12,6 +12,7 @@ from .colors import Rgb
 from .session import SessionComponent
 from .fx_mixer import FXMixerComponent
 from .master_mixer import MasterMixerComponent
+from .mixer import MixerComponent
 from ableton.v3.control_surface.components import ViewControlComponent, SessionRingComponent
 
 from functools import partial
@@ -89,7 +90,7 @@ class XoneK2FXv2(ControlSurface):
 
         session_ring = SessionRingComponent(
             name='session_ring',
-            num_tracks=8,
+            num_tracks=4,
             num_scenes=3,
         )
 
@@ -123,5 +124,6 @@ class Specification(ControlSurfaceSpecification):
         'FXMixer': FXMixerComponent,
         'MasterMixer': MasterMixerComponent,
         'ViewControl': ViewControlComponent,
+        'Mixer': MixerComponent,
         'Session': SessionComponent,
     }

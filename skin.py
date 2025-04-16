@@ -28,7 +28,8 @@ class Skin:
         CrossfadeA = Rgb.amber
         CrossfadeB = Rgb.green
         CrossfadeOff = OFF
-
+        ArmOn = Rgb.red
+        ArmOff = OFF
     class Session:
         Scene = Rgb.amber
         SceneTriggered = Rgb.green
@@ -36,7 +37,14 @@ class Skin:
         StopAllClips = Rgb.red
         ClipPlaying = Rgb.green
         ClipTriggeredPlay = Rgb.green
-        
+        ClipStopped = Rgb.amber
+        ClipTriggeredPlay = Rgb.green
+        ClipTriggeredRecord = Rgb.red
+        ClipPlaying = Rgb.green
+        ClipRecording = Rgb.red
+        NoSlot = OFF
+        Slot = OFF
+
     class Zooming:
         Playing = Rgb.green
         Empty = OFF
@@ -53,7 +61,7 @@ class Skin:
         SessionOverdubOn = ON
         SessionOverdubOff = OFF
         NewPressed = ON
-        New = OFF
+        New = Rgb.green
 
     class ModifierBackground:
         Shift = OFF
@@ -68,3 +76,6 @@ class Skin:
         Off = OFF
         Recall = Rgb.green
         Stash = Rgb.green
+
+    class NoteEditor:
+        NoClip = OFF
