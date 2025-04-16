@@ -13,10 +13,10 @@ from .session import SessionComponent
 from .fx_mixer import FXMixerComponent
 from .master_mixer import MasterMixerComponent
 from .mixer import MixerComponent
-from ableton.v3.control_surface.components import ViewControlComponent, SessionRingComponent
-
+from ableton.v3.control_surface.components import ViewControlComponent, SessionRingComponent #,StepSequenceComponent, GRID_RESOLUTIONS
 from functools import partial
 #import Live
+from functools import partial
 
 import logging
 logger = logging.getLogger("XoneK2FXv2")
@@ -121,6 +121,7 @@ class Specification(ControlSurfaceSpecification):
     control_surface_skin = create_skin(skin=Skin, colors=Rgb)
     create_mappings_function = create_mappings
     component_map = {
+        #'Step_Sequence': partial(StepSequenceComponent, grid_resolution=GRID_RESOLUTIONS[3]),
         'FXMixer': FXMixerComponent,
         'MasterMixer': MasterMixerComponent,
         'ViewControl': ViewControlComponent,

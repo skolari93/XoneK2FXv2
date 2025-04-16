@@ -14,6 +14,7 @@ class Elements(ElementsBase):
 
         # editing
         self.add_element("new_button", create_k2_button, 32, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_element("clear_button", create_k2_button, 36, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_element("undo_button", create_k2_button, 33, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_element("redo_button", create_k2_button, 34, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
@@ -98,6 +99,11 @@ class Elements(ElementsBase):
         self.add_element("automation_arm_button", create_k2_button, 28, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_element("automation_re-enable_button", create_k2_button, 29, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
+        # clip actions
+        self.add_element("quantize_button", create_k2_button, 38, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_element("delete_button", create_k2_button, 37, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        #self.add_modified_control(control=(self.duplicate_button), modifier=(self.shift_button))
+
         # recording
         self.add_element("record_button", create_k2_button, 26, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_element("session_record_button", create_k2_button, 30, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
@@ -179,4 +185,5 @@ class Elements(ElementsBase):
         self.add_encoder(20, 'horizontal_scene_select_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
         #self.add_matrix([range(48, 52)], "mixer_crossfade_assign_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_matrix([range(36, 40), range(32, 36), range(28, 32)], "mixer_clip_launch_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        #self.add_matrix([range(36, 40)], "mixer_clip_launch_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_matrix([range(24, 28)], "mixer_stop_track_clip_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")

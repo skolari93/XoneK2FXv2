@@ -40,6 +40,10 @@ def create_mappings(cs):
             variations_overwrite_button='variations_launch_button_with_shift',
             variations_select_encoder='variations_select_encoder'
         ),
+        'Clip_Actions': dict(
+            quantize_button='quantize_button',
+            double_button='delete_button'
+        ),
         'Mixer': dict(
             solo_buttons='mixer_solo_buttons',
             mute_buttons='mixer_mute_buttons',
@@ -61,16 +65,17 @@ def create_mappings(cs):
             scene_launch_buttons="scene_launch_buttons",
             stop_all_clips_button="stop_all_clips_button",
             clip_launch_buttons="mixer_clip_launch_buttons",
-            stop_track_clip_buttons="mixer_stop_track_clip_buttons"
+            stop_track_clip_buttons="mixer_stop_track_clip_buttons",
+            clip_slot_select_button = 'shift_button',
+            clear_button = 'clear_button'
         ),
         'Session_Navigation': dict(
             vertical_encoder='vertical_scene_select_encoder',
             horizontal_encoder='horizontal_scene_select_encoder',
-
         ),
+        #'Step_Sequence': dict(),
         'Undo_Redo': dict(
             undo_button='undo_button',
             redo_button='redo_button'
-
-        )
+        ),
     }
