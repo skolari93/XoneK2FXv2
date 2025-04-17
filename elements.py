@@ -5,7 +5,7 @@ from functools import partial
 from .k2_button import create_k2_button
 FXCHANNEL = 14
 MIXERCHANNEL1 = 12
-
+IS_FEEDBACK_ENABLED = False
 class Elements(ElementsBase):
     def __init__(self, *a, **k):
         super().__init__(*a, **k)
@@ -29,7 +29,7 @@ class Elements(ElementsBase):
             [range(4, 7)],
             base_name="send_a_encoders",
             channels=FXCHANNEL,
-            is_feedback_enabled=True,
+            is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.Absolute,
         )
@@ -38,7 +38,7 @@ class Elements(ElementsBase):
             [range(8, 11)],
             base_name="send_b_encoders",
             channels=FXCHANNEL,
-            is_feedback_enabled=True,
+            is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.Absolute,
         )
@@ -47,7 +47,7 @@ class Elements(ElementsBase):
             [range(12, 15)],
             base_name="send_c_encoders",
             channels=FXCHANNEL,
-            is_feedback_enabled=True,
+            is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.Absolute,
         )
@@ -56,7 +56,7 @@ class Elements(ElementsBase):
             [range(16, 19)],
             base_name="volume_faders",
             channels=FXCHANNEL,
-            is_feedback_enabled=True,
+            is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.Absolute,
         )
@@ -65,7 +65,7 @@ class Elements(ElementsBase):
             [range(0, 3)],
             base_name="gain_encoders",
             channels=FXCHANNEL,
-            is_feedback_enabled=True,
+            is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.AccelTwoCompliment,
         )
@@ -76,20 +76,20 @@ class Elements(ElementsBase):
             [[19]],
             base_name="master_volume_fader",
             channels=FXCHANNEL,
-            is_feedback_enabled=True,
+            is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.Absolute,
         )
         self.add_matrix([[55]], "master_track_select_button", channels=FXCHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         # cue
-        self.add_encoder(11, 'cue_encoder', channel=FXCHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.Absolute)
+        self.add_encoder(11, 'cue_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.Absolute)
 
         # Tempo
-        self.add_encoder(3, 'tempo_encoder', channel=FXCHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+        self.add_encoder(3, 'tempo_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
         self.add_modified_control(control=(self.tempo_encoder), modifier=(self.shift_button))
 
         # crossfader
-        self.add_encoder(15, 'crossfader_encoder', channel=FXCHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.Absolute)
+        self.add_encoder(15, 'crossfader_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.Absolute)
         self.add_matrix([range(44, 47)], "crossfade_assign_buttons", channels=FXCHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
         # transport
@@ -109,7 +109,7 @@ class Elements(ElementsBase):
         self.add_element("session_record_button", create_k2_button, 30, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
         # scene select
-        self.add_encoder(21, 'scene_select_encoder', channel=FXCHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+        self.add_encoder(21, 'scene_select_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
         self.add_button(14, 'launch_scene_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
 
         self.add_matrix([[39,35,31]], "scene_launch_buttons", channels=FXCHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
@@ -120,7 +120,7 @@ class Elements(ElementsBase):
         self.add_element("variations_recall_button", create_k2_button, 15, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")
         self.add_modified_control(control=(self.variations_recall_button), modifier=(self.shift_button))
         self.add_modified_control(control=(self.variations_launch_button), modifier=(self.shift_button))
-        self.add_encoder(20, 'variations_select_encoder', channel=FXCHANNEL, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+        self.add_encoder(20, 'variations_select_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
         
         # scene nav
         #self.add_modified_control(control=(self.scene_select_encoder), modifier=(self.shift_button))
@@ -139,7 +139,7 @@ class Elements(ElementsBase):
             [range(4, 8)],
             base_name="mixer_send_a_encoders",
             channels=MIXERCHANNEL1,
-            is_feedback_enabled=True,
+            is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.Absolute,
         )
@@ -148,7 +148,7 @@ class Elements(ElementsBase):
             [range(8, 12)],
             base_name="mixer_send_b_encoders",
             channels=MIXERCHANNEL1,
-            is_feedback_enabled=True,
+            is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.Absolute,
         )
@@ -157,7 +157,7 @@ class Elements(ElementsBase):
             [range(12, 16)],
             base_name="mixer_send_c_encoders",
             channels=MIXERCHANNEL1,
-            is_feedback_enabled=True,
+            is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.Absolute,
         )
@@ -166,7 +166,7 @@ class Elements(ElementsBase):
             [range(16, 20)],
             base_name="mixer_volume_faders",
             channels=MIXERCHANNEL1,
-            is_feedback_enabled=True,
+            is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.Absolute,
         )
@@ -175,14 +175,14 @@ class Elements(ElementsBase):
             [range(0, 4)],
             base_name="mixer_gain_encoders",
             channels=MIXERCHANNEL1,
-            is_feedback_enabled=True,
+            is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.AccelTwoCompliment,
         )
         self.add_modified_control(control=self.mixer_gain_encoders, modifier=self.shift_button)
 
-        self.add_encoder(21, 'vertical_scene_select_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
-        self.add_encoder(20, 'horizontal_scene_select_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=True, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+        self.add_encoder(21, 'vertical_scene_select_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+        self.add_encoder(20, 'horizontal_scene_select_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
         #self.add_matrix([range(48, 52)], "mixer_crossfade_assign_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_matrix([range(36, 40), range(32, 36), range(28, 32)], "mixer_clip_launch_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         #self.add_matrix([range(36, 40)], "mixer_clip_launch_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
