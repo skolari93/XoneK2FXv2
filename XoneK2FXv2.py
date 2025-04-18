@@ -13,7 +13,7 @@ from .session import SessionComponent
 from .fx_mixer import FXMixerComponent
 from .master_mixer import MasterMixerComponent
 from .mixer import MixerComponent
-from ableton.v3.control_surface.components import ViewControlComponent, SessionRingComponent #,StepSequenceComponent, GRID_RESOLUTIONS
+from ableton.v3.control_surface.components import ViewControlComponent, SessionRingComponent, SessionNavigationComponent #,StepSequenceComponent, GRID_RESOLUTIONS
 from functools import partial
 #import Live
 from functools import partial
@@ -127,4 +127,5 @@ class Specification(ControlSurfaceSpecification):
         'ViewControl': ViewControlComponent,
         'Mixer': MixerComponent,
         'Session': SessionComponent,
+        'Session_Navigation': partial(SessionNavigationComponent, respect_borders=True, snap_track_offset=False)
     }
