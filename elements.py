@@ -227,8 +227,6 @@ class Elements(ElementsBase):
 
         self.add_modified_control(control=self.mixer_gain_encoders, modifier=self.shift_button)
 
-        logger.info(combine_identifier_matrices([range(36, 40), range(32, 36), range(28, 32)]))
-
         pad_channel_list = [12, 12, 12, 12,13, 13, 13, 13]
         
         self.add_encoder(21, 'vertical_scene_select_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
