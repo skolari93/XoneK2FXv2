@@ -80,6 +80,9 @@ def create_mappings(cs):
         'Step_Sequence': dict(
             step_buttons= 'pads_columns_0_3'
         ),
+        'Instrument': dict(
+            matrix='pads_columns_4_7'
+        )
         # 'Main_Modes': dict(
         #     cycle_mode_button = 'layout_button',
         #     session= dict(

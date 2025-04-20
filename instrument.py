@@ -81,7 +81,7 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
         super().__init__(*a, name='Instrument', scroll_skin_name='Instrument.Scroll', matrix_always_listenable=True, **k)
         self._note_layout = note_layout
         self._target_track = target_track
-        self._first_note = (target_track, self._target_track, self.page_length + 5) * self.page_offset
+        self._first_note = (self.page_offset * (self.page_length + 5))#(target_track, self._target_track, self.page_length + 5) * self.page_offset
         self._pattern = self._get_pattern()
         self._note_editor = None
         self.pitches = [self._pattern.note(0, 0).index]
@@ -105,11 +105,18 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
 
     @property
     def position_count(self):
+        # if not self._note_layout.is_in_key:
+        #     return 139
+        # offset = self.page_offset
+        # octaves = 11 if self._note_layout.notes[0] < 8 else 10
+        # return 0#(offset, len(self._note_layout.notes), octaves) or ()
         if not self._note_layout.is_in_key:
             return 139
         offset = self.page_offset
         octaves = 11 if self._note_layout.notes[0] < 8 else 10
-        return (offset, len(self._note_layout.notes), octaves) or ()
+        # Return a single integer instead of a tuple
+        return offset + len(self._note_layout.notes) * octaves
+
 
     def _first_scale_note_offset(self):
         if not self._note_layout.is_in_key:
@@ -255,13 +262,13 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
 
     def _get_pattern(self, first_note=None):
         if first_note is None:
-            first_note =0# int(round(self._first_note))
+            first_note =int(round(self._first_note))
         interval = len(self._note_layout.notes)
         notes = self._note_layout.notes
-        width = None
-        height = None
-        octave = first_note * 2 * self.page_length  
-        offset = (first_note + self.page_length) * self._first_scale_note_offset()
+        width = 4 #Achtun hard coded
+        height = 4 #Achtun hard coded
+        octave = first_note // len(self._note_layout.notes)
+        offset = self._first_scale_note_offset() #*(first_note + self.page_length) 
         if self._note_layout.is_in_key:
             width = interval + 1
         else:  # inserted

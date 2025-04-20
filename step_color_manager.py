@@ -5,7 +5,6 @@ from ableton.v3.control_surface import ACTIVE_PARAMETER_TIMEOUT
 from ableton.v3.live import liveobj_valid
 
 
-
 class StepColorManager(EventObject):
     @depends(song=None, parent_task_group=None, update_method=None)
     def __init__(self, song=None, parent_task_group=None, update_method=None, *a, **k):
@@ -38,14 +37,14 @@ class StepColorManager(EventObject):
             self._revert_colors_task.restart()
 
     def get_color_for_step(self, index, visible_steps):
-        if self.song.is_playing and (index in visible_steps) and (index == self._last_beat):
+        if self.clip is None and self.song.is_playing and (index in visible_steps) and (index == self._last_beat*4):
             return 'NoteEditor.Playhead'
         if self.clip:
             return self._colors.get(index, None)
 
     @listens('current_song_time')
     def __on_song_time_changed(self):
-        beat = self.song.get_current_beats_song_time().beats | 1
+        beat = int(self.song.get_current_beats_song_time().beats)-  1
         if beat != self._last_beat:
             self._last_beat = beat
             self._update_method()

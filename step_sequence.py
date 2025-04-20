@@ -6,17 +6,18 @@
 from ableton.v3.control_surface.components import GRID_RESOLUTIONS as RESOLUTIONS_BASE
 from ableton.v3.control_surface.components import StepSequenceComponent as StepSequenceComponentBase
 from ableton.v3.control_surface.components.bar_based_sequence import PlayheadComponent
+from itertools import chain, starmap
 from .loop_selector import LoopSelectorComponent
 from .note_editor import NoteEditorComponent
 from .note_settings import NoteSettingsComponent
-
+  
 GRID_RESOLUTIONS = tuple(reversed(RESOLUTIONS_BASE[:-3]))
 DEFAULT_GRID_RESOLUTION_INDEX = 1
 
 class StepSequenceComponent(StepSequenceComponentBase):
 
     def __init__(self, *a, **k):
-        super().__init__(*a, note_editor_component_type=NoteEditorComponent, loop_selector_component_type=LoopSelectorComponent, playhead_component_type=PlayheadComponent, playhead_notes=list([range(0, 15)]), playhead_triplet_notes=[16, 17, 18, 20, 21, 22, 24, 25, 26, 28, 29, 30], **k)
+        super().__init__(*a, note_editor_component_type=NoteEditorComponent, loop_selector_component_type=LoopSelectorComponent, playhead_component_type=PlayheadComponent, playhead_notes=list(chain(range(36, 40),range(32, 37),range(28, 32),range(24, 28))), playhead_triplet_notes=[16, 17, 18, 20, 21, 22, 24, 25, 26, 28, 29, 30], **k)
         self._note_settings = NoteSettingsComponent(self._note_editor, parent=self)
         self._playhead.set_note_editor(self._note_editor)
 

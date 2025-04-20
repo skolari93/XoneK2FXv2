@@ -100,3 +100,13 @@ class Skin:
         OutsideLoop = Rgb.amber
         Playhead = Rgb.green
         PlayheadRecord = Rgb.red
+
+    class Instrument:
+        PadAction = Rgb.green
+        NoteBase = Rgb.red
+        NoteScale = Rgb.green
+        NoteNotScale = OFF
+        NoteInvalid = OFF
+        NoteInStep = Rgb.red
+        NoteSelected = Rgb.amber
+        Scroll = OFF
