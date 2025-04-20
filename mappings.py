@@ -67,7 +67,6 @@ def create_mappings(cs):
             clip_launch_buttons="mixer_clip_launch_buttons",
             stop_track_clip_buttons="mixer_stop_track_clip_buttons",
             clip_slot_select_button = 'shift_button',
-            clear_button = 'clear_button'
         ),
         'Session_Navigation': dict(
             vertical_encoder='vertical_scene_select_encoder',

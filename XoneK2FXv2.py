@@ -90,7 +90,7 @@ class XoneK2FXv2(ControlSurface):
 
         session_ring = SessionRingComponent(
             name='session_ring',
-            num_tracks=4,
+            num_tracks=8,
             num_scenes=3,
         )
 

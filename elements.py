@@ -5,11 +5,54 @@ from functools import partial
 from .k2_button import create_k2_button
 FXCHANNEL = 14
 MIXERCHANNEL1 = 12
+MIXERCHANNEL2 = 13
 IS_FEEDBACK_ENABLED = False
+
+
+
+import logging
+logger = logging.getLogger("XoneK2FXv2")
+
+
+def combine_identifier_matrices(ids):
+    combined_identifiers = ids + ids
+    return combined_identifiers
+
+def create_double_list(a, b):
+    return list(range(a, b)) * 2
+
+def create_duplicated_list(a, b):
+    return [range(a, b),range(a, b)]
+
+def create_channel_matrix(channels, num_rows):
+    """
+    Creates a matrix of channels, repeating each channel value for each row.
+    
+    :param channels: A list of channel values.
+    :param num_rows: Number of rows needed for the matrix.
+    :return: A 2D list (matrix) where each row contains repeated channel values.
+    """
+    return [channels[i % len(channels)] * 4 for i in range(num_rows)]
+
 class Elements(ElementsBase):
     def __init__(self, *a, **k):
         super().__init__(*a, **k)
+        
+        # prepare channels
+        channels = [
+            [MIXERCHANNEL1] * 4,
+            [MIXERCHANNEL1] * 4,
+            [MIXERCHANNEL1] * 4,
+        ]
 
+        channels2 = [
+            [MIXERCHANNEL2] * 4,
+            [MIXERCHANNEL2] * 4,
+            [MIXERCHANNEL2] * 4,
+        ]
+        combined_channels = channels + channels2
+
+        # shift
         self.add_element("shift_button", create_k2_button, 12, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")
 
         # editing
@@ -127,63 +170,71 @@ class Elements(ElementsBase):
 
 
         ########### Mixer 1  Channel 
+        combined_button_channels = [[MIXERCHANNEL1, MIXERCHANNEL1, MIXERCHANNEL1, MIXERCHANNEL1], [MIXERCHANNEL2, MIXERCHANNEL2, MIXERCHANNEL2, MIXERCHANNEL2]]
 
-        self.add_matrix([range(44, 48)], "mixer_arm_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        self.add_matrix([range(40, 44)], "mixer_mute_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_matrix(create_duplicated_list(44, 48), "mixer_arm_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        #self.add_matrix([range(40, 44)], "mixer_mute_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_matrix(create_duplicated_list(40, 44), "mixer_mute_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
-        self.add_matrix([range(52, 56)], "mixer_track_select_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        self.add_matrix([range(48, 52)], "mixer_solo_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_matrix(create_duplicated_list(52, 56), "mixer_track_select_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_matrix(create_duplicated_list(48, 52), "mixer_solo_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_modified_control(control=self.mixer_solo_buttons, modifier=self.shift_button)
 
         self.add_encoder_matrix(
-            [range(4, 8)],
+            create_duplicated_list(4, 8),
             base_name="mixer_send_a_encoders",
-            channels=MIXERCHANNEL1,
+            channels=combined_button_channels,
             is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.Absolute,
         )
 
         self.add_encoder_matrix(
-            [range(8, 12)],
+            create_duplicated_list(8, 12),
             base_name="mixer_send_b_encoders",
-            channels=MIXERCHANNEL1,
+            channels=combined_button_channels,
             is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.Absolute,
         )
 
         self.add_encoder_matrix(
-            [range(12, 16)],
+            create_duplicated_list(12, 16),
             base_name="mixer_send_c_encoders",
-            channels=MIXERCHANNEL1,
+            channels=combined_button_channels,
             is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.Absolute,
         )
 
         self.add_encoder_matrix(
-            [range(16, 20)],
+            create_duplicated_list(16, 20),
             base_name="mixer_volume_faders",
-            channels=MIXERCHANNEL1,
+            channels=combined_button_channels,
             is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.Absolute,
         )
 
         self.add_encoder_matrix(
-            [range(0, 4)],
+            create_duplicated_list(0, 4),
             base_name="mixer_gain_encoders",
-            channels=MIXERCHANNEL1,
+            channels=combined_button_channels,
             is_feedback_enabled=IS_FEEDBACK_ENABLED,
             needs_takeover=True,
             map_mode=MapMode.AccelTwoCompliment,
         )
+
         self.add_modified_control(control=self.mixer_gain_encoders, modifier=self.shift_button)
 
+        logger.info(combine_identifier_matrices([range(36, 40), range(32, 36), range(28, 32)]))
+
+        pad_channel_list = [12, 12, 12, 12,13, 13, 13, 13]
+        
         self.add_encoder(21, 'vertical_scene_select_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
         self.add_encoder(20, 'horizontal_scene_select_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
-        #self.add_matrix([range(48, 52)], "mixer_crossfade_assign_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        self.add_matrix([range(36, 40), range(32, 36), range(28, 32)], "mixer_clip_launch_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_matrix([create_double_list(36, 40), create_double_list(32, 36), create_double_list(28, 32)], "mixer_clip_launch_buttons", channels=[pad_channel_list, pad_channel_list,pad_channel_list], element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         #self.add_matrix([range(36, 40)], "mixer_clip_launch_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        self.add_matrix([range(24, 28)], "mixer_stop_track_clip_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        
+        self.add_matrix(create_duplicated_list(48, 52), "mixer_crossfade_assign_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_matrix(create_duplicated_list(24, 28), "mixer_stop_track_clip_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
