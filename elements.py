@@ -235,3 +235,6 @@ class Elements(ElementsBase):
         self.add_submatrix(self.pads, 'pads_rows_0_2', rows=(0, 3))
         self.add_submatrix(self.pads, 'pads_row_3', rows=(3,4))
         self.add_matrix(create_duplicated_list(48, 52), "mixer_crossfade_assign_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+
+        # Layout button 
+        self.add_element("layout_button", create_k2_button, 15, channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE, button_type="big")
