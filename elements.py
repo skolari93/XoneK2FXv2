@@ -233,8 +233,7 @@ class Elements(ElementsBase):
         
         self.add_encoder(21, 'vertical_scene_select_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
         self.add_encoder(20, 'horizontal_scene_select_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
-        self.add_matrix([create_double_list(36, 40), create_double_list(32, 36), create_double_list(28, 32)], "mixer_clip_launch_buttons", channels=[pad_channel_list, pad_channel_list,pad_channel_list], element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        #self.add_matrix([range(36, 40)], "mixer_clip_launch_buttons", channels=MIXERCHANNEL1, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        
+        self.add_matrix([create_double_list(36, 40), create_double_list(32, 36), create_double_list(28, 32), create_double_list(24, 28)], "pads", channels=[pad_channel_list, pad_channel_list,pad_channel_list,pad_channel_list], element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_submatrix(self.pads, 'pads_rows_0_2', rows=(0, 3))
+        self.add_submatrix(self.pads, 'pads_row_3', rows=(3,4))
         self.add_matrix(create_duplicated_list(48, 52), "mixer_crossfade_assign_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        self.add_matrix(create_duplicated_list(24, 28), "mixer_stop_track_clip_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")

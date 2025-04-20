@@ -64,8 +64,8 @@ def create_mappings(cs):
             launch_scene_and_advance='launch_scene_button',
             scene_launch_buttons="scene_launch_buttons",
             stop_all_clips_button="stop_all_clips_button",
-            clip_launch_buttons="mixer_clip_launch_buttons",
-            stop_track_clip_buttons="mixer_stop_track_clip_buttons",
+            clip_launch_buttons="pads_rows_0_2",
+            stop_track_clip_buttons="pads_row_3",
             clip_slot_select_button = 'shift_button',
         ),
         'Session_Navigation': dict(
