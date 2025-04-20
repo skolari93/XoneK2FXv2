@@ -151,26 +151,26 @@ def fx_tracks(song):
 def master_track(song):
     return (song.master_track,)
 
-# def note_mode_for_track(track, instrument_finder):
-#     if liveobj_valid(track) and track.has_midi_input:
-#         if liveobj_valid(instrument_finder.drum_group):
-#             return 'drum'
-#         if liveobj_valid(instrument_finder.sliced_simpler):
-#             return 'simpler'
-#         return 'instrument'
-#     return 'audio'
+def note_mode_for_track(track, instrument_finder):
+    if liveobj_valid(track) and track.has_midi_input:
+        if liveobj_valid(instrument_finder.drum_group):
+            return 'drum'
+        if liveobj_valid(instrument_finder.sliced_simpler):
+            return 'simpler'
+        return 'instrument'
+    return 'audio'
 
-# def _update_note_mode(self):
-#     if self.component_map['Main_Modes'].selected_mode == 'note':
-#         note_mode = note_mode_for_track(self.component_map['Target_Track'].target_track, self.instrument_finder)
-#         self.component_map['Note_Modes'].selected_mode = note_mode
-#         pitch_provider = PITCH_PROVIDERS.get(note_mode, None)
-#         self.component_map['Step_Sequence'].set_pitch_provider(self.component_map[pitch_provider] if pitch_provider else None)
+def _update_note_mode(self):
+    if self.component_map['Main_Modes'].selected_mode == 'note':
+        note_mode = note_mode_for_track(self.component_map['Target_Track'].target_track, self.instrument_finder)
+        self.component_map['Note_Modes'].selected_mode = note_mode
+        pitch_provider = PITCH_PROVIDERS.get(note_mode, None)
+        self.component_map['Step_Sequence'].set_pitch_provider(self.component_map[pitch_provider] if pitch_provider else None)
 
 
 
 class Specification(ControlSurfaceSpecification):
-    num_tracks = 3
+    num_tracks = 8
     num_scenes = 3
     include_returns = False
     include_master = False

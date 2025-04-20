@@ -77,28 +77,31 @@ def create_mappings(cs):
             undo_button='undo_button',
             redo_button='redo_button'
         ),
-        'Main_Modes': dict(
-            cycle_mode_button = 'layout_button',
-            session= dict(
-                modes= [
-                    {
-                        'component': 'Session',
-                        'launch_scene_and_advance':'launch_scene_button',
-                        'scene_launch_buttons':"scene_launch_buttons",
-                        'stop_all_clips_button':"stop_all_clips_button",
-                        'clip_launch_buttons':"pads_rows_0_2",
-                        'stop_track_clip_buttons':"pads_row_3",
-                        'clip_slot_select_button' : 'shift_button',
-                    }
-                ]
-            ),
-           step_sequencer= dict(
-                modes= [
-                    {
-                        'component': 'Step_Sequence',
-                        'step_buttons': 'pads_columns_4_7'
-                    }
-                ]
-            )
+        'Step_Sequence': dict(
+            step_buttons= 'pads_columns_4_7'
         ),
+        # 'Main_Modes': dict(
+        #     cycle_mode_button = 'layout_button',
+        #     session= dict(
+        #         modes= [
+        #             {
+        #                 'component': 'Session',
+        #                 'launch_scene_and_advance':'launch_scene_button',
+        #                 'scene_launch_buttons':"scene_launch_buttons",
+        #                 'stop_all_clips_button':"stop_all_clips_button",
+        #                 'clip_launch_buttons':"pads_rows_0_2",
+        #                 'stop_track_clip_buttons':"pads_row_3",
+        #                 'clip_slot_select_button' : 'shift_button',
+        #             }
+        #         ]
+        #     ),
+        #    step_sequencer= dict(
+        #         modes= [
+        #             {
+        #                 'component': 'Step_Sequence',
+        #                 #'step_buttons': 'pads_columns_4_7'
+        #             }
+        #         ]
+        #     )
+        # ),
     }
