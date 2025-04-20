@@ -80,7 +80,7 @@ def create_mappings(cs):
         'Step_Sequence': dict(
             step_buttons= 'pads_columns_0_3'
         ),
-        'Instrument': dict(
+        'Drum_Group': dict(
             matrix='pads_columns_4_7'
         )
         # 'Main_Modes': dict(

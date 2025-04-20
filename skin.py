@@ -110,3 +110,15 @@ class Skin:
         NoteInStep = Rgb.red
         NoteSelected = Rgb.amber
         Scroll = OFF
+
+    class DrumGroup:
+        PadEmpty = OFF
+        PadAction = Rgb.green
+        PadFilled = Rgb.amber
+        PadSelected = Rgb.red
+        PadMuted = OFF
+        PadMutedSelected = Rgb.red
+        PadSoloed = Rgb.green
+        PadSoloedSelected = Rgb.red
+        Scroll = OFF
+
