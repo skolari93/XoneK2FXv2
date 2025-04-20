@@ -78,7 +78,7 @@ def create_mappings(cs):
             redo_button='redo_button'
         ),
         'Step_Sequence': dict(
-            step_buttons= 'pads_columns_4_7'
+            step_buttons= 'pads_columns_0_3'
         ),
         # 'Main_Modes': dict(
         #     cycle_mode_button = 'layout_button',
@@ -99,7 +99,7 @@ def create_mappings(cs):
         #         modes= [
         #             {
         #                 'component': 'Step_Sequence',
-        #                 #'step_buttons': 'pads_columns_4_7'
+        #                 'step_buttons': 'pads_columns_4_7'
         #             }
         #         ]
         #     )

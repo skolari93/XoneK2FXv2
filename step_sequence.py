@@ -16,7 +16,7 @@ DEFAULT_GRID_RESOLUTION_INDEX = 1
 class StepSequenceComponent(StepSequenceComponentBase):
 
     def __init__(self, *a, **k):
-        super().__init__(*a, note_editor_component_type=NoteEditorComponent, loop_selector_component_type=LoopSelectorComponent, playhead_component_type=PlayheadComponent, playhead_notes=list([range(16, 32)]), playhead_triplet_notes=[16, 17, 18, 20, 21, 22, 24, 25, 26, 28, 29, 30], **k)
+        super().__init__(*a, note_editor_component_type=NoteEditorComponent, loop_selector_component_type=LoopSelectorComponent, playhead_component_type=PlayheadComponent, playhead_notes=list([range(0, 15)]), playhead_triplet_notes=[16, 17, 18, 20, 21, 22, 24, 25, 26, 28, 29, 30], **k)
         self._note_settings = NoteSettingsComponent(self._note_editor, parent=self)
         self._playhead.set_note_editor(self._note_editor)
 
