@@ -92,11 +92,13 @@ def create_mappings(cs):
                     }
                 ]
             ),
-        #    step_sequencer= dict(
-        #         modes= [
-        #             {
-        #             }
-        #         ]
-        #     )
+           step_sequencer= dict(
+                modes= [
+                    {
+                        'component': 'Step_Sequence',
+                        'step_buttons': 'pads_columns_4_7'
+                    }
+                ]
+            )
         ),
     }

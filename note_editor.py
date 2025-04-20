@@ -1,0 +1,113 @@
+from sys import maxsize
+from ableton.v3.base import listens
+from ableton.v3.control_surface import RelativeInternalParameter
+from ableton.v3.control_surface.components.bar_based_sequence import NoteEditorComponent as NoteEditorComponentBase
+from ableton.v3.control_surface.components.note_editor import get_notes
+from ableton.v3.live import liveobj_valid
+from .step_color_manager import StepColorManager
+DEFAULT_STEP_COUNT = 16
+
+# K2 specific
+STEP_TRANSLATION_CHANNEL = 12 #translation_channel=STEP_TRANSLATION_CHANNEL
+#START_NOTE =
+import logging
+logger = logging.getLogger("XoneK2FXv2")
+
+class NoteEditorComponent(NoteEditorComponentBase):
+    #@depends(volume_parameters=None)
+#    def __init__(self, volume_parameters=None, *a, **k):
+    def __init__(self, *a, **k):
+        super().__init__(translation_channel=STEP_TRANSLATION_CHANNEL,*a, **k)
+        self._step_start_times = []
+        self._step_color_manager = self.register_disconnectable(StepColorManager(update_method=self._update_editor_matrix))
+        self._step_color_manager.set_clip(self._clip)
+        #self._volume_parameters = volume_parameters
+        self._velocity_offset_parameter = self.register_disconnectable(RelativeInternalParameter(name='Velocity', display_value_conversion=lambda _: self.get_velocity_range_string()))
+        self.register_slot(self._velocity_offset_parameter, lambda x: self.set_velocity_offset(x + 50), 'delta')
+
+    @property
+    def step_color_manager(self):
+        return self._step_color_manager
+
+    @property
+    def step_start_times(self):
+        return self._step_start_times
+
+    def get_durations_from_step(self, step):
+        notes = self._time_step(step[0]).filter_notes(self._clip_notes)
+        return [note.duration for note in notes]
+
+    def get_duration_range_string(self):
+        return self._get_property_range_string('duration', lambda value_range: (v + self.step_length for v in value_range), str_fmt='{:.1f}'.format)
+
+    def set_clip(self, clip):
+        super().set_clip(clip)
+        if hasattr(self, '_step_color_manager'):
+            self._step_color_manager.set_clip(self._clip)
+
+    def notify_clip_notes(self):
+        if liveobj_valid(self._clip) and self._pitches:
+            notes = get_notes(self._clip, self._pitches, 0.0, maxsize, self._pitch_provider.is_polyphonic)
+            self._step_start_times = sorted(list({n.start_time for n in notes}))
+        super().notify_clip_notes()
+
+    def _on_pad_pressed(self, pad):
+        super()._on_pad_pressed(pad)
+        #self._volume_parameters.add_parameter(pad, self._velocity_offset_parameter)
+
+    def _on_pad_released(self, pad, *a, **k):
+        super()._on_pad_released(pad, *a, **k)
+        #self._volume_parameters.remove_parameter(pad, force=True)
+
+    @staticmethod
+    def _modify_duration(time_step, duration_offset, note):
+        note.duration = max(time_step.length - 0.1, note.duration + duration_offset)
+
+    def _get_alternate_color_for_step(self, index, visible_steps):
+        return self._step_color_manager.get_color_for_step(index, visible_steps)
+    
+    # @listens("notes")
+    # def __on_clip_notes_changed(self):
+    #     self._clip_notes = []
+    #     if self._has_clip() and self._can_edit():
+    #         start, length = self._get_clip_notes_time_range()
+
+    #         # Use get_notes to retrieve all notes in the full pitch range
+    #         all_notes = get_notes(self._clip, list(range(128)), start, length, self._pitch_provider.is_polyphonic)
+
+    #         # Extract all unique pitches used in the clip
+    #         used_pitches = sorted(set(note.pitch for note in all_notes))
+
+    #         # Update pitch grid dynamically
+    #         self.set_pitches(used_pitches)
+
+    #         # Re-fetch notes, now limited to used pitches
+    #         self._clip_notes = get_notes(self._clip, used_pitches, start, length, self._pitch_provider.is_polyphonic)
+        
+    #     self._update_editor_matrix()
+    #     self.notify_clip_notes()
+
+
+
+    # @listens("notes")
+    # def _on_clip_notes_changed(self):
+    #     if liveobj_valid(self._sequencer_clip) and self._can_edit():
+    #         time_start, time_length = self._get_clip_notes_time_range()
+    #         self._clip_notes = get_notes(self._sequencer_clip, time_start, self._pitches, time_length)
+    #     else:
+    #         self._clip_notes = []
+    #     self.notify_clip_notes()
+        #self.notify_notes_changed()
+
+    # def __on_clip_notes_changed(self):
+    #     self._clip_notes = []
+    #     if self._has_clip():
+    #         if self._can_edit():
+    #             start, length = self._get_clip_notes_time_range()
+    #             all_notes = get_notes(self._clip, self._pitches, start, length, all_pitches=True)
+    #             self._clip_notes = all_notes
+
+    #             # Dynamically detect additional pitches
+    #             clip_pitches = set(note.pitch for note in all_notes)
+    #             if any(p not in self._pitches for p in clip_pitches):
+    #                 self.set_pitches(sorted(clip_pitches))  # Update self._pitches
