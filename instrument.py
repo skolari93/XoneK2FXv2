@@ -1,8 +1,3 @@
-# Decompiled with PyLingual (https://pylingual.io)
-# Internal filename: ..\..\..\output\Live\win_64_static\Release\python-bundle\MIDI Remote Scripts\Move\instrument.py
-# Bytecode version: 3.11a7e (3495)
-# Source timestamp: 2025-04-10 07:23:45 UTC (1744269825)
-
 from ableton.v3.base import EventObject, MultiSlot, depends, find_if, index_if, listenable_property, listens, task
 from ableton.v3.control_surface import LiveObjSkinEntry
 from ableton.v3.control_surface.components import Pageable, PageComponent, PitchProvider, PlayableComponent
@@ -10,10 +5,10 @@ from ableton.v3.control_surface.controls import ButtonControl
 from ableton.v3.control_surface.display import Renderable
 from ableton.v3.live import action
 from .melodic_pattern import CHROMATIC_MODE_OFFSET, SCALES, MelodicPattern
+
 DEFAULT_SCALE = SCALES[0]
 
 class NoteLayout(EventObject, Renderable):
-
     @depends(song=None)
     def __init__(self, song=None, preferences=None, *a, **k):
         super().__init__(*a, **k)
@@ -59,8 +54,7 @@ class NoteLayout(EventObject, Renderable):
     def toggle_is_in_key(self):
         self.is_in_key = not self._is_in_key
 
-    @staticmethod
-    def _get_scale_from_name(name):
+    def _get_scale_from_name(self, name):
         return find_if(lambda scale: scale.name == name, SCALES) or DEFAULT_SCALE
 
     @listens('root_note')
@@ -72,31 +66,55 @@ class NoteLayout(EventObject, Renderable):
         self._scale = self._get_scale_from_name(self._song.scale_name)
         self.notify_scale(self._scale)
 
+
 class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable, PitchProvider):
     delete_button = ButtonControl(color=None)
     is_polyphonic = True
+    
+    # Constants for the 4x4 grid
+    GRID_WIDTH = 4
+    GRID_HEIGHT = 4
+    DEFAULT_FIRST_NOTE = 36  # C2 by default
 
     @depends(note_layout=None, target_track=None)
     def __init__(self, note_layout=None, target_track=None, *a, **k):
-        super().__init__(*a, name='Instrument', scroll_skin_name='Instrument.Scroll', matrix_always_listenable=True, **k)
+        super().__init__(
+            *a, 
+            name='Instrument', 
+            scroll_skin_name='Instrument.Scroll', 
+            matrix_always_listenable=True, 
+            **k
+        )
         self._note_layout = note_layout
         self._target_track = target_track
-        self._first_note = (self.page_offset * (self.page_length + 5))#(target_track, self._target_track, self.page_length + 5) * self.page_offset
+        self._first_note = self.DEFAULT_FIRST_NOTE
         self._pattern = self._get_pattern()
         self._note_editor = None
         self.pitches = [self._pattern.note(0, 0).index]
         self._last_page_length = self.page_length
         self._last_page_offset = self.page_offset
+        
+        # Register for note layout events
         for event in ['scale', 'root_note', 'is_in_key']:
             self.register_slot(self._note_layout, self._on_note_layout_changed, event)
-        self.register_slot(MultiSlot(subject=self._target_track, listener=self._update_led_feedback, event_name_list=('target_track', 'color_index')))
+        
+        # Register for track events
+        self.register_slot(
+            MultiSlot(
+                subject=self._target_track, 
+                listener=self._update_led_feedback, 
+                event_name_list=('target_track', 'color_index')
+            )
+        )
+        
+        # Setup chord detection task
         self._chord_detection_task = self._tasks.add(task.wait(0.3))
         self._chord_detection_task.kill()
+        
         self._update_pattern()
 
     @property
     def note_layout(self):
-
         return self._note_layout
 
     @property
@@ -105,29 +123,31 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
 
     @property
     def position_count(self):
-        # if not self._note_layout.is_in_key:
-        #     return 139
-        # offset = self.page_offset
-        # octaves = 11 if self._note_layout.notes[0] < 8 else 10
-        # return 0#(offset, len(self._note_layout.notes), octaves) or ()
+        """Calculate the total number of available positions"""
         if not self._note_layout.is_in_key:
-            return 139
-        offset = self.page_offset
-        octaves = 11 if self._note_layout.notes[0] < 8 else 10
-        # Return a single integer instead of a tuple
-        return offset + len(self._note_layout.notes) * octaves
+            return 128  # Standard MIDI note range
+        
+        # Calculate based on scale notes and octaves
+        octaves = 10  # Standard octave range
+        return len(self._note_layout.notes) * octaves
 
-
-    def _first_scale_note_offset(self):
+    def _get_first_scale_note_offset(self):
+        """Calculate the offset for the first note in the scale"""
         if not self._note_layout.is_in_key:
             return self._note_layout.notes[0]
+        
         if self._note_layout.notes[0] == 0:
             return 0
-        return len(self._note_layout.notes) | index_if(lambda n: n >= 12, self._note_layout.notes)
+        
+        # Find the index of the first note that's >= 12, or use the length if none found
+        for i, note in enumerate(self._note_layout.notes):
+            if note >= 12:
+                return i
+        return len(self._note_layout.notes)
 
     @property
     def page_offset(self):
-        return self._first_scale_note_offset()
+        return self._get_first_scale_note_offset()
 
     @property
     def position(self):
@@ -142,69 +162,89 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
 
     @property
     def min_pitch(self):
-        return self.pattern[0].index
+        return self.pattern.note(0, 0).index
 
     @property
     def max_pitch(self):
         identifiers = [control.identifier for control in self.matrix if control.identifier is not None]
-        return max(identifiers) if len(identifiers) > 0 else 127
+        return max(identifiers) if identifiers else 127
 
     @property
     def pattern(self):
         return self._pattern
 
     def set_note_editor(self, note_editor):
-
         self._note_editor = note_editor
         self.__on_active_steps_changed.subject = note_editor
 
     def _on_matrix_pressed(self, button):
+        """Handle matrix button press events"""
         pitch = self._get_note_info_for_coordinate(button.coordinate).index
-        if pitch is not None:
-            if self.delete_button.is_pressed:
-                button.color = 'Instrument.PadAction'
-                if action.delete_notes_with_pitch(self._target_track.target_clip, pitch):
-                    self.notify(self.notifications.Notes.Pitch.delete, pitch)
-                else:  # inserted
-                    self.notify(self.notifications.Notes.error_no_notes_to_delete)
-                    return
-            else:  # inserted
-                if self.select_button.is_pressed and pitch not in self.pitches:
-                    self.notify(self.notifications.Notes.Pitch.select, pitch)
-                if self._note_editor and self._note_editor.active_steps:
-                    self._note_editor.toggle_pitch_for_all_active_steps(pitch)
-                else:  # inserted
-                    if self._chord_detection_task.is_running:
-                        self.pitches.append(pitch)
-                    else:  # inserted
-                        self.pitches = [pitch]
-                        self._chord_detection_task.restart()
-                self._update_button_color(button)
+        
+        if pitch is None:
+            return
+            
+        if self.delete_button.is_pressed:
+            button.color = 'Instrument.PadAction'
+            if action.delete_notes_with_pitch(self._target_track.target_clip, pitch):
+                self.notify(self.notifications.Notes.Pitch.delete, pitch)
+            else:
+                self.notify(self.notifications.Notes.error_no_notes_to_delete)
+            return
+            
+        if self.select_button.is_pressed and pitch not in self.pitches:
+            self.notify(self.notifications.Notes.Pitch.select, pitch)
+            
+        if self._note_editor and self._note_editor.active_steps:
+            self._note_editor.toggle_pitch_for_all_active_steps(pitch)
+        else:
+            if self._chord_detection_task.is_running:
+                self.pitches.append(pitch)
+            else:
+                self.pitches = [pitch]
+                self._chord_detection_task.restart()
+                
+        self._update_button_color(button)
 
     @delete_button.value
     def delete_button(self, _, button):
         self._set_control_pads_from_script(button.is_pressed)
 
     def scroll_page_up(self):
+        """Scroll up by octaves"""
         super().scroll_page_up()
         self.notify(self.notifications.Notes.Octave.up)
 
     def scroll_page_down(self):
+        """Scroll down by octaves"""
         super().scroll_page_down()
         self.notify(self.notifications.Notes.Octave.down)
 
     def scroll_up(self):
+        """Scroll up by scale degrees"""
         super().scroll_up()
         self.notify(self.notifications.Notes.ScaleDegree.up)
 
     def scroll_down(self):
+        """Scroll down by scale degrees"""
         super().scroll_down()
         self.notify(self.notifications.Notes.ScaleDegree.down)
 
     def _align_first_note(self):
-        self._first_note = self.page_offset + 5 * 5 * 4 + self.page_length + self._last_page_length
-        if self._first_note >= self.position_count:
-            self._first_note = self.page_length
+        """Align the first note based on the current scale and key settings"""
+        # Calculate a sensible default position based on the current page settings
+        scale_length = len(self._note_layout.notes)
+        
+        # Adjust for changes in scale length or offset
+        if self._last_page_length != self.page_length or self._last_page_offset != self.page_offset:
+            # Calculate a middle octave position
+            middle_octave = 3
+            self._first_note = self.page_offset + middle_octave * scale_length
+            
+            # Ensure we're within the valid range
+            if self._first_note >= self.position_count:
+                self._first_note = scale_length  # Reset to first octave
+                
         self._last_page_length = self.page_length
         self._last_page_offset = self.page_offset
 
@@ -226,22 +266,26 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
         self._pattern = self._get_pattern()
 
     def _invert_and_swap_coordinates(self, coordinates):
-        return (coordinates[1], self.height * 1 + coordinates[0])
+        """Transform the coordinates for the 4x4 grid layout"""
+        # For a 4x4 grid with inverted coordinates (bottom-to-top)
+        x, y = coordinates
+        return (y, self.GRID_HEIGHT - 1 - x)
 
     def _get_note_info_for_coordinate(self, coordinate):
         x, y = self._invert_and_swap_coordinates(coordinate)
         return self.pattern.note(x, y)
 
     def _update_button_color(self, button):
+        """Update the color of a specific button based on its state"""
         note_info = self._get_note_info_for_coordinate(button.coordinate)
-        color = LiveObjSkinEntry('Instrument.{}'.format(note_info.color), self._target_track.target_track)
+        color = LiveObjSkinEntry(f'Instrument.{note_info.color}', self._target_track.target_track)
+        
         if self._note_editor:
-            if self._note_editor.active_steps:
-                if self._note_editor.is_pitch_active(button.identifier):
-                    color = 'Instrument.NoteInStep'
-            else:  # inserted
-                if button.identifier in self.pitches:
-                    color = 'Instrument.NoteSelected'
+            if self._note_editor.active_steps and self._note_editor.is_pitch_active(button.identifier):
+                color = 'Instrument.NoteInStep'
+            elif button.identifier in self.pitches:
+                color = 'Instrument.NoteSelected'
+                
         button.color = color
 
     def _button_should_be_enabled(self, button):
@@ -252,6 +296,7 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
         return (note_info.index, note_info.channel)
 
     def _update_matrix(self):
+        """Update the entire matrix display"""
         self._update_control_from_script()
         self._update_note_translations()
         self._update_led_feedback()
@@ -261,19 +306,36 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
         self._update_led_feedback()
 
     def _get_pattern(self, first_note=None):
+        """Create a melodic pattern based on current settings"""
         if first_note is None:
-            first_note =int(round(self._first_note))
+            first_note = int(round(self._first_note))
+            
         interval = len(self._note_layout.notes)
         notes = self._note_layout.notes
-        width = 4 #Achtun hard coded
-        height = 4 #Achtun hard coded
+        width = self.GRID_WIDTH
+        height = self.GRID_HEIGHT
+        
+        # Calculate octave based on first note and scale length
         octave = first_note // len(self._note_layout.notes)
-        offset = self._first_scale_note_offset() #*(first_note + self.page_length) 
+        offset = self._get_first_scale_note_offset()
+        
         if self._note_layout.is_in_key:
-            width = interval + 1
-        else:  # inserted
+            # In-key mode: each row is consecutive scale notes
+            steps = [1, interval]  # Move right by 1 scale note, up by octave
+        else:
+            # Chromatic mode: each row is a perfect fourth (5 semitones)
             interval = 5
             offset = offset + CHROMATIC_MODE_OFFSET
-        steps = [1, interval]
+            steps = [1, interval]  # Move right by semitone, up by perfect fourth
+            
         origin = [offset, 0]
-        return MelodicPattern(steps=steps, scale=notes, origin=origin, root_note=octave + 12, chromatic_mode=not self._note_layout.is_in_key, width=width, height=height)
+        
+        return MelodicPattern(
+            steps=steps,
+            scale=notes,
+            origin=origin,
+            root_note=octave * 12,
+            chromatic_mode=not self._note_layout.is_in_key,
+            width=width,
+            height=height
+        )
