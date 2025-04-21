@@ -69,21 +69,10 @@ class NoteLayout(EventObject, Renderable):
         self._scale = self._get_scale_from_name(self._song.scale_name)
         self.notify_scale(self._scale)
 
-    # it is probably called scale mode. not is-in-key. let try again laters
-    # 
     @listens('scale_mode')
     def __on_scale_mode_changed(self):
-        self.toggle_scale_mode()#self._scale = self._get_scale_from_name(self._song.scale_name)
+        self.toggle_scale_mode()
         self.notify_scale(self._scale_mode)
-
-    # @scale_mode.setter
-    # def scale_mode(self, mode):
-    #     if self._is_internal:
-    #         self._internal_scale_mode = mode
-    #         self.notify_scale_mode()
-    #     else:
-    #         self.song.scale_mode = mode
-
 
 class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable, PitchProvider):
     delete_button = ButtonControl(color=None)
@@ -92,7 +81,7 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
     # Constants for the 4x4 grid
     GRID_WIDTH = 4
     GRID_HEIGHT = 4
-    DEFAULT_FIRST_NOTE = 36  # C2 by default
+    DEFAULT_FIRST_NOTE = 48  # C2 by default
 
     @depends(note_layout=None, target_track=None)
     def __init__(self, note_layout=None, target_track=None, *a, **k):
