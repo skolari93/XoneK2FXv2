@@ -89,7 +89,7 @@ class Skin:
         StepAutomated = Rgb.red
         StepTied = Rgb.green
         StepPartiallyTied = Rgb.green
-        Playhead = Rgb.red
+        Playhead = Rgb.green
 
     class LoopSelector:
         # InsideLoopSelected = lambda _: make_pulsing_color(Colors.WHITE, Colors.DARK_GREY)

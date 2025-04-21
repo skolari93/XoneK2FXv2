@@ -168,14 +168,6 @@ def note_mode_for_track(track, instrument_finder):
         return 'instrument'
     return 'audio'
 
-def _update_note_mode(self):
-    if self.component_map['Main_Modes'].selected_mode == 'note':
-        note_mode = note_mode_for_track(self.component_map['Target_Track'].target_track, self.instrument_finder)
-        self.component_map['Note_Modes'].selected_mode = note_mode
-        pitch_provider ="DrumGroup" #PITCH_PROVIDERS.get(note_mode, None)
-        self.component_map['Step_Sequence'].set_pitch_provider(self.component_map[pitch_provider] if pitch_provider else None)
-
-
 
 class Specification(ControlSurfaceSpecification):
     num_tracks = 8
@@ -194,9 +186,8 @@ class Specification(ControlSurfaceSpecification):
         'ViewControl': ViewControlComponent,
         'Mixer': MixerComponent,
         'Session': SessionComponent,
-        'Drum_Group': DrumGroupComponent, 
+        'Drum_Group': DrumGroupComponent,# partial(DrumGroupComponent, translation_channel=12), 
         'Session_Navigation': partial(SessionNavigationComponent, respect_borders=True, snap_track_offset=False),
         'Step_Sequence': StepSequenceComponent, 
         'Instrument': InstrumentComponent, 
-
     }
