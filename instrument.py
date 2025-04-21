@@ -7,6 +7,8 @@ from ableton.v3.live import action
 from .melodic_pattern import CHROMATIC_MODE_OFFSET, SCALES, MelodicPattern
 
 DEFAULT_SCALE = SCALES[0]
+import logging
+logger = logging.getLogger("XoneK2FXv2")
 
 class NoteLayout(EventObject, Renderable):
     @depends(song=None)
@@ -15,9 +17,10 @@ class NoteLayout(EventObject, Renderable):
         self._song = song
         self._scale = self._get_scale_from_name(self._song.scale_name)
         self._preferences = preferences if preferences is not None else {}
-        self._is_in_key = self._preferences.setdefault('is_in_key', True)
+        self._scale_mode = True #self._preferences.setdefault('scale_mode', False)
         self.__on_root_note_changed.subject = self._song
         self.__on_scale_name_changed.subject = self._song
+        self.__on_scale_mode_changed.subject = self._song
 
     @property
     def notes(self):
@@ -42,17 +45,17 @@ class NoteLayout(EventObject, Renderable):
         self.notify_scale(self._scale)
 
     @listenable_property
-    def is_in_key(self):
-        return self._is_in_key
+    def scale_mode(self):
+        return self._scale_mode
 
-    @is_in_key.setter
-    def is_in_key(self, is_in_key):
-        self._is_in_key = is_in_key
-        self._preferences['is_in_key'] = self._is_in_key
-        self.notify_is_in_key(self._is_in_key)
+    @scale_mode.setter
+    def scale_mode(self, scale_mode):
+        self._scale_mode = scale_mode
+        self._song.scale_mode = self._scale_mode
+        self.notify_scale_mode(self._scale_mode)
 
-    def toggle_is_in_key(self):
-        self.is_in_key = not self._is_in_key
+    def toggle_scale_mode(self):
+        self._scale_mode = not self._scale_mode
 
     def _get_scale_from_name(self, name):
         return find_if(lambda scale: scale.name == name, SCALES) or DEFAULT_SCALE
@@ -65,6 +68,21 @@ class NoteLayout(EventObject, Renderable):
     def __on_scale_name_changed(self):
         self._scale = self._get_scale_from_name(self._song.scale_name)
         self.notify_scale(self._scale)
+
+    # it is probably called scale mode. not is-in-key. let try again laters
+    # 
+    @listens('scale_mode')
+    def __on_scale_mode_changed(self):
+        self.toggle_scale_mode()#self._scale = self._get_scale_from_name(self._song.scale_name)
+        self.notify_scale(self._scale_mode)
+
+    # @scale_mode.setter
+    # def scale_mode(self, mode):
+    #     if self._is_internal:
+    #         self._internal_scale_mode = mode
+    #         self.notify_scale_mode()
+    #     else:
+    #         self.song.scale_mode = mode
 
 
 class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable, PitchProvider):
@@ -95,7 +113,7 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
         self._last_page_offset = self.page_offset
         
         # Register for note layout events
-        for event in ['scale', 'root_note', 'is_in_key']:
+        for event in ['scale', 'root_note', 'scale_mode']:
             self.register_slot(self._note_layout, self._on_note_layout_changed, event)
         
         # Register for track events
@@ -119,12 +137,12 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
 
     @property
     def page_length(self):
-        return len(self._note_layout.notes) if self._note_layout.is_in_key else 12
+        return len(self._note_layout.notes) if self._note_layout.scale_mode else 12
 
     @property
     def position_count(self):
         """Calculate the total number of available positions"""
-        if not self._note_layout.is_in_key:
+        if not self._note_layout.scale_mode:
             return 128  # Standard MIDI note range
         
         # Calculate based on scale notes and octaves
@@ -133,7 +151,7 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
 
     def _get_first_scale_note_offset(self):
         """Calculate the offset for the first note in the scale"""
-        if not self._note_layout.is_in_key:
+        if not self._note_layout.scale_mode:
             return self._note_layout.notes[0]
         
         if self._note_layout.notes[0] == 0:
@@ -319,7 +337,7 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
         octave = first_note // len(self._note_layout.notes)
         offset = self._get_first_scale_note_offset()
         
-        if self._note_layout.is_in_key:
+        if self._note_layout.scale_mode:
             # In-key mode: each row is consecutive scale notes
             steps = [1, interval]  # Move right by 1 scale note, up by octave
         else:
@@ -331,11 +349,11 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
         origin = [offset, 0]
         
         return MelodicPattern(
-            steps=steps,
+            steps=[1,4],
             scale=notes,
             origin=origin,
             root_note=octave * 12,
-            chromatic_mode=not self._note_layout.is_in_key,
+            chromatic_mode=not self._note_layout.scale_mode,
             width=width,
             height=height
         )
