@@ -72,17 +72,10 @@ def create_mappings(cs):
             vertical_encoder='vertical_scene_select_encoder',
             horizontal_encoder='horizontal_scene_select_encoder',
         ),
-        #'Step_Sequence': dict(),
         'Undo_Redo': dict(
             undo_button='undo_button',
             redo_button='redo_button'
         ),
-        'Step_Sequence': dict(
-            step_buttons= 'pads_columns_0_3'
-        ),
-        # 'Instrument': dict(
-        #     matrix='pads_columns_4_7'
-        # ),
         'Note_Modes': dict(
             instrument = dict(
                 component= 'Instrument',
