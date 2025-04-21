@@ -115,10 +115,10 @@ class Skin:
         PadEmpty = OFF
         PadAction = Rgb.green
         PadFilled = Rgb.amber
-        PadSelected = Rgb.red
+        PadSelected = Rgb.green
         PadMuted = OFF
-        PadMutedSelected = Rgb.red
+        PadMutedSelected = Rgb.green
         PadSoloed = Rgb.green
-        PadSoloedSelected = Rgb.red
+        PadSoloedSelected = Rgb.green
         Scroll = OFF
 

@@ -2,8 +2,6 @@ from ableton.v3.base import depends
 from ableton.v3.control_surface.components import DrumGroupComponent as DrumGroupComponentBase
 
 class DrumGroupComponent(DrumGroupComponentBase):
-    pass
-
     @depends(volume_parameters=None)
     def __init__(self, volume_parameters=None, *a, **k):
         super().__init__(*a, matrix_always_listenable=True, **k)

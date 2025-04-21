@@ -37,8 +37,9 @@ class StepColorManager(EventObject):
             self._revert_colors_task.restart()
 
     def get_color_for_step(self, index, visible_steps):
-        if self.clip is None and self.song.is_playing and (index in visible_steps) and (index == self._last_beat*4):
-            return 'NoteEditor.Playhead'
+        if self._last_beat is not None:
+            if self.clip is None and self.song.is_playing and (index in visible_steps) and (index == self._last_beat*4):
+                return 'NoteEditor.Playhead'
         if self.clip:
             return self._colors.get(index, None)
 

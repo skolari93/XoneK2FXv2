@@ -21,7 +21,8 @@ from .instrument import InstrumentComponent, NoteLayout
 from .step_sequence import DEFAULT_GRID_RESOLUTION_INDEX, GRID_RESOLUTIONS, StepSequenceComponent
 from ableton.v3.control_surface.components import GridResolutionComponent, SequencerClip
 from ableton.v3.control_surface.components import DrumGroupComponent
-
+from .colors import Rgb
+from .k2_button import GREEN
 
 PITCH_PROVIDERS = {'drum': 'Drum_Group', 'instrument': 'Instrument'}
 
@@ -177,6 +178,9 @@ class Specification(ControlSurfaceSpecification):
     #right_align_non_player_tracks = False
     #link_session_ring_to_scene_selection = True
     elements_type = Elements
+    feedback_channels = list(range(0,16))#list(range(12,14))
+    recoding_feedback_velocity = GREEN
+    playing_feedback_velocity = GREEN
     control_surface_skin = create_skin(skin=Skin, colors=Rgb)
     create_mappings_function = create_mappings
     component_map = {
