@@ -129,7 +129,7 @@ class XoneK2FXv2(ControlSurface):
         #if self.component_map['Main_Modes'].selected_mode == 'note':
         note_mode = note_mode_for_track(self.component_map['Target_Track'].target_track, self.instrument_finder)
         #self.component_map['Note_Modes'].selected_mode = note_mode
-        pitch_provider ='Drum_Group'# PITCH_PROVIDERS.get(note_mode, None)
+        pitch_provider = 'Instrument'# PITCH_PROVIDERS.get(note_mode, None)
         self.component_map['Step_Sequence'].set_pitch_provider(self.component_map[pitch_provider] if pitch_provider else None)
     
     def drum_group_changed(self, _):
