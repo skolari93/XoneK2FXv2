@@ -35,12 +35,14 @@ class StepSequenceComponent(StepSequenceComponentBase):
     def set_shift_length_button(self, button):
         self._note_settings.shift_length_button.set_control_element(button)
 
-
     def set_transpose_encoder(self, encoder):
         self._note_settings.set_transpose_encoder(encoder)
 
     def set_transpose_octave_encoder(self, encoder):
         self._note_settings.set_transpose_octave_encoder(encoder)
+
+    def set_nudge_encoder(self, encoder):
+        self._note_settings.set_nudge_encoder(encoder)
 
     def set_nudge_left_button(self, button):
         self._note_settings.nudge_left_button.set_control_element(button)

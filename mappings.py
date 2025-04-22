@@ -122,10 +122,12 @@ def create_mappings(cs):
                         'step_buttons': 'pads_columns_0_3',
                         'matrix':'pads_columns_4_7',
                         'duration_encoder': 'vertical_scene_select_encoder',
+                        #'nudge_encoder': 'transpose_encoder',                        
                         'transpose_encoder': 'transpose_encoder',
                         'transpose_octave_encoder': 'transpose_encoder_with_transpose_shift',
                         'duration_fine_encoder': 'vertical_scene_select_encoder_with_shift',
-                        'shift_length_button': 'shift_length_button'
+                        'shift_length_button': 'shift_length_button',
+                        'nudge_right_button': 'nudge_button'
                     },
                     # {
                     #     'component': 'Loop_Length',
