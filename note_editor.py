@@ -63,5 +63,24 @@ class NoteEditorComponent(NoteEditorComponentBase):
     def _modify_duration(time_step, duration_offset, note):
         note.duration = max(time_step.length - 0.1, note.duration + duration_offset)
 
+    def _visible_page(self):
+        """Returns the current page number (0-indexed) based on the current page_time.
+        
+        Returns:
+            int: The current page number (0, 1, 2, etc.)
+        """
+        if self._page_time <= 0:
+            return 0
+        
+        page_length = self.page_length
+        if page_length <= 0:
+            return 0
+            
+        return int(self._page_time / page_length)
+    
     def _get_alternate_color_for_step(self, index, visible_steps):
-        return self._step_color_manager.get_color_for_step(index, visible_steps)
+        visible_page = self._visible_page()
+        clip_notes = visible_steps[index].filter_notes(self._clip_notes)
+
+        return self._step_color_manager.get_color_for_step(index, visible_steps, clip_notes, visible_page=visible_page)
+    

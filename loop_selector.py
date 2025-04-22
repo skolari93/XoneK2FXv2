@@ -3,11 +3,14 @@ from ableton.v3.base import listenable_property, round_to_multiple
 from ableton.v3.control_surface.components.bar_based_sequence import LoopSelectorComponent as LoopSelectorComponentBase
 from ableton.v3.control_surface.components.bar_based_sequence import get_relative_page_time
 from ableton.v3.control_surface.controls import ButtonControl
+from ableton.v3.control_surface import LiveObjSkinEntry
 from ableton.v3.live import is_clip_new_recording, is_clip_playing
 from typing import NamedTuple
-
+from ableton.v3.live import liveobj_changed
 
 BARS_PER_BANK = 16
+HEIGHT = 4
+WIDTH = 4
 
 class LoopOverviewData(NamedTuple):
     overview_start_position: float
@@ -27,7 +30,7 @@ class LoopSelectorComponent(LoopSelectorComponentBase):
     def __init__(self, *a, **k):
         self._bank_offset = 0.0
         super().__init__(*a, **k)
-        self.matrix.dimensions = (4, 4)
+        self.matrix.dimensions = (WIDTH, HEIGHT)
 
     @property
     def bank_end(self):
@@ -52,10 +55,18 @@ class LoopSelectorComponent(LoopSelectorComponentBase):
     def _increment_bank(self, delta):
         bank_length = self.bank_length
         bank_start = round_to_multiple(self._paginator.page_time, bank_length)
-        positions = sorted([bank_start, bank_length * delta, self._get_loop_start()])
-        fn = bisect_right if delta > 0 else lambda positions, value: bisect_left(positions, value) - 1
-        self._set_bank_offset(positions[fn(positions, self._paginator.page_time)], set_page_time=True)
+        loop_start = self._get_loop_start()
+        positions = sorted([bank_start, bank_length * delta + bank_start, loop_start])
+
+        fn = bisect_right if delta > 0 else lambda pos, val: max(0, bisect_left(pos, val) - 1)
+        index = fn(positions, self._paginator.page_time)
+
+        # Sicherheits-Check für den Index
+        index = max(0, min(index, len(positions) - 1))
+
+        self._set_bank_offset(positions[index], set_page_time=True)
         self._notify_page_time()
+
 
     def _increment_page_time(self, delta):
         bar_length = self.bar_length
@@ -106,6 +117,31 @@ class LoopSelectorComponent(LoopSelectorComponentBase):
         super()._update_matrix()
         self.loop_overview_data = self._get_loop_overview_data()
 
+
+    #i use this to overwrite the playhead color. atm it does not really work.
+    def _update_matrix_button(self, button, selected, playing, inside_loop):
+        color = "OutsideLoop"
+        # if playing:
+        #     color = "PlayheadRecord" if self.song.session_record else "Playhead"
+        # else:
+        if inside_loop:
+            color = "InsideLoopSelected" if selected else "InsideLoop"
+        else:
+            if selected:
+                color = "OutsideLoopSelected"
+        button.color = LiveObjSkinEntry("LoopSelector.{}".format(color), self._target_track.target_track)
+    
+    #this as well
+    def set_clip(self, clip):
+        if liveobj_changed(clip, self._clip):
+            #self._LoopSelectorComponent__on_playing_position_changed.subject = clip
+            #self._LoopSelectorComponent__on_playing_status_changed.subject = clip
+            self._clip = clip
+            if clip:
+                if self._paginator.can_change_page:
+                    self._paginator.page_time = clip.loop_start
+            self.update()
+
     def _get_loop_overview_data(self):
         if not self._has_clip():
             return None
@@ -140,6 +176,7 @@ class LoopSelectorComponent(LoopSelectorComponentBase):
 
         # Determine if the clip is playing and, if so, whether it's in view
         playing = -1.0  # Default: not playing
+        position = None
         if is_clip_playing(self._clip):
             position = self._clip.playing_position + current_offset
             if overview_start <= position <= overview_end:

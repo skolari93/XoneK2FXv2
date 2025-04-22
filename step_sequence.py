@@ -49,3 +49,6 @@ class StepSequenceComponent(StepSequenceComponentBase):
 
     def set_next_bank_button(self, button):
         self._loop_selector.next_bank_button.set_control_element(button)
+    
+    def set_matrix(self, matrix):
+        self._loop_selector.matrix.set_control_element(matrix)

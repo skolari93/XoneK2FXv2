@@ -79,11 +79,11 @@ def create_mappings(cs):
         'Note_Modes': dict(
             instrument = dict(
                 component= 'Instrument',
-                matrix='pads_columns_4_7'         
+                #matrix='pads_columns_4_7'         
             ),
             drum = dict(
                 component= 'Drum_Group',
-                matrix='pads_columns_4_7'         
+                #matrix='pads_columns_4_7'         
             ),
             audio = dict(
                 component= 'Background',
@@ -114,7 +114,10 @@ def create_mappings(cs):
                     {'component': 'Note_Modes'},
                     {
                         'component': 'Step_Sequence',
-                        'step_buttons': 'pads_columns_0_3'
+                        'step_buttons': 'pads_columns_0_3',
+                        'next_bank_button': 'next_bank_button',
+                        'prev_bank_button': 'prev_bank_button',
+                        'matrix':'pads_columns_4_7'
                     },
                     # {
                     #     'component': 'Loop_Length',

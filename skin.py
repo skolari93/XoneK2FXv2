@@ -79,27 +79,27 @@ class Skin:
 
     class NoteEditor:
         NoClip = OFF
-
-    class NoteEditor:
-        NoClip = OFF
         StepFilled = Rgb.green
         StepMuted = OFF
-        StepEmpty = OFF 
-        StepDisabled = Rgb.amber
+        StepEmpty = Rgb.amber 
+        StepDisabled = OFF#Rgb.amber
         StepAutomated = Rgb.red
         StepTied = Rgb.green
         StepPartiallyTied = Rgb.green
         Playhead = Rgb.green
+        NotInLoop = OFF
+        NotInLoopStepFilled = Rgb.red
+        NotInLoopStepMuted = OFF
 
     class LoopSelector:
-        # InsideLoopSelected = lambda _: make_pulsing_color(Colors.WHITE, Colors.DARK_GREY)
-        InsideLoopSelectedPlaying = Rgb.green
-        # InsideLoop = make_pulsing_color_for_liveobj
-        InsideLoopPlaying = Rgb.green
+        InsideLoopSelected = Rgb.green
+        InsideLoopSelectedPlaying = Rgb.red
+        InsideLoop = Rgb.amber
+        InsideLoopPlaying = Rgb.red
         OutsideLoopSelected = Rgb.red
-        OutsideLoop = Rgb.amber
+        OutsideLoop = OFF
         Playhead = Rgb.green
-        PlayheadRecord = Rgb.red
+        PlayheadRecord = Rgb.green
 
     class Instrument:
         PadAction = Rgb.green
