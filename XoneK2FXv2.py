@@ -15,6 +15,7 @@ from .master_mixer import MasterMixerComponent
 from .mixer import MixerComponent
 from ableton.v3.control_surface.components import ViewControlComponent, SessionRingComponent, SessionNavigationComponent #,StepSequenceComponent, GRID_RESOLUTIONS
 from functools import partial
+from .loop_length import LoopLengthComponent
 
 from ableton.v3.live import liveobj_valid
 from .instrument import InstrumentComponent, NoteLayout
@@ -192,6 +193,7 @@ class Specification(ControlSurfaceSpecification):
         'ViewControl': ViewControlComponent,
         'Mixer': MixerComponent,
         'Session': SessionComponent,
+        'Loop_Length': LoopLengthComponent, 
         'Drum_Group': DrumGroupComponent,# partial(DrumGroupComponent, translation_channel=12), 
         'Session_Navigation': partial(SessionNavigationComponent, respect_borders=True, snap_track_offset=False),
         'Step_Sequence': StepSequenceComponent, 

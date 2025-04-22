@@ -90,6 +90,10 @@ def create_mappings(cs):
             )
             #'simpler': create_note_mode_layer_dict('Sliced_Simpler'),
         ),
+        'Loop_Length': dict(
+            length_encoder= 'loop_length_encoder',
+            shift_button='loop_shift_button'
+        ),
         'Main_Modes': dict(
             cycle_mode_button = 'layout_button',
             session= dict(
@@ -107,11 +111,15 @@ def create_mappings(cs):
             ),
            note= dict(
                 modes= [
-                        {'component': 'Note_Modes'},
+                    {'component': 'Note_Modes'},
                     {
                         'component': 'Step_Sequence',
                         'step_buttons': 'pads_columns_0_3'
-                    }
+                    },
+                    # {
+                    #     'component': 'Loop_Length',
+                    #     'length_encoder': 'loop_length_encoder'
+                    # }
                 ]
             )
         ),
