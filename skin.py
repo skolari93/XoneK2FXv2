@@ -96,7 +96,7 @@ class Skin:
         InsideLoopSelectedPlaying = Rgb.green
         # InsideLoop = make_pulsing_color_for_liveobj
         InsideLoopPlaying = Rgb.green
-        # OutsideLoopSelected = Colors.WHITE
+        OutsideLoopSelected = Rgb.red
         OutsideLoop = Rgb.amber
         Playhead = Rgb.green
         PlayheadRecord = Rgb.red
