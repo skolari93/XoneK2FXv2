@@ -92,7 +92,7 @@ def create_mappings(cs):
         },
         'Loop_Length': dict(
             length_encoder= 'loop_length_encoder',
-            shift_button='shift_button'
+            shift_button='loop_shift_button'
         ),
         'Main_Modes': dict(
             cycle_mode_button = 'layout_button',

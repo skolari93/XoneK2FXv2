@@ -91,7 +91,7 @@ class Skin:
         StepPartiallyTied = Rgb.red
         Playhead = Rgb.green
         NotInLoop = OFF
-        NotInLoopStepFilled = Rgb.red
+        NotInLoopStepFilled = OFF#Rgb.red
         NotInLoopStepMuted = OFF
         Accent = Rgb.red
 
