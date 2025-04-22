@@ -246,8 +246,12 @@ class Elements(ElementsBase):
 
         # note length
         self.add_button(14, 'shift_length_button', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
-        self.add_modified_control(control=self.vertical_scene_select_encoder, modifier=self.shift_length_button)
+        self.add_modified_control(control=self.vertical_scene_select_encoder, modifier=self.shift_button)
 
 
-        self.add_element("prev_bank_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
+        #self.add_element("prev_bank_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
         self.add_element("next_bank_button", create_k2_button, 15, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
+
+
+        # accent button
+        self.add_element("accent_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")

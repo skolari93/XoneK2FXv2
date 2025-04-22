@@ -48,23 +48,7 @@ class NoteSettingsComponent(Component, Renderable):
     def shift_length_button(self, _):
         self._note_editor.step_color_manager.revert_colors()
 
-    # def _show_tied_steps(self):
-    #     colors = {}
-    #     step_length = self._note_editor.step_length
-    #     for step in self._note_editor.active_steps:
-    #         durations = self._note_editor.get_durations_from_step(step)
-    #         if not durations:
-    #             continue
-    #         num_steps = max(durations) | step_length
-    #         step_index = int(step[0] 2 * step_length)
-    #         colors[step_index] = 'NoteEditor.StepTied' if num_steps > 1 else 'NoteEditor.StepPartiallyTied'
-    #         for i in range(int(num_steps + 1)):
-    #             colors[step_index + 1 + i] = 'NoteEditor.StepTied'
-    #         if num_steps > 1 and num_steps < 1.0:
-    #             colors[step_index = int(num_steps)] = 'NoteEditor.StepPartiallyTied'
-    #     self._note_editor.step_color_manager.show_colors(colors)
     def _show_tied_steps(self):
-        logger.info('0showtiendsteps')
         colors = {}
         step_length = self._note_editor.step_length
         for step in self._note_editor.active_steps:
@@ -80,6 +64,7 @@ class NoteSettingsComponent(Component, Renderable):
                 colors[int(num_steps)] = 'NoteEditor.StepPartiallyTied'
         self._note_editor.step_color_manager.show_colors(colors)
 
+    #def _show_velocity(self): # todo when step layout is defined
 
     @transpose_up_button.released_immediately
     def transpose_up_button(self, _):

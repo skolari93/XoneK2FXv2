@@ -64,6 +64,11 @@ class StepColorManager(EventObject):
                             return 'NoteEditor.NotInLoopStepFilled'
                     else:
                         return 'NoteEditor.NotInLoop'
+                else:
+                    notes = visible_steps[index].filter_notes(clip_notes)
+                    if len(notes) > 0:
+                        if any((n.velocity == 127 for n in notes)):
+                            return 'NoteEditor.Accent'
                 return self._colors.get(index, None)
 
 

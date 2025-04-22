@@ -87,6 +87,9 @@ def create_mappings(cs):
             )
             #'simpler': create_note_mode_layer_dict('Sliced_Simpler'),
         ),
+        'Accent': {
+            'accent_button': 'accent_button'
+        },
         'Loop_Length': dict(
             length_encoder= 'loop_length_encoder',
             shift_button='shift_button'

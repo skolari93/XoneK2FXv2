@@ -71,6 +71,9 @@ class Skin:
         ScenePressed = Rgb.green
         Scene = Rgb.green
 
+    class Accent:
+        On = Rgb.red
+        Off = OFF
 
     class Variations:
         Off = OFF
@@ -90,6 +93,7 @@ class Skin:
         NotInLoop = OFF
         NotInLoopStepFilled = Rgb.red
         NotInLoopStepMuted = OFF
+        Accent = Rgb.red
 
     class LoopSelector:
         InsideLoopSelected = Rgb.green
