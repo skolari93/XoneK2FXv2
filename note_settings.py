@@ -9,10 +9,11 @@ class NoteSettingsComponent(Component, Renderable):
     duration_range_string = listenable_property.managed('-')
     duration_encoder = StepEncoderControl(num_steps=64)
     duration_fine_encoder = StepEncoderControl(num_steps=64)
+    transpose_encoder = StepEncoderControl(num_steps=64)
+    transpose_octave_encoder = StepEncoderControl(num_steps=64)
+
     shift_length_button = ButtonControl(color=None)
     cursor_skin = {'color': 'NoteSettings.CursorButton', 'pressed_color': 'NoteSettings.CursorButtonPressed'}
-    transpose_up_button = ButtonControl(**cursor_skin)
-    transpose_down_button = ButtonControl(**cursor_skin)
     nudge_left_button = ButtonControl(**cursor_skin)
     nudge_right_button = ButtonControl(**cursor_skin)
 
@@ -26,6 +27,12 @@ class NoteSettingsComponent(Component, Renderable):
 
     def set_duration_encoder(self, encoder):
         self.duration_encoder.set_control_element(encoder)
+
+    def set_transpose_encoder(self, encoder):
+        self.transpose_encoder.set_control_element(encoder)
+
+    def set_transpose_octave_encoder(self, encoder):
+        self.transpose_octave_encoder.set_control_element(encoder)
 
     def set_duration_fine_encoder(self, encoder):
         self.duration_fine_encoder.set_control_element(encoder)
@@ -66,21 +73,16 @@ class NoteSettingsComponent(Component, Renderable):
 
     #def _show_velocity(self): # todo when step layout is defined
 
-    @transpose_up_button.released_immediately
-    def transpose_up_button(self, _):
-        self._transpose_notes(1)
 
-    @transpose_up_button.pressed_delayed
-    def transpose_up_button(self, _):
-        self._transpose_notes(12)
+    @transpose_encoder.value
+    def transpose_encoder(self, value, _):
+        offset = 1
+        self._transpose_notes(value * offset)
 
-    @transpose_down_button.released_immediately
-    def transpose_down_button(self, _):
-        self._transpose_notes((-1))
-
-    @transpose_down_button.pressed_delayed
-    def transpose_down_button(self, _):
-        self._transpose_notes((-12))
+    @transpose_octave_encoder.value
+    def transpose_octave_encoder(self, value, _):
+        offset = 12
+        self._transpose_notes(value * offset)
 
     @nudge_left_button.pressed
     def nudge_left_button(self, _):
@@ -103,8 +105,9 @@ class NoteSettingsComponent(Component, Renderable):
         can_enable = self._note_editor.pitch_provider is not None and values is not None
         is_polyphonic = can_enable and self._note_editor.pitch_provider.is_polyphonic
         pitch_min, pitch_max = values.get('pitch', (0, 0))
-        self.transpose_up_button.enabled = is_polyphonic and (pitch_min!= pitch_max or pitch_max!= 127)
-        self.transpose_down_button.enabled = is_polyphonic and (pitch_min!= pitch_max or pitch_max!= 0)
+        # self.transpose_up_button.enabled = is_polyphonic and (pitch_min!= pitch_max or pitch_max!= 127)
+        # self.transpose_down_button.enabled = is_polyphonic and (pitch_min!= pitch_max or pitch_max!= 0)
+
         #nudge_offset = self._note_editor.step_length 5 3 COMPILER ERORR
         nudge_offset = 0
         self.nudge_left_button.enabled = can_enable and self._note_editor.can_nudge_by_offset(-nudge_offset)

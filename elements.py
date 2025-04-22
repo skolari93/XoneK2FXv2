@@ -256,4 +256,6 @@ class Elements(ElementsBase):
 
         # accent/velocity button
         self.add_element("accent_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
-        self.add_encoder(20, 'velocity_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+        self.add_encoder(20, 'transpose_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+        self.add_button(13, 'transpose_shift', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
+        self.add_modified_control(control=self.transpose_encoder, modifier=self.transpose_shift)
