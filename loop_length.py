@@ -25,7 +25,7 @@ class LoopLengthComponent(Component, Renderable):
         if num_bars:
             complete_bars = int(num_bars)
             remainder = self._sequencer_clip.length % get_bar_length(clip=self._sequencer_clip.clip)
-            if self.can_fine_tune() or remainder:
+            if self.use_fine_steps() or remainder:
                 bar_fraction = int(remainder + FINE_TUNE_FACTOR)
                 if complete_bars:
                     return '{} + {}/16'.format(complete_bars, bar_fraction)
@@ -43,20 +43,17 @@ class LoopLengthComponent(Component, Renderable):
         if num_bars < 1 or (delta < 0 and num_bars == 1):
             fine_tune = True
         step_size = FINE_TUNE_FACTOR if fine_tune else bar_length
-        num_steps = int(clip.loop_end / step_size)
-        #action.set_loop_end(clip, max(step_size, num_steps, delta, Component))
         new_loop_end = clip.loop_end + (delta * step_size)
         action.set_loop_end(clip, max(step_size, new_loop_end))
 
-    def can_fine_tune(self):
+    def use_fine_steps(self):
         if self.shift_button.control_element:
-            return self.shift_button.is_pressed
-            #return self.shift_button.control_element.is_locked or self.shift_button.is_pressed
+            return not self.shift_button.is_pressed
         return False
 
     @length_encoder.value
     def length_encoder(self, value, _):
-        self.increment_length(value, fine_tune=self.can_fine_tune())
+        self.increment_length(value, fine_tune=self.use_fine_steps())
         self.notify_length_string()
 
     @shift_button.value
