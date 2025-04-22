@@ -243,6 +243,11 @@ class Elements(ElementsBase):
 
         # Loop
         self.add_encoder(21, 'loop_length_encoder', channel=MIXERCHANNEL2, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
-        self.add_button(14, 'loop_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
+
+        # note length
+        self.add_button(14, 'shift_length_button', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
+        self.add_modified_control(control=self.vertical_scene_select_encoder, modifier=self.shift_length_button)
+
+
         self.add_element("prev_bank_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
         self.add_element("next_bank_button", create_k2_button, 15, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")

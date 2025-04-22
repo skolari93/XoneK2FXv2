@@ -84,8 +84,8 @@ class Skin:
         StepEmpty = Rgb.amber 
         StepDisabled = OFF#Rgb.amber
         StepAutomated = Rgb.red
-        StepTied = Rgb.green
-        StepPartiallyTied = Rgb.green
+        StepTied = Rgb.red
+        StepPartiallyTied = Rgb.red
         Playhead = Rgb.green
         NotInLoop = OFF
         NotInLoopStepFilled = Rgb.red

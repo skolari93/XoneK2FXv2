@@ -89,7 +89,7 @@ def create_mappings(cs):
         ),
         'Loop_Length': dict(
             length_encoder= 'loop_length_encoder',
-            shift_button='loop_shift_button'
+            shift_button='shift_button'
         ),
         'Main_Modes': dict(
             cycle_mode_button = 'layout_button',
@@ -118,7 +118,9 @@ def create_mappings(cs):
                         'component': 'Step_Sequence',
                         'step_buttons': 'pads_columns_0_3',
                         'matrix':'pads_columns_4_7',
-                        'duration_encoder': 'vertical_scene_select_encoder'
+                        'duration_encoder': 'vertical_scene_select_encoder',
+                        'duration_fine_encoder': 'vertical_scene_select_encoder_with_shift',
+                        'shift_length_button': 'shift_length_button'
                     },
                     # {
                     #     'component': 'Loop_Length',

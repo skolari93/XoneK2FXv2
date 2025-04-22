@@ -7,9 +7,9 @@ import logging
 logger = logging.getLogger("XoneK2FXv2")
 class NoteSettingsComponent(Component, Renderable):
     duration_range_string = listenable_property.managed('-')
-    can_display_duration = listenable_property.managed(False)
     duration_encoder = StepEncoderControl(num_steps=64)
-    duration_encoder_touch = ButtonControl(color=None)
+    duration_fine_encoder = StepEncoderControl(num_steps=64)
+    shift_length_button = ButtonControl(color=None)
     cursor_skin = {'color': 'NoteSettings.CursorButton', 'pressed_color': 'NoteSettings.CursorButtonPressed'}
     transpose_up_button = ButtonControl(**cursor_skin)
     transpose_down_button = ButtonControl(**cursor_skin)
@@ -25,22 +25,27 @@ class NoteSettingsComponent(Component, Renderable):
         self._update_from_property_ranges()
 
     def set_duration_encoder(self, encoder):
-        self.can_display_duration = False
         self.duration_encoder.set_control_element(encoder)
+
+    def set_duration_fine_encoder(self, encoder):
+        self.duration_fine_encoder.set_control_element(encoder)
 
     @duration_encoder.value
     def duration_encoder(self, value, _):
-        logger.info(value)
         offset = 0.25
         self._note_editor.set_duration_offset(value * offset)
 
-    @duration_encoder_touch.pressed
-    def duration_encoder_touch(self, _):
-        self._show_tied_steps()
-        self.can_display_duration = True
+    @duration_fine_encoder.value
+    def duration_fine_encoder(self, value, _):
+        offset = 0.25*0.1
+        self._note_editor.set_duration_offset(value * offset)
 
-    @duration_encoder_touch.released
-    def duration_encoder_touch(self, _):
+    @shift_length_button.pressed
+    def shift_length_button(self, _):
+        self._show_tied_steps()
+
+    @shift_length_button.released
+    def shift_length_button(self, _):
         self._note_editor.step_color_manager.revert_colors()
 
     # def _show_tied_steps(self):
@@ -59,6 +64,7 @@ class NoteSettingsComponent(Component, Renderable):
     #             colors[step_index = int(num_steps)] = 'NoteEditor.StepPartiallyTied'
     #     self._note_editor.step_color_manager.show_colors(colors)
     def _show_tied_steps(self):
+        logger.info('0showtiendsteps')
         colors = {}
         step_length = self._note_editor.step_length
         for step in self._note_editor.active_steps:
@@ -119,5 +125,5 @@ class NoteSettingsComponent(Component, Renderable):
         self.nudge_left_button.enabled = can_enable and self._note_editor.can_nudge_by_offset(-nudge_offset)
         self.nudge_right_button.enabled = can_enable and self._note_editor.can_nudge_by_offset(nudge_offset)
         self.duration_range_string = self._note_editor.get_duration_range_string()
-        if self.duration_encoder_touch.is_pressed:
+        if self.shift_length_button.is_pressed:
             self._show_tied_steps()
