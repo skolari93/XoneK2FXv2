@@ -3,7 +3,8 @@ from ableton.v3.base import listenable_property
 from ableton.v3.control_surface import Component
 from ableton.v3.control_surface.controls import ButtonControl, StepEncoderControl
 from ableton.v3.control_surface.display import Renderable
-
+import logging
+logger = logging.getLogger("XoneK2FXv2")
 class NoteSettingsComponent(Component, Renderable):
     duration_range_string = listenable_property.managed('-')
     can_display_duration = listenable_property.managed(False)
@@ -29,7 +30,9 @@ class NoteSettingsComponent(Component, Renderable):
 
     @duration_encoder.value
     def duration_encoder(self, value, _):
-        self._note_editor.set_duration_offset(self._note_editor.step_length + 0.1, value)
+        logger.info(value)
+        offset = 0.25
+        self._note_editor.set_duration_offset(value * offset)
 
     @duration_encoder_touch.pressed
     def duration_encoder_touch(self, _):

@@ -68,10 +68,7 @@ def create_mappings(cs):
         #     stop_track_clip_buttons="pads_row_3",
         #     clip_slot_select_button = 'shift_button',
         # ),
-        'Session_Navigation': dict(
-            vertical_encoder='vertical_scene_select_encoder',
-            horizontal_encoder='horizontal_scene_select_encoder',
-        ),
+
         'Undo_Redo': dict(
             undo_button='undo_button',
             redo_button='redo_button'
@@ -106,7 +103,12 @@ def create_mappings(cs):
                         'clip_launch_buttons':"pads_rows_0_2",
                         'stop_track_clip_buttons':"pads_row_3",
                         'clip_slot_select_button' : 'shift_button',
-                    }
+                    },
+                    {
+                        'component': 'Session_Navigation',
+                        'vertical_encoder': 'vertical_scene_select_encoder',
+                        'horizontal_encoder': 'horizontal_scene_select_encoder',
+                    },
                 ]
             ),
            note= dict(
@@ -115,9 +117,8 @@ def create_mappings(cs):
                     {
                         'component': 'Step_Sequence',
                         'step_buttons': 'pads_columns_0_3',
-                        'next_bank_button': 'next_bank_button',
-                        'prev_bank_button': 'prev_bank_button',
-                        'matrix':'pads_columns_4_7'
+                        'matrix':'pads_columns_4_7',
+                        'duration_encoder': 'vertical_scene_select_encoder'
                     },
                     # {
                     #     'component': 'Loop_Length',

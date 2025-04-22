@@ -1,3 +1,4 @@
+import math
 from sys import maxsize
 from ableton.v3.base import listens
 from ableton.v3.control_surface import RelativeInternalParameter
@@ -59,9 +60,15 @@ class NoteEditorComponent(NoteEditorComponentBase):
         super()._on_pad_released(pad, *a, **k)
         #self._volume_parameters.remove_parameter(pad, force=True)
 
-    @staticmethod
+    @staticmethod #also here quantisation options would be great
     def _modify_duration(time_step, duration_offset, note):
-        note.duration = max(time_step.length - 0.1, note.duration + duration_offset)
+        threshold = 0.1
+        if note.duration < threshold:
+            note.duration = threshold
+        elif note.duration == threshold and duration_offset > 0:
+            note.duration = 0.25
+        else:
+            note.duration = note.duration + duration_offset
 
     def _visible_page(self):
         """Returns the current page number (0-indexed) based on the current page_time.

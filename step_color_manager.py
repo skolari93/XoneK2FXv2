@@ -53,7 +53,6 @@ class StepColorManager(EventObject):
         if self._last_beat is not None:
             if self.clip is None and self.song.is_playing and (index in visible_steps) and (index == self._last_beat*4):
                 return 'NoteEditor.Playhead'
-
         if self.clip:
             if (index in visible_steps):
                 if self.clip.loop_end <= get_value_from_label("1/16")*(index + visible_page * len(visible_steps)) : # only works with 16th notes atm

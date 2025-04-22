@@ -141,22 +141,6 @@ class XoneK2FXv2(ControlSurface):
     def target_track_changed(self, _):
         self._update_note_mode()
 
-    @listens('in_control_surface_mode')
-    def __on_control_mode_changed(self, in_control_surface_mode):
-        enabled = in_control_surface_mode and self._identification.is_identified
-        if enabled:
-            self.component_map['Firmware'].initialize()
-            self.component_map['Global_Modes'].selected_mode = 'default'
-            self.component_map['Menu_Modes'].selected_mode = 'default'
-            self.__on_main_mode_changed(self.component_map['Main_Modes'].selected_mode)
-            self.refresh_state()
-        else:
-            self.component_map['Firmware'].reset()
-            self.component_map['Global_Modes'].selected_mode = 'standalone'
-            self.set_can_auto_arm(False)
-            self.set_can_update_controlled_track(False)
-        self._session_ring.set_enabled(enabled)
-
 def fx_tracks(song):
     return tuple(song.return_tracks)
 
