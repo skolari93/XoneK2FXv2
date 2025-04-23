@@ -1,6 +1,6 @@
 import math
 from sys import maxsize
-from ableton.v3.base import listens
+from ableton.v3.base import depends
 from ableton.v3.control_surface import RelativeInternalParameter
 from ableton.v3.control_surface.components.bar_based_sequence import NoteEditorComponent as NoteEditorComponentBase
 from ableton.v3.control_surface.components.note_editor import get_notes
@@ -15,14 +15,13 @@ import logging
 logger = logging.getLogger("XoneK2FXv2")
 
 class NoteEditorComponent(NoteEditorComponentBase):
-    #@depends(volume_parameters=None)
-#    def __init__(self, volume_parameters=None, *a, **k):
-    def __init__(self, *a, **k):
+    @depends(volume_parameters=None)
+    def __init__(self, volume_parameters=None, *a, **k):
         super().__init__(translation_channel=STEP_TRANSLATION_CHANNEL,*a, **k)
         self._step_start_times = []
         self._step_color_manager = self.register_disconnectable(StepColorManager(update_method=self._update_editor_matrix))
         self._step_color_manager.set_clip(self._clip)
-        #self._volume_parameters = volume_parameters
+        self._volume_parameters = volume_parameters
         self._velocity_offset_parameter = self.register_disconnectable(RelativeInternalParameter(name='Velocity', display_value_conversion=lambda _: self.get_velocity_range_string()))
         self.register_slot(self._velocity_offset_parameter, lambda x: self.set_velocity_offset(x + 50), 'delta')
 
@@ -54,11 +53,11 @@ class NoteEditorComponent(NoteEditorComponentBase):
 
     def _on_pad_pressed(self, pad):
         super()._on_pad_pressed(pad)
-        #self._volume_parameters.add_parameter(pad, self._velocity_offset_parameter)
+        self._volume_parameters.add_parameter(pad, self._velocity_offset_parameter)
 
     def _on_pad_released(self, pad, *a, **k):
         super()._on_pad_released(pad, *a, **k)
-        #self._volume_parameters.remove_parameter(pad, force=True)
+        self._volume_parameters.remove_parameter(pad, force=True)
 
     @staticmethod #also here quantisation options would be great
     def _modify_duration(time_step, duration_offset, note):

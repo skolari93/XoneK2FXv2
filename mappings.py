@@ -139,4 +139,9 @@ def create_mappings(cs):
                 ]
             )
         ),
+        'Volume_Parameters': dict(
+            volume_encoder='bottom_3_encoder', 
+            volume_encoder_touch_button='bottom_3_encoder_shift_button'
+        )
+
     }

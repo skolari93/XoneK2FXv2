@@ -21,8 +21,9 @@ from ableton.v3.live import liveobj_valid
 from .instrument import InstrumentComponent, NoteLayout
 from .step_sequence import DEFAULT_GRID_RESOLUTION_INDEX, GRID_RESOLUTIONS, StepSequenceComponent
 from ableton.v3.control_surface.components import GridResolutionComponent, SequencerClip
-from ableton.v3.control_surface.components import DrumGroupComponent
+from .drum_group import DrumGroupComponent
 from .colors import Rgb
+from .volume_parameters import VolumeParametersComponent
 from .k2_button import GREEN
 
 PITCH_PROVIDERS = {'drum': 'Drum_Group', 'instrument': 'Instrument'}
@@ -119,13 +120,15 @@ class XoneK2FXv2(ControlSurface):
         sequencer_clip = self.register_disconnectable(SequencerClip(target_track=self._target_track))
         note_layout = self.register_disconnectable(NoteLayout())
 
+        self.component_map['Volume_Parameters'] = VolumeParametersComponent()
         return {
             "fx_ring": const(fx_ring),
             "master_ring": const(master_ring),
             "session_ring": const(session_ring),
             'grid_resolution': const(GridResolutionComponent(resolutions=GRID_RESOLUTIONS, default_index=DEFAULT_GRID_RESOLUTION_INDEX)),
             'sequencer_clip': const(sequencer_clip),
-            'note_layout': const(note_layout)
+            'note_layout': const(note_layout),
+            'volume_parameters': const(self.component_map['Volume_Parameters'])
         }
     
     def _update_note_mode(self):

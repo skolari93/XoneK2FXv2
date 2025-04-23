@@ -76,11 +76,13 @@ class Elements(ElementsBase):
         self.add_element("redo_button", create_k2_button, 34, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
 
-        # Loop
-        self.add_button(14, 'loop_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
-
-        # note length
+        # scene select
+        self.add_button(13, 'transpose_shift', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
         self.add_button(14, 'shift_length_button', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
+        self.add_button(13, 'bottom_3_encoder_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
+        self.add_button(14, 'loop_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
+        self.add_button(13, 'variations_launch_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
+        self.add_button(14, 'launch_scene_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
 
         # modified controls
         self.add_modified_control(control=self.bottom_2_encoder, modifier=self.shift_button)
@@ -99,16 +101,7 @@ class Elements(ElementsBase):
         #self.add_element("prev_bank_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
 
         # accent/velocity button
-        self.add_button(13, 'transpose_shift', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
         self.add_modified_control(control=self.bottom_4_encoder, modifier=self.transpose_shift)
-
-
-
-
-
-
-
-
 
         #track 
 
@@ -200,14 +193,11 @@ class Elements(ElementsBase):
         self.add_element("record_button", create_k2_button, 26, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_element("session_record_button", create_k2_button, 30, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
-        # scene select
-        self.add_button(14, 'launch_scene_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
 
         self.add_matrix([[39,35,31]], "scene_launch_buttons", channels=FXCHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_element("stop_all_clips_button", create_k2_button, 27, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
         # variations
-        self.add_button(13, 'variations_launch_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
         self.add_modified_control(control=(self.variations_recall_button), modifier=(self.shift_button))
         self.add_modified_control(control=(self.variations_launch_button), modifier=(self.shift_button))
         
