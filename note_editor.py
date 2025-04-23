@@ -22,7 +22,7 @@ class NoteEditorComponent(NoteEditorComponentBase):
         self._step_color_manager = self.register_disconnectable(StepColorManager(update_method=self._update_editor_matrix))
         self._step_color_manager.set_clip(self._clip)
         self._volume_parameters = volume_parameters
-        self._velocity_offset_parameter = self.register_disconnectable(RelativeInternalParameter(name='Velocity', display_value_conversion=lambda _: self.get_velocity_range_string()))
+        self._velocity_offset_parameter = self.register_disconnectable(RelativeInternalParameter(name='Velocity'))
         self.register_slot(self._velocity_offset_parameter, lambda x: self.set_velocity_offset(x + 50), 'delta')
 
     @property

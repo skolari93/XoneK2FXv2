@@ -40,7 +40,7 @@ class VolumeParametersComponent(Component):
         self._update_volume_encoder()
 
     def _update_volume_encoder(self):
-        parameter = self.song.master_track.mixer_device.volume
+        parameter = None
         if self._parameters:
             possible_parameter = list(self._parameters.values())[-1]
             if liveobj_valid(possible_parameter):
