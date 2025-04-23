@@ -76,11 +76,11 @@ def create_mappings(cs):
         'Note_Modes': dict(
             instrument = dict(
                 component= 'Instrument',
-                #matrix='pads_columns_4_7'         
+                matrix='pads_columns_4_7'         
             ),
             drum = dict(
                 component= 'Drum_Group',
-                #matrix='pads_columns_4_7'         
+                matrix='pads_columns_4_7'         
             ),
             audio = dict(
                 component= 'Background',
@@ -120,7 +120,7 @@ def create_mappings(cs):
                     {
                         'component': 'Step_Sequence',
                         'step_buttons': 'pads_columns_0_3',
-                        'matrix':'pads_columns_4_7',
+                        #'matrix':'pads_columns_4_7', #bad name for loop matrix
                         'duration_encoder': 'vertical_scene_select_encoder',
                         #'nudge_encoder': 'transpose_encoder',                        
                         'transpose_encoder': 'transpose_encoder',
