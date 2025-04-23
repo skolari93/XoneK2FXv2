@@ -126,3 +126,8 @@ class Skin:
         PadSoloedSelected = Rgb.green
         Scroll = OFF
 
+    class MainModes:
+        class Session:
+            On = Rgb.green
+        class Note:
+            On = Rgb.red

@@ -11,6 +11,7 @@ def create_mappings(cs):
             tempo_fine_encoder="tempo_encoder_with_shift",
             re_enable_automation_button="automation_re-enable_button",
             automation_arm_button="automation_arm_button",
+            capture_midi_button="capture_midi_button",
         ),
         'Recording': dict(
             arrangement_record_button='record_button',
@@ -41,7 +42,7 @@ def create_mappings(cs):
             variations_select_encoder='variations_select_encoder'
         ),
         'Clip_Actions': dict(
-            quantize_button='quantize_button',
+            quantize_button='capture_midi_button_with_shift',
             double_button='delete_button'
         ),
         'Mixer': dict(
@@ -76,11 +77,12 @@ def create_mappings(cs):
         'Note_Modes': dict(
             instrument = dict(
                 component= 'Instrument',
-                matrix='pads_columns_4_7'         
+                matrix='pads_columns_4_7',
             ),
             drum = dict(
                 component= 'Drum_Group',
-                matrix='pads_columns_4_7'         
+                matrix='pads_columns_4_7',
+                copy_button= 'duplicate_button'         
             ),
             audio = dict(
                 component= 'Background',
@@ -88,10 +90,10 @@ def create_mappings(cs):
             #'simpler': create_note_mode_layer_dict('Sliced_Simpler'),
         ),
         'Accent': {
-            'accent_button': 'accent_button'
+            'accent_button': 'big_3_button'
         },
         'Loop_Length': dict(
-            length_encoder= 'loop_length_encoder',
+            length_encoder= 'bottom_2_encoder',
             shift_button='loop_shift_button'
         ),
         'Main_Modes': dict(
@@ -106,11 +108,12 @@ def create_mappings(cs):
                         'clip_launch_buttons':"pads_rows_0_2",
                         'stop_track_clip_buttons':"pads_row_3",
                         'clip_slot_select_button' : 'shift_button',
+                        'copy_button': 'duplicate_button'
                     },
                     {
                         'component': 'Session_Navigation',
-                        'vertical_encoder': 'vertical_scene_select_encoder',
-                        'horizontal_encoder': 'horizontal_scene_select_encoder',
+                        'vertical_encoder': 'bottom_3_encoder',
+                        'horizontal_encoder': 'bottom_4_encoder',
                     },
                 ]
             ),
@@ -121,13 +124,13 @@ def create_mappings(cs):
                         'component': 'Step_Sequence',
                         'step_buttons': 'pads_columns_0_3',
                         #'matrix':'pads_columns_4_7', #bad name for loop matrix
-                        'duration_encoder': 'vertical_scene_select_encoder',
-                        #'nudge_encoder': 'transpose_encoder',                        
-                        'transpose_encoder': 'transpose_encoder',
-                        'transpose_octave_encoder': 'transpose_encoder_with_transpose_shift',
-                        'duration_fine_encoder': 'vertical_scene_select_encoder_with_shift',
+                        'duration_encoder': 'bottom_2_encoder',
+                        'nudge_encoder': 'bottom_1_encoder',                        
+                        'transpose_encoder': 'bottom_4_encoder',
+                        'transpose_octave_encoder': 'bottom_4_encoder_with_transpose_shift',
+                        'duration_fine_encoder': 'bottom_2_encoder_with_shift',
                         'shift_length_button': 'shift_length_button',
-                        'nudge_right_button': 'nudge_button'
+                        'loop_copy_button': 'duplicate_button'
                     },
                     # {
                     #     'component': 'Loop_Length',

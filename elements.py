@@ -52,14 +52,63 @@ class Elements(ElementsBase):
         ]
         combined_channels = channels + channels2
 
-        # shift
+
+        # Big buttons
+        self.add_element("layout_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
+        self.add_element("duplicate_button", create_k2_button, 15, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big") 
+        self.add_element("big_3_button", create_k2_button, 12, channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE, button_type="big") 
+        self.add_element("capture_midi_button", create_k2_button, 15, channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE, button_type="big")
         self.add_element("shift_button", create_k2_button, 12, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")
+        self.add_element("variations_recall_button", create_k2_button, 15, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big") 
+
+        # bottom encoders
+        self.add_encoder(20, 'bottom_1_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment) 
+        self.add_encoder(21, 'bottom_2_encoder', channel=MIXERCHANNEL2, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment) 
+        self.add_encoder(20, 'bottom_3_encoder', channel=MIXERCHANNEL2, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment) 
+        self.add_encoder(21, 'bottom_4_encoder', channel=MIXERCHANNEL2, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+        self.add_encoder(20, 'variations_select_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+        self.add_encoder(21, 'scene_select_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
 
         # editing
         self.add_element("new_button", create_k2_button, 32, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_element("clear_button", create_k2_button, 36, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_element("undo_button", create_k2_button, 33, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_element("redo_button", create_k2_button, 34, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
+
+
+        # Loop
+        self.add_button(14, 'loop_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
+
+        # note length
+        self.add_button(14, 'shift_length_button', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
+
+        # modified controls
+        self.add_modified_control(control=self.bottom_2_encoder, modifier=self.shift_button)
+        self.add_modified_control(control=self.capture_midi_button, modifier=self.shift_button)
+
+        
+        pad_channel_list = [12, 12, 12, 12,13, 13, 13, 13]
+        
+        self.add_matrix([create_double_list(36, 40), create_double_list(32, 36), create_double_list(28, 32), create_double_list(24, 28)], "pads", channels=[pad_channel_list, pad_channel_list,pad_channel_list,pad_channel_list], element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        self.add_submatrix(self.pads, 'pads_rows_0_2', rows=(0, 3))
+        self.add_submatrix(self.pads, 'pads_columns_0_3', columns=(0, 4))
+        self.add_submatrix(self.pads, 'pads_columns_4_7', columns=(4, 8))
+        self.add_submatrix(self.pads, 'pads_row_3', rows=(3,4))
+
+
+        #self.add_element("prev_bank_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
+
+        # accent/velocity button
+        self.add_button(13, 'transpose_shift', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
+        self.add_modified_control(control=self.bottom_4_encoder, modifier=self.transpose_shift)
+
+
+
+
+
+
+
+
 
         #track 
 
@@ -152,7 +201,6 @@ class Elements(ElementsBase):
         self.add_element("session_record_button", create_k2_button, 30, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
         # scene select
-        self.add_encoder(21, 'scene_select_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
         self.add_button(14, 'launch_scene_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
 
         self.add_matrix([[39,35,31]], "scene_launch_buttons", channels=FXCHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
@@ -160,10 +208,8 @@ class Elements(ElementsBase):
 
         # variations
         self.add_button(13, 'variations_launch_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
-        self.add_element("variations_recall_button", create_k2_button, 15, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="big")
         self.add_modified_control(control=(self.variations_recall_button), modifier=(self.shift_button))
         self.add_modified_control(control=(self.variations_launch_button), modifier=(self.shift_button))
-        self.add_encoder(20, 'variations_select_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
         
         # scene nav
         #self.add_modified_control(control=(self.scene_select_encoder), modifier=(self.shift_button))
@@ -227,35 +273,8 @@ class Elements(ElementsBase):
 
         self.add_modified_control(control=self.mixer_gain_encoders, modifier=self.shift_button)
 
-        pad_channel_list = [12, 12, 12, 12,13, 13, 13, 13]
-        
-        self.add_encoder(21, 'vertical_scene_select_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
-        self.add_encoder(20, 'horizontal_scene_select_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
-        self.add_matrix([create_double_list(36, 40), create_double_list(32, 36), create_double_list(28, 32), create_double_list(24, 28)], "pads", channels=[pad_channel_list, pad_channel_list,pad_channel_list,pad_channel_list], element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        self.add_submatrix(self.pads, 'pads_rows_0_2', rows=(0, 3))
-        self.add_submatrix(self.pads, 'pads_columns_0_3', columns=(0, 4))
-        self.add_submatrix(self.pads, 'pads_columns_4_7', columns=(4, 8))
-        self.add_submatrix(self.pads, 'pads_row_3', rows=(3,4))
+
         self.add_matrix(create_duplicated_list(48, 52), "mixer_crossfade_assign_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
         # Layout button 
-        self.add_element("layout_button", create_k2_button, 15, channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE, button_type="big")
-
-        # Loop
-        self.add_encoder(21, 'loop_length_encoder', channel=MIXERCHANNEL2, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
-        self.add_button(14, 'loop_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
-
-        # note length
-        self.add_button(14, 'shift_length_button', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
-        self.add_modified_control(control=self.vertical_scene_select_encoder, modifier=self.shift_button)
-
-
-        #self.add_element("prev_bank_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
-        self.add_element("nudge_button", create_k2_button, 15, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
-
-        # accent/velocity button
-        self.add_element("accent_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
-        self.add_encoder(20, 'transpose_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
-        self.add_button(13, 'transpose_shift', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
-        self.add_modified_control(control=self.transpose_encoder, modifier=self.transpose_shift)
 
