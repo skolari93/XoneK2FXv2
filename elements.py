@@ -1,14 +1,10 @@
 from ableton.v3.control_surface import MIDI_NOTE_TYPE, ElementsBase, MapMode, PrioritizedResource
-from ableton.v3.control_surface.elements import ButtonElement
-
-from functools import partial
 from .k2_button import create_k2_button
-FXCHANNEL = 14
+
 MIXERCHANNEL1 = 12
 MIXERCHANNEL2 = 13
+FXCHANNEL = 14
 IS_FEEDBACK_ENABLED = False
-
-
 
 import logging
 logger = logging.getLogger("XoneK2FXv2")
