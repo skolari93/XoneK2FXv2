@@ -8,7 +8,7 @@ from ableton.v2.base import NamedTuple
 from ableton.v3.base import PITCH_NAMES, find_if, lazy_attribute, memoize
 #from .midi import NOTE_MODE_FEEDBACK_CHANNELS
 CHANNEL = 1 # don't choose channel 12, 13, or 14
-CHROMATIC_MODE_OFFSET = 3
+CHROMATIC_MODE_OFFSET = 0#3
 
 # i think the index is the nth pad.
 # channel stuff is nnot working jey probably
