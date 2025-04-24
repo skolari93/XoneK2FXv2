@@ -13,8 +13,6 @@ class ChannelStripComponent(ChannelStripComponentBase):
     gain_control = MappedControl()
     # send_controls = control_list(MappedControl, control_count=MAX_NUM_SENDS)
 
-
-
     def __init__(self,  *a, **k):
         super().__init__( *a, **k)
 

@@ -40,7 +40,7 @@ def note_mode_for_track(track, instrument_finder):
         if liveobj_valid(instrument_finder.drum_group):
             return 'drum'
         if liveobj_valid(instrument_finder.sliced_simpler):
-            return 'simpler'
+            return 'instrument'#return 'simpler'
         return 'instrument'
     return 'audio'
 

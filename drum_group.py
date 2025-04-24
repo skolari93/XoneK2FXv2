@@ -5,12 +5,12 @@ from ableton.v3.live import liveobj_valid
 
 import logging
 logger = logging.getLogger("XoneK2FXv2")
-PAD_TRANSLATION_CHANNEL = 6
+TRANSLATION_CHANNEL = 6
 
 class DrumGroupComponent(DrumGroupComponentBase):
     @depends(volume_parameters=None)
-    def __init__(self, volume_parameters=None, set_pad_translations=PAD_TRANSLATION_CHANNEL, *a, **k):
-        super().__init__(*a, matrix_always_listenable=True, **k)
+    def __init__(self, volume_parameters=None, translation_channel=TRANSLATION_CHANNEL, *a, **k):
+        super().__init__(*a, translation_channel=translation_channel,matrix_always_listenable=True, **k)
         self._volume_parameters = volume_parameters
 
     def _on_matrix_pressed(self, button):
@@ -46,5 +46,3 @@ class DrumGroupComponent(DrumGroupComponentBase):
 
 
     #     return index
-
-    

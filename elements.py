@@ -73,7 +73,7 @@ class Elements(ElementsBase):
         self.add_submatrix(self.pads, 'pads_columns_0_7_rows_2_3', rows=(2,4), columns=(0,8))
         self.add_submatrix(self.pads, 'pads_columns_8_11_rows_2_3', rows=(2,4), columns=(8,12))
         self.add_submatrix(self.pads, 'pads_columns_8_11_rows_0_1', rows=(0,2), columns=(8,12))
-        self.add_submatrix(self.pads, 'pads_columns_8_11', columns=(8,12)) ###################for testing
+        #self.add_submatrix(self.pads, 'pads_columns_8_11', columns=(8,12)) ###################for testing
 
     
         self.add_submatrix(self.pads, 'scene_launch_buttons', rows=(0,3), columns=(11,12)) 
