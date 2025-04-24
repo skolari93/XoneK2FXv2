@@ -6,10 +6,9 @@ from ableton.v3.control_surface.components.bar_based_sequence import NoteEditorC
 from ableton.v3.control_surface.components.note_editor import get_notes
 from ableton.v3.live import liveobj_valid
 from .step_color_manager import StepColorManager
-DEFAULT_STEP_COUNT = 16
 
 # K2 specific
-STEP_TRANSLATION_CHANNEL = 3 #translation_channel=STEP_TRANSLATION_CHANNEL i think the translation channel ist the pseudo channel where the scripts sends
+STEP_TRANSLATION_CHANNEL = 3 #this param here is probably overwritten, translation_channel=STEP_TRANSLATION_CHANNEL i think the translation channel ist the pseudo channel where the scripts sends
 #START_NOTE =
 import logging
 logger = logging.getLogger("XoneK2FXv2")

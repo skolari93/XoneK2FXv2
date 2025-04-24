@@ -70,13 +70,34 @@ def create_mappings(cs):
 
         'Note_Modes': dict(
             instrument = dict(
-                component= 'Instrument',
-                matrix='pads_rows_0_2',
+                modes= [
+                    dict(
+                        component= 'Instrument',
+                        matrix='pads_rows_0_2',
+                    ),
+                    dict(
+                        component= 'Step_Sequence',
+                        step_buttons= 'pads_columns_0_7_rows_2_3',
+                        matrix= 'pads_columns_8_11_rows_2_3', #bad name for loop matrix
+
+                    )
+                ]
             ),
             drum = dict(
-                component= 'Drum_Group',
-                matrix='pads_columns_4_7',
-                copy_button= 'duplicate_button'         
+                modes=[
+                    dict(
+                        component= 'Drum_Group',
+                        matrix='p  ads_columns_8_11_rows_2_3',
+                        copy_button= 'duplicate_button'         
+                    ),
+                    dict(
+                        component= 'Step_Sequence',
+                        step_buttons= 'pads_columns_0_7',
+                        matrix= 'pads_columns_8_11_rows_0_1', #bad name for loop matrix
+
+                    )
+                ]
+
             ),
             audio = dict(
                 component= 'Background',
@@ -135,8 +156,6 @@ def create_mappings(cs):
                     {'component': 'Note_Modes'},
                     {
                         'component': 'Step_Sequence',
-                        'step_buttons': 'pads_columns_0_7_rows_2_3',
-                        'matrix':'pads_columns_8_11_rows_2_3', #bad name for loop matrix
                         'duration_encoder': 'bottom_2_encoder',
                         'nudge_encoder': 'bottom_1_encoder',                        
                         'transpose_encoder': 'bottom_4_encoder',

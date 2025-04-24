@@ -67,11 +67,14 @@ class Elements(ElementsBase):
         self.add_submatrix(self.pads, 'pads_rows_0_2_cols_0_7', rows=(0, 3), columns=(0,8))
         self.add_submatrix(self.pads, 'pads_columns_0_3', columns=(0, 4))
         self.add_submatrix(self.pads, 'pads_columns_4_7', columns=(4, 8))
+        self.add_submatrix(self.pads, 'pads_columns_0_7', columns=(0, 8))
         self.add_submatrix(self.pads, 'pads_rows_3_cols_0_7', rows=(3,4), columns=(0,8))
         self.add_submatrix(self.pads, 'pads_rows_0_2', rows=(0,2))
         self.add_submatrix(self.pads, 'pads_columns_0_7_rows_2_3', rows=(2,4), columns=(0,8))
         self.add_submatrix(self.pads, 'pads_columns_8_11_rows_2_3', rows=(2,4), columns=(8,12))
+        self.add_submatrix(self.pads, 'pads_columns_8_11_rows_0_1', rows=(0,2), columns=(8,12))
 
+    
         self.add_submatrix(self.pads, 'scene_launch_buttons', rows=(0,3), columns=(11,12)) 
 
         # editing
