@@ -33,7 +33,7 @@ def create_channel_matrix(channels, num_rows):
 class Elements(ElementsBase):
     def __init__(self, *a, **k):
         super().__init__(*a, **k)
-        
+
         # Big buttons
         self.add_element("layout_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
         self.add_element("duplicate_button", create_k2_button, 15, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big") 
@@ -73,10 +73,10 @@ class Elements(ElementsBase):
         self.add_submatrix(self.pads, 'pads_columns_0_7_rows_2_3', rows=(2,4), columns=(0,8))
         self.add_submatrix(self.pads, 'pads_columns_8_11_rows_2_3', rows=(2,4), columns=(8,12))
         self.add_submatrix(self.pads, 'pads_columns_8_11_rows_0_1', rows=(0,2), columns=(8,12))
-        #self.add_submatrix(self.pads, 'pads_columns_8_11', columns=(8,12)) ###################for testing
+        self.add_submatrix(self.pads, 'pads_columns_8_11', columns=(8,12)) ###################for testing
 
-    
         self.add_submatrix(self.pads, 'scene_launch_buttons', rows=(0,3), columns=(11,12)) 
+        self.add_matrix([[],[],[28, 29, 30, 31],[24, 25, 26, 27]], "pads_drum", channels=14, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small") # hack i don't know why this works / sth is off. mutes don't work
 
         # editing
         #self.add_element("new_button", create_k2_button, 32, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
@@ -228,3 +228,4 @@ class Elements(ElementsBase):
         self.add_modified_control(control=self.mixer_gain_encoders, modifier=self.shift_button)
 
         self.add_matrix(create_duplicated_list(48, 52), "mixer_crossfade_assign_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+

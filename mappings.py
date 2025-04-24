@@ -87,9 +87,9 @@ def create_mappings(cs):
                 modes=[
                     dict(
                         component= 'Drum_Group',
-                        matrix='pads_columns_8_11_rows_2_3',
+                        matrix='pads_drum',
                         copy_button= 'duplicate_button',
-                        mute_button='shift_button'         
+                        mute_button='shift_button',
                     ),
                     dict(
                         component= 'Step_Sequence',
