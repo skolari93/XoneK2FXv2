@@ -92,14 +92,10 @@ class Elements(ElementsBase):
         self.add_submatrix(self.pads, 'pads_columns_8_11_rows_2_3', rows=(2,4), columns=(8,12))
 
         self.add_submatrix(self.pads, 'scene_launch_buttons', rows=(0,3), columns=(11,12)) 
-        #self.add_matrix([[39,35,31]], "scene_launch_buttons", channels=FXCHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        #self.add_element("stop_all_clips_button", create_k2_button, 27, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
         # editing
         self.add_element("new_button", create_k2_button, 32, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_element("clear_button", create_k2_button, 36, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        self.add_element("undo_button", create_k2_button, 33, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        self.add_element("redo_button", create_k2_button, 34, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
 
 
@@ -107,18 +103,15 @@ class Elements(ElementsBase):
         self.add_modified_control(control=self.bottom_2_encoder, modifier=self.shift_button)
         self.add_modified_control(control=self.capture_midi_button, modifier=self.shift_button)
         self.add_modified_control(control=self.pads_raw[44], modifier=self.shift_button)
-        
-
 
         #self.add_element("prev_bank_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
 
         # accent/velocity button
         self.add_modified_control(control=self.bottom_4_encoder, modifier=self.transpose_shift)
 
-        #track 
+        ########## FX + Master Mixer: K2.3 
 
         self.add_matrix([range(48, 51)], "solo_buttons", channels=FXCHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-
         self.add_matrix([range(40, 43)], "mute_buttons", channels=FXCHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_matrix([range(52, 55)], "track_select_buttons", channels=FXCHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
@@ -193,13 +186,11 @@ class Elements(ElementsBase):
         self.add_modified_control(control=(self.variations_recall_button), modifier=(self.shift_button))
         self.add_modified_control(control=(self.variations_launch_button), modifier=(self.shift_button))
 
-        ########### Mixer  1 + 2
+        ########### Tracks Mixer  K2.1 + K2.2
         combined_button_channels = [[MIXERCHANNEL1, MIXERCHANNEL1, MIXERCHANNEL1, MIXERCHANNEL1], [MIXERCHANNEL2, MIXERCHANNEL2, MIXERCHANNEL2, MIXERCHANNEL2]]
 
         self.add_matrix(create_duplicated_list(44, 48), "mixer_arm_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-        #self.add_matrix([range(40, 44)], "mixer_mute_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_matrix(create_duplicated_list(40, 44), "mixer_mute_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
-
         self.add_matrix(create_duplicated_list(52, 56), "mixer_track_select_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_matrix(create_duplicated_list(48, 52), "mixer_solo_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
         self.add_modified_control(control=self.mixer_solo_buttons, modifier=self.shift_button)
@@ -250,6 +241,5 @@ class Elements(ElementsBase):
         )
 
         self.add_modified_control(control=self.mixer_gain_encoders, modifier=self.shift_button)
-
 
         self.add_matrix(create_duplicated_list(48, 52), "mixer_crossfade_assign_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
