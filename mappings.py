@@ -58,14 +58,9 @@ def create_mappings(cs):
         'ViewControl': dict(
             scene_encoder='scene_select_encoder',
         ),
-        # 'Session': dict(
-        #     launch_scene_and_advance='launch_scene_button',
-        #     scene_launch_buttons="scene_launch_buttons",
-        #     stop_all_clips_button="stop_all_clips_button",
-        #     clip_launch_buttons="pads_rows_0_2",
-        #     stop_track_clip_buttons="pads_row_3",
-        #     clip_slot_select_button = 'shift_button',
-        # ),
+        'Session': dict(
+            launch_scene_and_advance='launch_scene_button',
+        ),
 
 
         'Note_Modes': dict(
@@ -118,7 +113,7 @@ def create_mappings(cs):
                 modes= [
                     {
                         'component': 'Session',
-                        'launch_scene_and_advance':'launch_scene_button',
+                        #'launch_scene_and_advance':'launch_scene_button',
                         'scene_launch_buttons':"scene_launch_buttons",
                         'stop_all_clips_button':"pads_raw[47]",
                         'clip_launch_buttons':"pads_rows_0_2_cols_0_7",
