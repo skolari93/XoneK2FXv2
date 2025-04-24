@@ -4,18 +4,15 @@ def create_mappings(cs):
             shift="shift_button"
         ),
         'Transport': dict(
-            play_pause_button='play_button',
-            play_button='play_button_with_shift',
-            stop_button='stop_button',
+            #play_pause_button='pads_raw[44]',
+            #play_button='play_button_with_shift',
             tempo_coarse_encoder="tempo_encoder",
             tempo_fine_encoder="tempo_encoder_with_shift",
-            re_enable_automation_button="automation_re-enable_button",
-            automation_arm_button="automation_arm_button",
             capture_midi_button="capture_midi_button",
         ),
         'Recording': dict(
-            arrangement_record_button='record_button',
-            session_record_button='session_record_button',
+            # arrangement_record_button='record_button',
+            # session_record_button='session_record_button',
             new_button='new_button' # not working
         ),
         'FXMixer': dict(
@@ -43,7 +40,7 @@ def create_mappings(cs):
         ),
         'Clip_Actions': dict(
             quantize_button='capture_midi_button_with_shift',
-            double_button='delete_button'
+            #double_button='delete_button'
         ),
         'Mixer': dict(
             solo_buttons='mixer_solo_buttons',
@@ -70,10 +67,7 @@ def create_mappings(cs):
         #     clip_slot_select_button = 'shift_button',
         # ),
 
-        'Undo_Redo': dict(
-            undo_button='undo_button',
-            redo_button='redo_button'
-        ),
+
         'Note_Modes': dict(
             instrument = dict(
                 component= 'Instrument',
@@ -104,9 +98,9 @@ def create_mappings(cs):
                         'component': 'Session',
                         'launch_scene_and_advance':'launch_scene_button',
                         'scene_launch_buttons':"scene_launch_buttons",
-                        'stop_all_clips_button':"stop_all_clips_button",
-                        'clip_launch_buttons':"pads_rows_0_2",
-                        'stop_track_clip_buttons':"pads_row_3",
+                        'stop_all_clips_button':"pads_raw[47]",
+                        'clip_launch_buttons':"pads_rows_0_2_cols_0_7",
+                        'stop_track_clip_buttons':"pads_rows_3_cols_0_7",
                         'clip_slot_select_button' : 'shift_button',
                         'copy_button': 'duplicate_button'
                     },
@@ -115,7 +109,26 @@ def create_mappings(cs):
                         'vertical_encoder': 'bottom_3_encoder',
                         'horizontal_encoder': 'bottom_4_encoder',
                     },
-                ]
+                    {
+                        'component': 'Transport',
+                        'play_pause_button':'pads_raw[44]',
+                        'stop_button': 'pads_raw[45]',
+                        'automation_arm_button':"pads_raw[32]",
+                        're_enable_automation_button': "pads_raw[33]",
+                    },
+                    {
+                        'component': 'Recording',
+                        'session_record_button':"pads_raw[34]",
+                        'arrangement_record_button':"pads_raw[46]",
+                    },
+                    {
+                        'component': 'Undo_Redo',
+                        'undo_button':'pads_raw[21]',
+                        'redo_button':'pads_raw[22]'
+                    }
+                    
+                ],
+                
             ),
            note= dict(
                 modes= [
@@ -140,6 +153,10 @@ def create_mappings(cs):
                         'component': 'Volume_Parameters',
                         'volume_encoder':'bottom_3_encoder', 
                         'volume_encoder_touch_button':'bottom_3_encoder_shift_button'
+                    },
+                    {
+                        'component': 'Transport',
+                        'play_pause_button':'pads_raw[44]_with_shift',
                     }
                 ]
             )

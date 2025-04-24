@@ -81,7 +81,7 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
     # Constants for the 4x4 grid
     GRID_WIDTH = 4
     GRID_HEIGHT = 4
-    DEFAULT_FIRST_NOTE = 48  # C2 by default
+    DEFAULT_FIRST_NOTE = 36  # C2 by default
 
     @depends(note_layout=None, target_track=None)
     def __init__(self, note_layout=None, target_track=None, *a, **k):
