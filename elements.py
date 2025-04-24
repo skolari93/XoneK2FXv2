@@ -38,21 +38,6 @@ class Elements(ElementsBase):
     def __init__(self, *a, **k):
         super().__init__(*a, **k)
         
-        # prepare channels
-        channels = [
-            [MIXERCHANNEL1] * 4,
-            [MIXERCHANNEL1] * 4,
-            [MIXERCHANNEL1] * 4,
-        ]
-
-        channels2 = [
-            [MIXERCHANNEL2] * 4,
-            [MIXERCHANNEL2] * 4,
-            [MIXERCHANNEL2] * 4,
-        ]
-        combined_channels = channels + channels2
-
-
         # Big buttons
         self.add_element("layout_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
         self.add_element("duplicate_button", create_k2_button, 15, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big") 
