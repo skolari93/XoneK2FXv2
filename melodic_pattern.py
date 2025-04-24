@@ -7,7 +7,7 @@ import Live
 from ableton.v2.base import NamedTuple
 from ableton.v3.base import PITCH_NAMES, find_if, lazy_attribute, memoize
 #from .midi import NOTE_MODE_FEEDBACK_CHANNELS
-CHANNEL = 13
+CHANNEL = 1 # don't choose channel 12, 13, or 14
 CHROMATIC_MODE_OFFSET = 3
 
 # i think the index is the nth pad.
@@ -72,7 +72,7 @@ class MelodicPattern(NamedTuple):
 
     def note(self, x, y):
         if not self._boundary_reached(x, y):
-            channel = CHANNEL#(y + len(NOTE_MODE_FEEDBACK_CHANNELS)) * NOTE_MODE_FEEDBACK_CHANNELS[0] = []
+            channel = CHANNEL 
             return self._get_note_info(self._octave_and_note(x, y), self.root_note, channel)
         return NoteInfo()
 
