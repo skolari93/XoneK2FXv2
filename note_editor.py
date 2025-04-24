@@ -100,7 +100,6 @@ class NoteEditorComponent(NoteEditorComponentBase):
                 button_column = index % 8
                 
                 # Set channel based on column:
-                # Columns 0-3 use channel 12, columns 4-7 use channel 13
                 button.channel = 4 if button_column < 4 else 5 # EACH DEVICE NEEDS A SEPERATE TRANSLATION CHANNEL
         
         self._update_editor_matrix()
