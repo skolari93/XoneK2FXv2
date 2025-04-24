@@ -13,7 +13,7 @@ def create_mappings(cs):
         'Recording': dict(
             # arrangement_record_button='record_button',
             # session_record_button='session_record_button',
-            new_button='new_button' # not working
+            #new_button='new_button' # not working
         ),
         'FXMixer': dict(
             solo_buttons='solo_buttons',

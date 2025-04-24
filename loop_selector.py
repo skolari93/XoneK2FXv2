@@ -27,7 +27,8 @@ class LoopSelectorComponent(LoopSelectorComponentBase):
     prev_bank_button = ButtonControl(color='LoopSelector.Navigation', pressed_color='LoopSelector.NavigationPressed')
     loop_overview_data = listenable_property.managed(None)
 
-    def __init__(self, *a, **k):
+    def __init__(self, bars_per_bank=BARS_PER_BANK, *a, **k):
+        self._bars_per_bank = bars_per_bank
         self._bank_offset = 0.0
         super().__init__(*a, **k)
         self.matrix.dimensions = (WIDTH, HEIGHT)
@@ -38,7 +39,7 @@ class LoopSelectorComponent(LoopSelectorComponentBase):
 
     @property
     def bank_length(self):
-        return self.bar_length * BARS_PER_BANK
+        return self.bar_length * self._bars_per_bank
 
     @property
     def bank_offset(self):
