@@ -71,7 +71,7 @@ def create_mappings(cs):
         'Note_Modes': dict(
             instrument = dict(
                 component= 'Instrument',
-                matrix='pads_columns_4_7',
+                matrix='pads_rows_0_2',
             ),
             drum = dict(
                 component= 'Drum_Group',
@@ -135,8 +135,8 @@ def create_mappings(cs):
                     {'component': 'Note_Modes'},
                     {
                         'component': 'Step_Sequence',
-                        'step_buttons': 'pads_columns_0_3',
-                        #'matrix':'pads_columns_4_7', #bad name for loop matrix
+                        'step_buttons': 'pads_columns_0_7_rows_2_3',
+                        'matrix':'pads_columns_8_11_rows_2_3', #bad name for loop matrix
                         'duration_encoder': 'bottom_2_encoder',
                         'nudge_encoder': 'bottom_1_encoder',                        
                         'transpose_encoder': 'bottom_4_encoder',
@@ -154,10 +154,10 @@ def create_mappings(cs):
                         'volume_encoder':'bottom_3_encoder', 
                         'volume_encoder_touch_button':'bottom_3_encoder_shift_button'
                     },
-                    {
-                        'component': 'Transport',
-                        'play_pause_button':'pads_raw[44]_with_shift',
-                    }
+                    # {
+                    #     'component': 'Transport',
+                    #     'play_pause_button':'pads_raw[44]_with_shift',
+                    # }
                 ]
             )
         ),

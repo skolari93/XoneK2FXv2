@@ -88,6 +88,8 @@ class Elements(ElementsBase):
         self.add_submatrix(self.pads, 'pads_columns_4_7', columns=(4, 8))
         self.add_submatrix(self.pads, 'pads_rows_3_cols_0_7', rows=(3,4), columns=(0,8))
         self.add_submatrix(self.pads, 'pads_rows_0_2', rows=(0,2))
+        self.add_submatrix(self.pads, 'pads_columns_0_7_rows_2_3', rows=(2,4), columns=(0,8))
+        self.add_submatrix(self.pads, 'pads_columns_8_11_rows_2_3', rows=(2,4), columns=(8,12))
 
         self.add_submatrix(self.pads, 'scene_launch_buttons', rows=(0,3), columns=(11,12)) 
         #self.add_matrix([[39,35,31]], "scene_launch_buttons", channels=FXCHANNEL, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")

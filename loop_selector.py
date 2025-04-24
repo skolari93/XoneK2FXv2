@@ -8,9 +8,9 @@ from ableton.v3.live import is_clip_new_recording, is_clip_playing
 from typing import NamedTuple
 from ableton.v3.live import liveobj_changed
 
-BARS_PER_BANK = 16
-HEIGHT = 4
-WIDTH = 4
+BARS_PER_BANK = 8
+HEIGHT = 4 # this is inversed. the code thinks transposed
+WIDTH = 2
 
 class LoopOverviewData(NamedTuple):
     overview_start_position: float
@@ -219,3 +219,4 @@ class LoopSelectorComponent(LoopSelectorComponentBase):
         has_clip = self._has_clip()
         self.prev_bank_button.enabled = has_clip and self._bank_offset > self.min_page_time
         self.next_bank_button.enabled = has_clip
+

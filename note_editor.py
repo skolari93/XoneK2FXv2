@@ -90,3 +90,17 @@ class NoteEditorComponent(NoteEditorComponentBase):
 
         return self._step_color_manager.get_color_for_step(index, visible_steps, clip_notes, visible_page=visible_page)
     
+    # K2 specific
+    def set_matrix(self, matrix):
+        self.matrix.set_control_element(matrix)
+        
+        if matrix:
+            for index, button in enumerate(self.matrix):
+                # Determine which column this button belongs to
+                button_column = index % 8
+                
+                # Set channel based on column:
+                # Columns 0-3 use channel 12, columns 4-7 use channel 13
+                button.channel = 12 if button_column < 4 else 13
+        
+        self._update_editor_matrix()

@@ -79,8 +79,8 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
     is_polyphonic = True
     
     # Constants for the 4x4 grid
-    GRID_WIDTH = 4
-    GRID_HEIGHT = 4
+    GRID_WIDTH = 12
+    GRID_HEIGHT = 2
     DEFAULT_FIRST_NOTE = 36  # C2 by default
 
     @depends(note_layout=None, target_track=None)
@@ -338,7 +338,7 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
         origin = [offset, 0]
         
         return MelodicPattern(
-            steps=[1,4],
+            steps=[1,12], # steps
             scale=notes,
             origin=origin,
             root_note=octave * 12,
