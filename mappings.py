@@ -34,9 +34,6 @@ def create_mappings(cs):
             prehear_volume_control='cue_encoder',
             variations_recall_button='variations_recall_button',
             variations_stash_button='variations_recall_button_with_shift',
-            variations_launch_button='variations_launch_button',
-            variations_overwrite_button='variations_launch_button_with_shift',
-            variations_select_encoder='variations_select_encoder'
         ),
         'Clip_Actions': dict(
             quantize_button='capture_midi_button_with_shift',
@@ -101,10 +98,7 @@ def create_mappings(cs):
             #'simpler': create_note_mode_layer_dict('Sliced_Simpler'),
         ),
 
-        # 'Loop_Length': dict(
-        #     length_encoder= 'bottom_2_encoder',
-        #     shift_button='loop_shift_button'
-        # ),
+
         'Main_Modes': dict(
             cycle_mode_button = 'layout_button',
             session= dict(
@@ -142,9 +136,11 @@ def create_mappings(cs):
                         'redo_button':'pads_raw[22]'
                     },
                     {
-                        'component':'Accent',
-                        'accent_button': 'big_3_button'
-                    },
+                        'component':'MasterMixer',
+                        'variations_launch_button': 'variations_launch_button',
+                        'variations_overwrite_button': 'variations_launch_button_with_shift',
+                        'variations_select_encoder': 'variations_select_encoder'
+                    }
                     
                 ],
                 
@@ -175,6 +171,15 @@ def create_mappings(cs):
                     #     'component': 'Transport',
                     #     'play_pause_button':'pads_raw[44]_with_shift',
                     # }
+                    {
+                        'component': 'Loop_Length',
+                        'length_encoder': 'variations_select_encoder',
+                        'shift_button': 'variations_launch_button'
+                    },
+                    {
+                        'component':'Accent',
+                        'accent_button': 'big_3_button'
+                    },
                 ]
             )
         ),
