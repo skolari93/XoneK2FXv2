@@ -44,7 +44,7 @@ class Elements(ElementsBase):
 
         # bottom encoders
         self.add_encoder(20, 'bottom_1_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment) 
-        self.add_encoder(21, 'bottom_2_encoder', channel=MIXERCHANNEL2, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment) 
+        self.add_encoder(21, 'bottom_2_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment) 
         self.add_encoder(20, 'bottom_3_encoder', channel=MIXERCHANNEL2, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment) 
         self.add_encoder(21, 'bottom_4_encoder', channel=MIXERCHANNEL2, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
         self.add_encoder(20, 'variations_select_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
@@ -52,9 +52,9 @@ class Elements(ElementsBase):
 
         # push encoder buttons
         self.add_button(13, 'transpose_shift', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
-        self.add_button(14, 'shift_length_button', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
+        self.add_button(14, 'bottom_2_encoder_shift_button', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
         self.add_button(13, 'bottom_3_encoder_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
-        self.add_button(14, 'loop_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
+        self.add_button(14, 'bottom_4_encoder_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
         self.add_button(13, 'variations_launch_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
         self.add_button(14, 'launch_scene_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
 
@@ -69,8 +69,8 @@ class Elements(ElementsBase):
         self.add_submatrix(self.pads, 'pads_columns_4_7', columns=(4, 8))
         self.add_submatrix(self.pads, 'pads_columns_0_7', columns=(0, 8))
         self.add_submatrix(self.pads, 'pads_rows_3_cols_0_7', rows=(3,4), columns=(0,8))
-        self.add_submatrix(self.pads, 'pads_rows_0_2', rows=(0,2))
-        self.add_submatrix(self.pads, 'pads_columns_0_7_rows_2_3', rows=(2,4), columns=(0,8))
+        self.add_submatrix(self.pads, 'pads_rows_2_3', rows=(2,4))
+        self.add_submatrix(self.pads, 'pads_columns_0_7_rows_0_1', rows=(0,2), columns=(0,8))
         self.add_submatrix(self.pads, 'pads_columns_8_11_rows_2_3', rows=(2,4), columns=(8,12))
         self.add_submatrix(self.pads, 'pads_columns_8_11_rows_0_1', rows=(0,2), columns=(8,12))
         self.add_submatrix(self.pads, 'pads_columns_8_11', columns=(8,12)) ###################for testing
@@ -85,14 +85,12 @@ class Elements(ElementsBase):
 
 
         # modified controls
-        self.add_modified_control(control=self.bottom_2_encoder, modifier=self.shift_button)
+        self.add_modified_control(control=self.bottom_2_encoder, modifier=self.bottom_2_encoder_shift_button)
+        self.add_modified_control(control=self.bottom_4_encoder, modifier=self.bottom_4_encoder_shift_button)
         self.add_modified_control(control=self.capture_midi_button, modifier=self.shift_button)
         self.add_modified_control(control=self.pads_raw[44], modifier=self.shift_button)
 
         #self.add_element("prev_bank_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
-
-        # accent/velocity button
-        self.add_modified_control(control=self.bottom_4_encoder, modifier=self.transpose_shift)
 
         ########## FX + Master Mixer: K2.3 
 

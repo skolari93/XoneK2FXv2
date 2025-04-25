@@ -328,17 +328,17 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
         
         if self._note_layout.scale_mode:
             # In-key mode: each row is consecutive scale notes
-            steps = [1, interval]  # Move right by 1 scale note, up by octave
+            steps = [1, int(interval*0.5)]  # Move right by 1 scale note, up by octave
         else:
             # Chromatic mode: each row is a perfect fourth (5 semitones)
-            interval = 5
+            interval = 12
             offset = offset + CHROMATIC_MODE_OFFSET
             steps = [1, interval]  # Move right by semitone, up by perfect fourth
             
         origin = [offset, 0]
         
         return MelodicPattern(
-            steps=[1,12], # steps
+            steps=steps, # steps
             scale=notes,
             origin=origin,
             root_note=octave * 12,

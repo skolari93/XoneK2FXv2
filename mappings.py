@@ -68,12 +68,12 @@ def create_mappings(cs):
                 modes= [
                     dict(
                         component= 'Instrument',
-                        matrix='pads_rows_0_2',
+                        matrix='pads_rows_2_3',
                     ),
                     dict(
                         component= 'Step_Sequence',
-                        step_buttons= 'pads_columns_0_7_rows_2_3',
-                        matrix= 'pads_columns_8_11_rows_2_3', #bad name for loop matrix
+                        step_buttons= 'pads_columns_0_7_rows_0_1',
+                        matrix= 'pads_columns_8_11_rows_0_1', #bad name for loop matrix
 
                     )
                 ]
@@ -100,13 +100,11 @@ def create_mappings(cs):
             )
             #'simpler': create_note_mode_layer_dict('Sliced_Simpler'),
         ),
-        'Accent': {
-            'accent_button': 'big_3_button'
-        },
-        'Loop_Length': dict(
-            length_encoder= 'bottom_2_encoder',
-            shift_button='loop_shift_button'
-        ),
+
+        # 'Loop_Length': dict(
+        #     length_encoder= 'bottom_2_encoder',
+        #     shift_button='loop_shift_button'
+        # ),
         'Main_Modes': dict(
             cycle_mode_button = 'layout_button',
             session= dict(
@@ -142,7 +140,11 @@ def create_mappings(cs):
                         'component': 'Undo_Redo',
                         'undo_button':'pads_raw[21]',
                         'redo_button':'pads_raw[22]'
-                    }
+                    },
+                    {
+                        'component':'Accent',
+                        'accent_button': 'big_3_button'
+                    },
                     
                 ],
                 
@@ -155,9 +157,9 @@ def create_mappings(cs):
                         'duration_encoder': 'bottom_2_encoder',
                         'nudge_encoder': 'bottom_1_encoder',                        
                         'transpose_encoder': 'bottom_4_encoder',
-                        'transpose_octave_encoder': 'bottom_4_encoder_with_transpose_shift',
-                        'duration_fine_encoder': 'bottom_2_encoder_with_shift',
-                        'shift_length_button': 'shift_length_button',
+                        'transpose_octave_encoder': 'bottom_4_encoder_with_bottom_4_encoder_shift',
+                        'duration_fine_encoder': 'bottom_2_encoder_with_bottom_2_encoder_shift',
+                        'shift_length_button': 'bottom_2_encoder_shift_button',
                         'loop_copy_button': 'duplicate_button'
                     },
                     # {
