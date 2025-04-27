@@ -55,8 +55,6 @@ class XoneK2FXv2(ControlSurface):
 
         self.show_message("XoneK2FXv2: init mate")
         logger.info("XoneK2FXv2: init started ...")
-
-
         #logger.info(dir(Live.Browser.Browser.audio_effects.children))
 
 
@@ -70,7 +68,9 @@ class XoneK2FXv2(ControlSurface):
         super().setup()
         self.init()
         note_editor = self.component_map['Step_Sequence'].note_editor
+        self.__on_main_mode_changed.subject = self.component_map['Main_Modes']
         self.component_map['Instrument'].set_note_editor(note_editor)
+
 
     def init(self):
         logger.info("init started:")
@@ -132,17 +132,23 @@ class XoneK2FXv2(ControlSurface):
         }
     
     def _update_note_mode(self):
-        #if self.component_map['Main_Modes'].selected_mode == 'note':
-        note_mode = note_mode_for_track(self.component_map['Target_Track'].target_track, self.instrument_finder)
-        self.component_map['Note_Modes'].selected_mode = note_mode
-        pitch_provider = PITCH_PROVIDERS.get(note_mode, None)
-        self.component_map['Step_Sequence'].set_pitch_provider(self.component_map[pitch_provider] if pitch_provider else None)
+        if self.component_map['Main_Modes'].selected_mode == 'note':
+            note_mode = note_mode_for_track(self.component_map['Target_Track'].target_track, self.instrument_finder)
+            self.component_map['Note_Modes'].selected_mode = note_mode
+            pitch_provider = PITCH_PROVIDERS.get(note_mode, None)
+            self.component_map['Step_Sequence'].set_pitch_provider(self.component_map[pitch_provider] if pitch_provider else None)
     
     def drum_group_changed(self, _):
         self._update_note_mode()
     
     def target_track_changed(self, _):
         self._update_note_mode()
+    
+    @listens('selected_mode')
+    def __on_main_mode_changed(self, mode):
+        self.set_can_update_controlled_track(mode == 'note')
+        self._update_note_mode()
+
 
 def fx_tracks(song):
     return tuple(song.return_tracks)

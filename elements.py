@@ -1,6 +1,6 @@
 from ableton.v3.control_surface import MIDI_NOTE_TYPE, ElementsBase, MapMode, PrioritizedResource
 from .k2_button import create_k2_button
-
+from ableton.v3.control_surface.elements import ButtonMatrixElement
 MIXERCHANNEL1 = 12
 MIXERCHANNEL2 = 13
 FXCHANNEL = 14
@@ -30,7 +30,39 @@ def create_channel_matrix(channels, num_rows):
     """
     return [channels[i % len(channels)] * 4 for i in range(num_rows)]
 
+
+
 class Elements(ElementsBase):
+    def add_empty_rows_to_matrix(self, matrix, num_empty_rows=1, at_index=0):
+        """
+        Adds empty rows to an existing ButtonMatrixElement at a specified index.
+        
+        Args:
+            matrix: The ButtonMatrixElement to modify
+            num_empty_rows: Number of empty rows to add (default: 1)
+            at_index: Index at which to insert the empty rows (default: 0)
+        
+        Returns:
+            The modified ButtonMatrixElement with empty rows inserted
+        """
+        # Create empty rows matching the width of the matrix
+        width = matrix.width()
+        empty_rows = [[None] * width for _ in range(num_empty_rows)]
+        
+        # Insert empty rows at the specified index
+        for i in range(num_empty_rows):
+            matrix._buttons.insert(at_index + i, [None] * width)
+            matrix._orig_buttons.insert(at_index + i, [])
+        
+        # Update coordinates for all buttons after the inserted rows
+        for row_idx in range(at_index + num_empty_rows, len(matrix._buttons)):
+            for col_idx, button in enumerate(matrix._orig_buttons[row_idx]):
+                if button is not None:
+                    matrix._button_coordinates[button] = (col_idx, row_idx)
+    
+        return matrix
+
+
     def __init__(self, *a, **k):
         super().__init__(*a, **k)
 
@@ -71,12 +103,12 @@ class Elements(ElementsBase):
         self.add_submatrix(self.pads, 'pads_rows_3_cols_0_7', rows=(3,4), columns=(0,8))
         self.add_submatrix(self.pads, 'pads_rows_2_3', rows=(2,4))
         self.add_submatrix(self.pads, 'pads_columns_0_7_rows_0_1', rows=(0,2), columns=(0,8))
-        self.add_submatrix(self.pads, 'pads_columns_8_11_rows_2_3', rows=(2,4), columns=(8,12))
+        self.add_submatrix(self.pads, 'pads_drum', rows=(2,4), columns=(8,12)) #THIS I HAVE TO IMPROVE
+        self.add_empty_rows_to_matrix(self.pads_drum, num_empty_rows=2, at_index=0)
         self.add_submatrix(self.pads, 'pads_columns_8_11_rows_0_1', rows=(0,2), columns=(8,12))
-        self.add_submatrix(self.pads, 'pads_columns_8_11', columns=(8,12)) ###################for testing
-
+        #self.add_submatrix(self.pads, 'pads_drum', columns=(8,12)) ###################for testing
         self.add_submatrix(self.pads, 'scene_launch_buttons', rows=(0,3), columns=(11,12)) 
-        self.add_matrix([[],[],[28, 29, 30, 31],[24, 25, 26, 27]], "pads_drum", channels=14, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small") # hack i don't know why this works / sth is off. mutes don't work
+        #self.add_matrix([[],[],[28, 29, 30, 31],[24, 25, 26, 27]], "pads_drum", channels=14, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small") # hack i don't know why this works / sth is off. mutes don't work
 
         # editing
         #self.add_element("new_button", create_k2_button, 32, resource_type=PrioritizedResource, channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE, button_type="small")

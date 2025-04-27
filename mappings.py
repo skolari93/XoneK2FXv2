@@ -181,6 +181,6 @@ def create_mappings(cs):
                         'accent_button': 'big_3_button'
                     },
                 ]
-            )
+            ),
         ),
     }

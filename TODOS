@@ -12,6 +12,7 @@
 [ ] piano does not properly deconnect 
 playhead works via note feedback. noow note feedback is broken.
 
+either nodes component does not work or the notes stuff. very strange
 
 2025-04-25T10:52:47.249864: error: RemoteScriptError:     
     2025-04-25T10:52:47.249877: error: RemoteScriptError: note.duration = note.duration + duration_offset
@@ -32,7 +33,7 @@ playhead works via note feedback. noow note feedback is broken.
     2025-04-25T10:52:47.250039: error: RemoteScriptError: ^
     2025-04-25T10:52:47.250049: error: RemoteScriptError: ^
     2025-04-25T10:52:47.250059: error: RemoteScriptError: ^
-    2025-04-25T10:52:47.250070: error: RemoteScriptError: ^
+    2025-04-25T10:52:47.250070: error: RemoteScriptError: ^ 
     2025-04-25T10:52:47.250080: error: RemoteScriptError: ^
     2025-04-25T10:52:47.250090: error: RemoteScriptError: ^
     2025-04-25T10:52:47.250100: error: RemoteScriptError: 
