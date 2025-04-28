@@ -7,9 +7,7 @@
 ☐ note length is not shown correctly. also it does not start at the right spot
 ☐ parameter automations for returns.
 ☐ retrigs with note dividec
-[ ] accent does not work in note mod
 [ ] retrigs with note dividec
-[ ] piano does not properly deconnect 
 playhead works via note feedback. noow note feedback is broken.
 
 either nodes component does not work or the notes stuff. very strange
