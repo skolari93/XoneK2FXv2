@@ -1,7 +1,7 @@
 from ableton.v3.base import EventObject, MultiSlot, depends, find_if, index_if, listenable_property, listens, task
 from ableton.v3.control_surface import LiveObjSkinEntry
 from ableton.v3.control_surface.components import Pageable, PageComponent, PitchProvider, PlayableComponent
-from ableton.v3.control_surface.controls import ButtonControl
+from ableton.v3.control_surface.controls import ButtonControl, StepEncoderControl
 from ableton.v3.control_surface.display import Renderable
 from ableton.v3.live import action
 from .melodic_pattern import CHROMATIC_MODE_OFFSET, SCALES, MelodicPattern
@@ -76,6 +76,8 @@ class NoteLayout(EventObject, Renderable):
 
 class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable, PitchProvider):
     delete_button = ButtonControl(color=None)
+    octave_encoder = StepEncoderControl(num_steps=64)
+
     is_polyphonic = True
     
     # Constants for the 4x4 grid
@@ -123,6 +125,16 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
     @property
     def note_layout(self):
         return self._note_layout
+
+    @octave_encoder.value
+    def octave_encoder(self, value, _):
+        offset = 6 #somehow i have to do 6 mpt 12
+        logger.info(self.position)
+        logger.info(value * offset)
+        self.position = max(0, min(127, self.position + value * offset))   
+
+    def set_octave_encoder(self, encoder):
+        self.octave_encoder.set_control_element(encoder)
 
     @property
     def page_length(self):
@@ -263,6 +275,8 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
         self._update_pattern()
         self._update_matrix()
         self.notify_position()
+
+
 
     def update(self):
         super().update()
