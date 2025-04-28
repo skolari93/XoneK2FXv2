@@ -9,7 +9,7 @@ from .step_color_manager import StepColorManager
 
 # K2 specific
 STEP_TRANSLATION_CHANNEL = 3 #this param here is probably overwritten, translation_channel=STEP_TRANSLATION_CHANNEL i think the translation channel ist the pseudo channel where the scripts sends
-#START_NOTE =
+
 import logging
 logger = logging.getLogger("XoneK2FXv2")
 
@@ -22,8 +22,6 @@ class NoteEditorComponent(NoteEditorComponentBase):
         self._step_color_manager.set_clip(self._clip)
         self._volume_parameters = volume_parameters
         self._velocity_offset_parameter = self.register_disconnectable(RelativeInternalParameter(name='Velocity'))
-        
-        #self.register_slot(self._velocity_offset_parameter, self.set_velocity_offset, 'delta')
         self.register_slot(self._velocity_offset_parameter, self.set_velocity_offset, 'delta')
     
     @property
@@ -36,7 +34,7 @@ class NoteEditorComponent(NoteEditorComponentBase):
 
     def set_velocity_offset(self, delta):
         # Set the new value
-        self._modify_note_property('_velocity_offset', 8*delta) #factor 5 is k2 specific
+        self._modify_note_property('_velocity_offset', 8*delta) #factor 8 is k2 specific
 
     def get_durations_from_step(self, step):
         notes = self._time_step(step[0]).filter_notes(self._clip_notes)
@@ -104,6 +102,7 @@ class NoteEditorComponent(NoteEditorComponentBase):
         self.matrix.set_control_element(matrix)
         
         if matrix:
+
             for index, button in enumerate(self.matrix):
                 # Determine which column this button belongs to
                 button_column = index % 8

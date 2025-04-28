@@ -23,6 +23,7 @@ class NoteSettingsComponent(Component, Renderable):
         self.register_slot(self._note_editor, self._update_from_property_ranges, 'pitch_provider')
         self.register_slot(self._note_editor, self._update_from_property_ranges, 'active_steps')
         self.register_slot(self._note_editor, self._update_from_property_ranges, 'clip_notes')
+
         self._update_from_property_ranges()
         self._revert_timer = None  
 
@@ -83,7 +84,7 @@ class NoteSettingsComponent(Component, Renderable):
                 continue
             num_steps = max(durations) / step_length
             step_index = int(step[0] / step_length)
-            step_index = step_index % 16 # it should be 32 for drum...
+            step_index = step_index % self._note_editor.step_count # it should be 32 for drum...BUG
             # Always color the starting step
             if num_steps > 1:
                 colors[step_index] = 'NoteEditor.StepTied'
