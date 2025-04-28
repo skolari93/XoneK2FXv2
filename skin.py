@@ -71,6 +71,9 @@ class Skin:
         ScenePressed = Rgb.green
         Scene = Rgb.green
 
+    class Accent:
+        On = Rgb.red
+        Off = OFF
 
     class Variations:
         Off = OFF
@@ -79,3 +82,52 @@ class Skin:
 
     class NoteEditor:
         NoClip = OFF
+        StepFilled = Rgb.green
+        StepMuted = OFF
+        StepEmpty = Rgb.amber 
+        StepDisabled = OFF#Rgb.amber
+        StepAutomated = Rgb.red
+        StepTied = Rgb.red
+        StepPartiallyTied = Rgb.red
+        Playhead = Rgb.green
+        NotInLoop = OFF
+        NotInLoopStepFilled = OFF#Rgb.red
+        NotInLoopStepMuted = OFF
+        Accent = Rgb.red
+
+    class LoopSelector:
+        InsideLoopSelected = Rgb.green
+        InsideLoopSelectedPlaying = Rgb.red
+        InsideLoop = Rgb.amber
+        InsideLoopPlaying = Rgb.red
+        OutsideLoopSelected = Rgb.red
+        OutsideLoop = OFF
+        Playhead = Rgb.green
+        PlayheadRecord = Rgb.green
+
+    class Instrument:
+        PadAction = Rgb.green
+        NoteBase = Rgb.red
+        NoteScale = Rgb.green
+        NoteNotScale = OFF
+        NoteInvalid = OFF
+        NoteInStep = Rgb.red
+        NoteSelected = Rgb.amber
+        Scroll = OFF
+
+    class DrumGroup:
+        PadEmpty = OFF
+        PadAction = Rgb.green
+        PadFilled = Rgb.amber
+        PadSelected = Rgb.green
+        PadMuted = OFF
+        PadMutedSelected = Rgb.green
+        PadSoloed = Rgb.green
+        PadSoloedSelected = Rgb.green
+        Scroll = OFF
+
+    class MainModes:
+        class Session:
+            On = Rgb.green
+        class Note:
+            On = Rgb.red

@@ -1,17 +1,23 @@
 from ableton.v3.control_surface.components import ChannelStripComponent as ChannelStripComponentBase
-from ableton.v3.control_surface.controls import MappedControl
+from ableton.v3.control_surface.controls import MappedControl, control_list
 from ableton.v3.live import get_parameter_by_name
 from ableton.v3.base import listens_group
 from itertools import chain
+#from .channel_strip_parameters import ParametersComponent
 
 import logging
 logger = logging.getLogger("XoneK2FXv2")
+MAX_NUM_SENDS = 12
 
 
 class ChannelStripComponent(ChannelStripComponentBase):
     gain_control = MappedControl()
-    def __init__(self,  *a, **k):
-        super().__init__( *a, **k)
+    # send_controls = control_list(MappedControl, control_count=MAX_NUM_SENDS)
+
+    def __init__(self, *a, **k):
+        super().__init__(*a, **k)
+        # self._parameters_component = ChannelParametersComponent()
+        # self._parameters_component._parent = self
 
     @listens_group("devices")
     def __on_devices_changed(self, _):
@@ -26,11 +32,17 @@ class ChannelStripComponent(ChannelStripComponentBase):
             last_device = self._track.devices[-1]
             gain_parameter = get_parameter_by_name("Gain", last_device)
             self.gain_control.mapped_parameter = gain_parameter
+            # self._gain_parameter = gain_parameter  # Hier merken!
     
     def update(self):
         super().update()
         if self.is_enabled():
             self._update_listeners()
+
+    # def set_track(self, track):
+    #     super().set_track(track)
+    #     if self._parameters_component:
+    #         self._parameters_component._track = track
 
     def _update_listeners(self):
         if self._track:

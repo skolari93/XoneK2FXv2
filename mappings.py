@@ -4,18 +4,16 @@ def create_mappings(cs):
             shift="shift_button"
         ),
         'Transport': dict(
-            play_pause_button='play_button',
-            play_button='play_button_with_shift',
-            stop_button='stop_button',
+            #play_pause_button='pads_raw[44]',
+            #play_button='play_button_with_shift',
             tempo_coarse_encoder="tempo_encoder",
             tempo_fine_encoder="tempo_encoder_with_shift",
-            re_enable_automation_button="automation_re-enable_button",
-            automation_arm_button="automation_arm_button",
+            capture_midi_button="capture_midi_button",
         ),
         'Recording': dict(
-            arrangement_record_button='record_button',
-            session_record_button='session_record_button',
-            new_button='new_button' # not working
+            # arrangement_record_button='record_button',
+            # session_record_button='session_record_button',
+            #new_button='new_button' # not working
         ),
         'FXMixer': dict(
             solo_buttons='solo_buttons',
@@ -36,13 +34,10 @@ def create_mappings(cs):
             prehear_volume_control='cue_encoder',
             variations_recall_button='variations_recall_button',
             variations_stash_button='variations_recall_button_with_shift',
-            variations_launch_button='variations_launch_button',
-            variations_overwrite_button='variations_launch_button_with_shift',
-            variations_select_encoder='variations_select_encoder'
         ),
         'Clip_Actions': dict(
-            quantize_button='quantize_button',
-            double_button='delete_button'
+            quantize_button='capture_midi_button_with_shift',
+            #double_button='delete_button'
         ),
         'Mixer': dict(
             solo_buttons='mixer_solo_buttons',
@@ -60,43 +55,134 @@ def create_mappings(cs):
         'ViewControl': dict(
             scene_encoder='scene_select_encoder',
         ),
-        # 'Session': dict(
-        #     launch_scene_and_advance='launch_scene_button',
-        #     scene_launch_buttons="scene_launch_buttons",
-        #     stop_all_clips_button="stop_all_clips_button",
-        #     clip_launch_buttons="pads_rows_0_2",
-        #     stop_track_clip_buttons="pads_row_3",
-        #     clip_slot_select_button = 'shift_button',
-        # ),
-        'Session_Navigation': dict(
-            vertical_encoder='vertical_scene_select_encoder',
-            horizontal_encoder='horizontal_scene_select_encoder',
+        'Session': dict(
+            launch_scene_and_advance='launch_scene_button',
         ),
-        #'Step_Sequence': dict(),
-        'Undo_Redo': dict(
-            undo_button='undo_button',
-            redo_button='redo_button'
+
+
+        'Note_Modes': dict(
+            instrument = dict(
+                modes= [
+                    dict(
+                        component= 'Instrument',
+                        matrix='pads_rows_2_3',
+                        octave_encoder='bottom_4_encoder'
+                    ),
+                    dict(
+                        component= 'Step_Sequence',
+                        step_buttons= 'pads_columns_0_7_rows_0_1',
+                        matrix= 'pads_columns_8_11_rows_0_1', #bad name for loop matrix
+                        #transpose_encoder= 'bottom_4_encoder',
+                        transpose_octave_encoder= 'bottom_4_encoder_with_bottom_4_encoder_shift',
+                    )
+                ]
+            ),
+            drum = dict(
+                modes=[
+                    dict(
+                        component= 'Drum_Group',
+                        matrix='pads_drum',
+                        copy_button= 'duplicate_button',
+                        mute_button='shift_button',
+                        scroll_encoder='bottom_4_encoder'
+                    ),
+                    dict(
+                        component= 'Step_Sequence',
+                        step_buttons= 'pads_columns_0_7',
+                        matrix= 'pads_columns_8_11_rows_0_1', #bad name for loop matrix
+
+                    )
+                ]
+
+            ),
+            audio = dict(
+                component= 'Background',
+            )
+            #'simpler': create_note_mode_layer_dict('Sliced_Simpler'),
         ),
+
+
         'Main_Modes': dict(
             cycle_mode_button = 'layout_button',
             session= dict(
                 modes= [
                     {
                         'component': 'Session',
-                        'launch_scene_and_advance':'launch_scene_button',
+                        #'launch_scene_and_advance':'launch_scene_button',
                         'scene_launch_buttons':"scene_launch_buttons",
-                        'stop_all_clips_button':"stop_all_clips_button",
-                        'clip_launch_buttons':"pads_rows_0_2",
-                        'stop_track_clip_buttons':"pads_row_3",
+                        'stop_all_clips_button':"pads_raw[47]",
+                        'clip_launch_buttons':"pads_rows_0_2_cols_0_7",
+                        'stop_track_clip_buttons':"pads_rows_3_cols_0_7",
                         'clip_slot_select_button' : 'shift_button',
+                        'copy_button': 'duplicate_button'
+                    },
+                    {
+                        'component': 'Session_Navigation',
+                        'vertical_encoder': 'bottom_3_encoder',
+                        'horizontal_encoder': 'bottom_4_encoder',
+                    },
+                    {
+                        'component': 'Transport',
+                        'play_pause_button':'pads_raw[44]',
+                        'stop_button': 'pads_raw[45]',
+                        'automation_arm_button':"pads_raw[32]",
+                        're_enable_automation_button': "pads_raw[33]",
+                    },
+                    {
+                        'component': 'Recording',
+                        'session_record_button':"pads_raw[34]",
+                        'arrangement_record_button':"pads_raw[46]",
+                    },
+                    {
+                        'component': 'Undo_Redo',
+                        'undo_button':'pads_raw[21]',
+                        'redo_button':'pads_raw[22]'
+                    },
+                    {
+                        'component':'MasterMixer',
+                        'variations_launch_button': 'variations_launch_button',
+                        'variations_overwrite_button': 'variations_launch_button_with_shift',
+                        'variations_select_encoder': 'variations_select_encoder'
                     }
+                    
+                ],
+                
+            ),
+           note= dict(
+                modes= [
+                    {'component': 'Note_Modes'},
+                    {
+                        'component': 'Step_Sequence',
+                        'duration_encoder': 'bottom_2_encoder',
+                        'nudge_encoder': 'bottom_1_encoder',                        
+
+                        'duration_fine_encoder': 'bottom_2_encoder_with_bottom_2_encoder_shift',
+                        #'shift_length_button': 'bottom_2_encoder_shift_button',
+                        'loop_copy_button': 'duplicate_button'
+                    },
+                    # {
+                    #     'component': 'Loop_Length',
+                    #     'length_encoder': 'loop_length_encoder'
+                    # }
+                    {
+                        'component': 'Volume_Parameters',
+                        'volume_encoder':'bottom_3_encoder', 
+                        'volume_encoder_touch_button':'bottom_3_encoder_shift_button'
+                    },
+                    # {
+                    #     'component': 'Transport',
+                    #     'play_pause_button':'pads_raw[44]_with_shift',
+                    # }
+                    {
+                        'component': 'Loop_Length',
+                        'length_encoder': 'variations_select_encoder',
+                        'shift_button': 'variations_launch_button'
+                    },
+                    {
+                        'component':'Accent',
+                        'accent_button': 'big_3_button'
+                    },
                 ]
             ),
-        #    step_sequencer= dict(
-        #         modes= [
-        #             {
-        #             }
-        #         ]
-        #     )
         ),
     }
