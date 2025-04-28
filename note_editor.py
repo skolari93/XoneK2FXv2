@@ -22,8 +22,10 @@ class NoteEditorComponent(NoteEditorComponentBase):
         self._step_color_manager.set_clip(self._clip)
         self._volume_parameters = volume_parameters
         self._velocity_offset_parameter = self.register_disconnectable(RelativeInternalParameter(name='Velocity'))
-        self.register_slot(self._velocity_offset_parameter, lambda x: self.set_velocity_offset(x + 50), 'delta')
-
+        
+        #self.register_slot(self._velocity_offset_parameter, self.set_velocity_offset, 'delta')
+        self.register_slot(self._velocity_offset_parameter, self.set_velocity_offset, 'delta')
+    
     @property
     def step_color_manager(self):
         return self._step_color_manager
@@ -31,6 +33,10 @@ class NoteEditorComponent(NoteEditorComponentBase):
     @property
     def step_start_times(self):
         return self._step_start_times
+
+    def set_velocity_offset(self, delta):
+        # Set the new value
+        self._modify_note_property('_velocity_offset', 8*delta) #factor 5 is k2 specific
 
     def get_durations_from_step(self, step):
         notes = self._time_step(step[0]).filter_notes(self._clip_notes)

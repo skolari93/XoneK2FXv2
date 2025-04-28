@@ -1,11 +1,11 @@
 from ableton.v3.base import task
 from ableton.v3.control_surface import Component
-from ableton.v3.control_surface.controls import ButtonControl
+from ableton.v3.control_surface.controls import ButtonControl, StepEncoderControl
 from ableton.v3.live import liveobj_changed, liveobj_valid
 from .control import ParameterControl
-
+ENCODER_SENSITIVITY = 5.0
 class VolumeParametersComponent(Component):
-    volume_encoder = ParameterControl()
+    volume_encoder = ParameterControl(default_sensitivity=ENCODER_SENSITIVITY)#StepEncoderControl(num_steps=64)#ParameterControl()
     volume_encoder_touch_button = ButtonControl(color=None)
 
     def __init__(self, *a, **k):
