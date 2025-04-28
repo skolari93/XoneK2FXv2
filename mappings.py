@@ -155,7 +155,7 @@ def create_mappings(cs):
                         'transpose_encoder': 'bottom_4_encoder',
                         'transpose_octave_encoder': 'bottom_4_encoder_with_bottom_4_encoder_shift',
                         'duration_fine_encoder': 'bottom_2_encoder_with_bottom_2_encoder_shift',
-                        'shift_length_button': 'bottom_2_encoder_shift_button',
+                        #'shift_length_button': 'bottom_2_encoder_shift_button',
                         'loop_copy_button': 'duplicate_button'
                     },
                     # {

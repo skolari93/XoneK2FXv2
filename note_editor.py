@@ -67,12 +67,16 @@ class NoteEditorComponent(NoteEditorComponentBase):
     @staticmethod #also here quantisation options would be great
     def _modify_duration(time_step, duration_offset, note):
         threshold = 0.1
+        # Ensure the duration doesn't go below the threshold
         if note.duration < threshold:
             note.duration = threshold
-        elif note.duration == threshold and duration_offset > 0:
-            note.duration = 0.25
         else:
-            note.duration = note.duration + duration_offset
+            # Increase duration, respecting the threshold and the offset
+            note.duration = max(note.duration + duration_offset, threshold)
+
+            # Special case: if the duration is exactly threshold and the offset is positive, set it to 0.25
+            if note.duration == threshold and duration_offset > 0:
+                note.duration = 0.25
 
     def _visible_page(self):
         """Returns the current page number (0-indexed) based on the current page_time.
