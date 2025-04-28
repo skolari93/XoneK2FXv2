@@ -101,9 +101,6 @@ class NoteSettingsComponent(Component, Renderable):
                 
         self._note_editor.step_color_manager.show_colors(colors)
 
-    #def _show_velocity(self): # todo when step layout is defined
-
-
     @transpose_encoder.value
     def transpose_encoder(self, value, _):
         offset = 1

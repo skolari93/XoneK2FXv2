@@ -6,10 +6,10 @@ from ableton.v3.control_surface.components.bar_based_sequence import NoteEditorC
 from ableton.v3.control_surface.components.note_editor import get_notes
 from ableton.v3.live import liveobj_valid
 from .step_color_manager import StepColorManager
-
+import threading
 # K2 specific
 STEP_TRANSLATION_CHANNEL = 3 #this param here is probably overwritten, translation_channel=STEP_TRANSLATION_CHANNEL i think the translation channel ist the pseudo channel where the scripts sends
-
+DEFAULT_VELOCITY = 100
 import logging
 logger = logging.getLogger("XoneK2FXv2")
 
@@ -23,7 +23,8 @@ class NoteEditorComponent(NoteEditorComponentBase):
         self._volume_parameters = volume_parameters
         self._velocity_offset_parameter = self.register_disconnectable(RelativeInternalParameter(name='Velocity'))
         self.register_slot(self._velocity_offset_parameter, self.set_velocity_offset, 'delta')
-    
+        #self._full_velocity = DEFAULT_VELOCITY
+
     @property
     def step_color_manager(self):
         return self._step_color_manager
@@ -110,3 +111,41 @@ class NoteEditorComponent(NoteEditorComponentBase):
                 # Set channel based on column:
                 button.channel = 4 if button_column < 4 else 5 # EACH DEVICE NEEDS A SEPERATE TRANSLATION CHANNEL
         self._update_editor_matrix()
+
+
+    # def _show_velocity(self):
+    #     colors = {}
+        
+    #     # Hole die durchschnittliche oder erste Velocity
+    #     velocities = self.get_velocities()  # Annahme: gibt Liste oder Dict
+    #     velocity = 0
+    #     if isinstance(velocities, dict):
+    #         velocity = list(velocities.values())[0] if velocities else 0
+    #     elif isinstance(velocities, list):
+    #         velocity = velocities[0] if velocities else 0
+
+    #     # Normiere die Velocity (0-127) auf 0-8
+    #     num_steps_on = int((velocity / 127) * 8)
+
+    #     for step_index in range(8):
+    #         if step_index < num_steps_on:
+    #             colors[step_index] = 'NoteEditor.Velocity'  # Eingeschaltete Steps
+    #         else:
+    #             colors[step_index] = 'NoteEditor.StepEmpty'  # Ausgeschaltete Steps
+
+    #     self.step_color_manager.show_colors(colors)
+
+    # def _show_velocity_temporary(self):
+    #     # Zeige Fader-Style Velocity
+    #     self._show_velocity()
+
+    #     # Timer zurücksetzen, wenn schon einer läuft
+    #     if self._revert_timer is not None:
+    #         self._revert_timer.cancel()
+
+    #     # Nach 0.3 Sekunden zurücksetzen
+    #     self._revert_timer = threading.Timer(0.3, self.step_color_manager.revert_colors)
+    #     self._revert_timer.start()
+
+
+    
