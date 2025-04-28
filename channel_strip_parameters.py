@@ -10,14 +10,13 @@ from .control import ParameterControl
 from ableton.v3.live import liveobj_valid
 
 MAX_NUM_SENDS =12
-
+ENCODER_SENSITIVITY_FACTOR = 0.1
 def parameter_is_automatable(parameter):
     return liveobj_valid(parameter) and isinstance(parameter, DeviceParameter)
 
 
 class ParametersComponent(DeviceParametersComponent):
     controls = control_list(ParameterControl, 8)
-    touch_controls = control_list(TouchControl, 8)
     delete_button = ButtonControl(color=None)
     mute_button = ButtonControl(color=None)
     envelope_value = listenable_property.managed(None)
@@ -58,26 +57,6 @@ class ParametersComponent(DeviceParametersComponent):
                 for step in self._note_editor.active_steps:
                     self._insert_step(envelope, parameter, control.index, step, value)
                 self._update_envelope_value(parameter)
-
-    @touch_controls.pressed
-    def touch_controls(self, control):
-        self._hide_envelope_view_task.kill()
-        parameter = control.control_element.controlled_parameter
-        clip = self._target_track.target_clip
-        if self.delete_button.is_pressed:
-            self._clear_envelope(clip, parameter)
-        elif self.mute_button.is_pressed:
-            self._toggle_automation(parameter)
-        elif self._can_automate_parameters() and parameter_is_automatable(parameter):
-            self._update_parameters_for_steps()
-            self._update_envelope_value(parameter)
-            self._show_envelope_view(clip, parameter)
-            self._show_automated_steps()
-
-    @touch_controls.released
-    def touch_controls(self, _):
-        self._hide_envelope_view_task.restart()
-        self._hide_automated_steps()
 
     def _update_parameters(self):
         super()._update_parameters()
@@ -191,8 +170,6 @@ class ParametersComponent(DeviceParametersComponent):
                 time_ranges = self._get_time_ranges_for_step(key, start_times)
                 value['time_ranges'] = time_ranges
                 value['included_steps'] = self._get_steps_for_time_ranges(time_ranges)
-            if any(t.is_pressed for t in self.touch_controls):
-                self._show_automated_steps()
         else:
             self._hide_automated_steps(immediate=True)
 

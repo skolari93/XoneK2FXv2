@@ -3,7 +3,7 @@ from ableton.v3.control_surface.controls import MappedControl, control_list
 from ableton.v3.live import get_parameter_by_name
 from ableton.v3.base import listens_group
 from itertools import chain
-# from .channel_strip_parameters import ChannelParametersComponent
+#from .channel_strip_parameters import ParametersComponent
 
 import logging
 logger = logging.getLogger("XoneK2FXv2")
@@ -14,7 +14,7 @@ class ChannelStripComponent(ChannelStripComponentBase):
     gain_control = MappedControl()
     # send_controls = control_list(MappedControl, control_count=MAX_NUM_SENDS)
 
-    def __init__(self,  *a, **k):
+    def __init__(self, *a, **k):
         super().__init__(*a, **k)
         # self._parameters_component = ChannelParametersComponent()
         # self._parameters_component._parent = self
