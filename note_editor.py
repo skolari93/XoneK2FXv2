@@ -9,7 +9,7 @@ from .step_color_manager import StepColorManager
 import threading
 # K2 specific
 STEP_TRANSLATION_CHANNEL = 3 #this param here is probably overwritten, translation_channel=STEP_TRANSLATION_CHANNEL i think the translation channel ist the pseudo channel where the scripts sends
-DEFAULT_VELOCITY = 100
+#DEFAULT_VELOCITY = 100
 import logging
 logger = logging.getLogger("XoneK2FXv2")
 
