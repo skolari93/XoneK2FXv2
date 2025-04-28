@@ -82,9 +82,9 @@ class Skin:
 
     class NoteEditor:
         NoClip = OFF
-        StepFilled = Rgb.green
+        StepFilled = Rgb.amber
         StepMuted = OFF
-        StepEmpty = Rgb.amber 
+        StepEmpty = Rgb.green 
         StepDisabled = OFF#Rgb.amber
         StepAutomated = Rgb.red
         StepTied = Rgb.red
