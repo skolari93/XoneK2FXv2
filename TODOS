@@ -4,40 +4,10 @@
 ☐ Monitoring toggle [auto to off]
 ☐ clip change not working
 ☐ clip stop in  session session : buttons dissapear
-☐ note length is not shown correctly. also it does not start at the right spot
+☐ note length is not shown correctly when drum rack. i hav to get number of steps 32 and 16 somehow.
 ☐ parameter automations for returns.
 ☐ retrigs with note dividec
 [ ] retrigs with note dividec
 playhead works via note feedback. noow note feedback is broken.
 
 either nodes component does not work or the notes stuff. very strange
-
-2025-04-25T10:52:47.249864: error: RemoteScriptError:     
-    2025-04-25T10:52:47.249877: error: RemoteScriptError: note.duration = note.duration + duration_offset
-    2025-04-25T10:52:47.249887: error: RemoteScriptError: 
-    
-    2025-04-25T10:52:47.249913: error: RemoteScriptError: 
-    2025-04-25T10:52:47.249926: error: RemoteScriptError:  
-    2025-04-25T10:52:47.249937: error: RemoteScriptError:  
-    2025-04-25T10:52:47.249947: error: RemoteScriptError:  
-    2025-04-25T10:52:47.249957: error: RemoteScriptError:  
-    2025-04-25T10:52:47.249967: error: RemoteScriptError: ^
-    2025-04-25T10:52:47.249978: error: RemoteScriptError: ^
-    2025-04-25T10:52:47.249988: error: RemoteScriptError: ^
-    2025-04-25T10:52:47.249998: error: RemoteScriptError: ^
-    2025-04-25T10:52:47.250008: error: RemoteScriptError: ^
-    2025-04-25T10:52:47.250018: error: RemoteScriptError: ^
-    2025-04-25T10:52:47.250029: error: RemoteScriptError: ^
-    2025-04-25T10:52:47.250039: error: RemoteScriptError: ^
-    2025-04-25T10:52:47.250049: error: RemoteScriptError: ^
-    2025-04-25T10:52:47.250059: error: RemoteScriptError: ^
-    2025-04-25T10:52:47.250070: error: RemoteScriptError: ^ 
-    2025-04-25T10:52:47.250080: error: RemoteScriptError: ^
-    2025-04-25T10:52:47.250090: error: RemoteScriptError: ^
-    2025-04-25T10:52:47.250100: error: RemoteScriptError: 
-    
-    2025-04-25T10:52:47.250111: error: RemoteScriptError: 
-    2025-04-25T10:52:47.250123: error: RemoteScriptError: IndexError
-    2025-04-25T10:52:47.250134: error: RemoteScriptError: : 
-    2025-04-25T10:52:47.250145: error: RemoteScriptError: A negative note duration is not allowed
-    2025-04-25T10:52:47.250159: error: RemoteScriptError: 

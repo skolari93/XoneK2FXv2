@@ -83,7 +83,7 @@ class NoteSettingsComponent(Component, Renderable):
                 continue
             num_steps = max(durations) / step_length
             step_index = int(step[0] / step_length)
-            
+            step_index = step_index % 16 # it should be 32 for drum...
             # Always color the starting step
             if num_steps > 1:
                 colors[step_index] = 'NoteEditor.StepTied'
