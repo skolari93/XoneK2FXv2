@@ -3,7 +3,7 @@ from ableton.v3.base import listenable_property
 from ableton.v3.control_surface import Component
 from ableton.v3.control_surface.controls import ButtonControl, StepEncoderControl
 from ableton.v3.control_surface.display import Renderable
-import logging
+import logging, threading
 logger = logging.getLogger("XoneK2FXv2")
 class NoteSettingsComponent(Component, Renderable):
     duration_range_string = listenable_property.managed('-')
@@ -12,7 +12,6 @@ class NoteSettingsComponent(Component, Renderable):
     transpose_encoder = StepEncoderControl(num_steps=64)
     transpose_octave_encoder = StepEncoderControl(num_steps=64)
     nudge_encoder = StepEncoderControl(num_steps=64)
-
     shift_length_button = ButtonControl(color=None)
     cursor_skin = {'color': 'NoteSettings.CursorButton', 'pressed_color': 'NoteSettings.CursorButtonPressed'}
     nudge_left_button = ButtonControl(**cursor_skin)
@@ -25,6 +24,8 @@ class NoteSettingsComponent(Component, Renderable):
         self.register_slot(self._note_editor, self._update_from_property_ranges, 'active_steps')
         self.register_slot(self._note_editor, self._update_from_property_ranges, 'clip_notes')
         self._update_from_property_ranges()
+        self._revert_timer = None  
+
 
     def set_duration_encoder(self, encoder):
         self.duration_encoder.set_control_element(encoder)
@@ -41,15 +42,29 @@ class NoteSettingsComponent(Component, Renderable):
     def set_nudge_encoder(self, encoder):
         self.nudge_encoder.set_control_element(encoder)
 
+    def _show_tied_steps_temporary(self):
+        # Erst Farben zeigen
+        self._show_tied_steps()
+
+        # Wenn schon ein Timer läuft, abbrechen
+        if self._revert_timer is not None:
+            self._revert_timer.cancel()
+
+        # Neuen Timer starten
+        self._revert_timer = threading.Timer(0.3, self._note_editor.step_color_manager.revert_colors)  # 0.3 Sekunden warten
+        self._revert_timer.start()
+
     @duration_encoder.value
     def duration_encoder(self, value, _):
         offset = 0.25
         self._note_editor.set_duration_offset(value * offset)
+        self._show_tied_steps_temporary()
 
     @duration_fine_encoder.value
     def duration_fine_encoder(self, value, _):
-        offset = 0.25*0.1
+        offset = 0.25 * 0.1
         self._note_editor.set_duration_offset(value * offset)
+        self._show_tied_steps_temporary()
 
     @shift_length_button.pressed
     def shift_length_button(self, _):
@@ -67,12 +82,22 @@ class NoteSettingsComponent(Component, Renderable):
             if not durations:
                 continue
             num_steps = max(durations) / step_length
-            step_index = int(step[0] * 2 * step_length)
-            colors[step_index] = 'NoteEditor.StepTied' if num_steps > 1 else 'NoteEditor.StepPartiallyTied'
-            for i in range(int(num_steps + 1)):
+            step_index = int(step[0] / step_length)
+            
+            # Always color the starting step
+            if num_steps > 1:
+                colors[step_index] = 'NoteEditor.StepTied'
+            else:
+                colors[step_index] = 'NoteEditor.StepPartiallyTied'
+            
+            # Color the following tied steps
+            for i in range(1, int(num_steps)):
                 colors[step_index + i] = 'NoteEditor.StepTied'
-            if num_steps > 1 and num_steps < 1.0:
-                colors[int(num_steps)] = 'NoteEditor.StepPartiallyTied'
+            
+            # If it does not exactly cover a whole number of steps, the last step is partially tied
+            if not num_steps.is_integer():
+                colors[step_index + int(num_steps)] = 'NoteEditor.StepPartiallyTied'
+                
         self._note_editor.step_color_manager.show_colors(colors)
 
     #def _show_velocity(self): # todo when step layout is defined
