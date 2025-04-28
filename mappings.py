@@ -84,6 +84,7 @@ def create_mappings(cs):
                         matrix='pads_drum',
                         copy_button= 'duplicate_button',
                         mute_button='shift_button',
+                        scroll_encoder='bottom_4_encoder'
                     ),
                     dict(
                         component= 'Step_Sequence',

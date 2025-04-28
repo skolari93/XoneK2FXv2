@@ -1,6 +1,5 @@
-from ableton.v3.base import depends, clamp, first
+from ableton.v3.base import depends
 from ableton.v3.control_surface.components import DrumGroupComponent as DrumGroupComponentBase
-from ableton.v3.live import liveobj_valid
 
 BASE_DRUM_RACK_NOTE=36
 
@@ -25,3 +24,7 @@ class DrumGroupComponent(DrumGroupComponentBase):
     def _on_matrix_released(self, button):
         super()._on_matrix_released(button)
         self._volume_parameters.remove_parameter(button)
+
+    def set_scroll_encoder(self, encoder):
+        self._drum_group_scroller.set_scroll_encoder(encoder)
+

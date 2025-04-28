@@ -128,7 +128,7 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
 
     @octave_encoder.value
     def octave_encoder(self, value, _):
-        offset = 6 #somehow i have to do 6 mpt 12
+        offset = 6 #somehow i have to do 6 and not 12 BUG
         logger.info(self.position)
         logger.info(value * offset)
         self.position = max(0, min(127, self.position + value * offset))   
