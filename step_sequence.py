@@ -15,8 +15,10 @@ GRID_RESOLUTIONS = tuple(reversed(RESOLUTIONS_BASE[:-3]))
 DEFAULT_GRID_RESOLUTION_INDEX = 1
 PLAYHEAD_NOTES = []#list(range(0, 16))#[28, 29, 30, 31, 28, 29, 30, 31, 24, 25, 26, 27, 24, 25, 26, 27]
 PLAYHEAD_CHANNELS = []#list(range(0,15))
+from functools import partial
 
 
+#not used custom_loop_selector = partial(LoopSelectorComponent, bars_per_bank=8)
 class StepSequenceComponent(StepSequenceComponentBase):
     # list(chain(range(36, 40),range(32, 37),range(28, 32),range(24, 28))) 
     def __init__(self, *a, **k):

@@ -16,7 +16,7 @@ from .mixer import MixerComponent
 from ableton.v3.control_surface.components import ViewControlComponent, SessionRingComponent, SessionNavigationComponent #,StepSequenceComponent, GRID_RESOLUTIONS
 from functools import partial
 from .loop_length import LoopLengthComponent
-
+from .clip_actions import ClipActionsComponent
 from ableton.v3.live import liveobj_valid
 from .instrument import InstrumentComponent, NoteLayout
 from .step_sequence import DEFAULT_GRID_RESOLUTION_INDEX, GRID_RESOLUTIONS, StepSequenceComponent
@@ -183,6 +183,7 @@ class Specification(ControlSurfaceSpecification):
         #'Step_Sequence': partial(StepSequenceComponent, grid_resolution=GRID_RESOLUTIONS[3]),
         'FXMixer': FXMixerComponent,
         'MasterMixer': MasterMixerComponent,
+        'Clip_Actions': ClipActionsComponent, 
         'ViewControl': ViewControlComponent,
         'Mixer': MixerComponent,
         'Session': SessionComponent,

@@ -121,7 +121,7 @@ class Elements(ElementsBase):
         self.add_modified_control(control=self.bottom_4_encoder, modifier=self.bottom_4_encoder_shift_button)
         self.add_modified_control(control=self.capture_midi_button, modifier=self.shift_button)
         self.add_modified_control(control=self.pads_raw[44], modifier=self.shift_button)
-
+        self.add_modified_control(control=self.duplicate_button, modifier=self.shift_button)
         #self.add_element("prev_bank_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
 
         ########## FX + Master Mixer: K2.3 

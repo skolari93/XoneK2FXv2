@@ -85,7 +85,6 @@ def create_mappings(cs):
                         component= 'Step_Sequence',
                         step_buttons= 'pads_columns_0_7',
                         matrix= 'pads_columns_8_11_rows_0_1', #bad name for loop matrix
-
                     )
                 ]
 
@@ -162,6 +161,11 @@ def create_mappings(cs):
                     #     'component': 'Loop_Length',
                     #     'length_encoder': 'loop_length_encoder'
                     # }
+                    {
+                        'component': 'Clip_Actions',
+                        'delete_button': 'duplicate_button_with_shift',
+                        'double_button': 'duplicate_button'
+                    },
                     {
                         'component': 'Volume_Parameters',
                         'volume_encoder':'bottom_3_encoder', 
