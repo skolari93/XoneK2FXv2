@@ -10,11 +10,6 @@ def create_mappings(cs):
             tempo_fine_encoder="tempo_encoder_with_shift",
             capture_midi_button="capture_midi_button",
         ),
-        'Recording': dict(
-            # arrangement_record_button='record_button',
-            # session_record_button='session_record_button',
-            #new_button='new_button' # not working
-        ),
         'FXMixer': dict(
             solo_buttons='solo_buttons',
             mute_buttons='mute_buttons',
@@ -132,6 +127,9 @@ def create_mappings(cs):
                         'component': 'Recording',
                         'session_record_button':"pads_raw[34]",
                         'arrangement_record_button':"pads_raw[46]",
+                        'new_button': 'pads_raw[20]'
+                        
+        
                     },
                     {
                         'component': 'Undo_Redo',
