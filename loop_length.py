@@ -33,31 +33,26 @@ class LoopLengthComponent(Component, Renderable):
             return '1 Bar' if num_bars == 1 else '{} Bars'.format(complete_bars)
         return ''
 
-    # def increment_length(self, delta, fine_tune=False):
-    #     clip = self._sequencer_clip.clip
-    #     if not clip:
-    #         return
-        
-    #     bar_length = get_bar_length(clip=clip)
-    #     num_bars = self._sequencer_clip.num_bars
-    #     if num_bars < 1 or (delta < 0 and num_bars == 1):
-    #         fine_tune = True
-    #     step_size = FINE_TUNE_FACTOR if fine_tune else bar_length
-    #     new_loop_end = clip.loop_end + (delta * step_size)
-    #     action.set_loop_end(clip, max(step_size, new_loop_end))
+    def increment_length(self, delta, modify_end=True):
+            clip = self._sequencer_clip.clip
+            if not clip:
+                return
+            # Fine = 1/4 note, Coarse = 1 full note (i.e., 1 beat = 4/4 note)
+            if modify_end:
+                step_size = FINE_TUNE_FACTOR #if fine_tune else FINE_TUNE_FACTOR * 4
+                new_loop_end = clip.loop_end + (delta * step_size)
+                # Ensure the loop end doesn't go below one full step
+                new_loop_end = max(step_size, new_loop_end)
+                action.set_loop_end(clip, new_loop_end)
+            else:
+                step_size = FINE_TUNE_FACTOR #if fine_tune else FINE_TUNE_FACTOR * 4
+                new_loop_start = clip.loop_start + (delta * step_size)
+                # Allow the loop start to go all the way to zero (first step)
+                new_loop_start = max(0, new_loop_start)
+                # Also ensure loop_start doesn't go beyond loop_end - step_size
+                new_loop_start = min(new_loop_start, clip.loop_end - step_size)
+                action.set_loop_start(clip, new_loop_start)
 
-    def increment_length(self, delta, fine_tune=True):
-        clip = self._sequencer_clip.clip
-        if not clip:
-            return
-
-        # Fine = 1/4 note, Coarse = 1 full note (i.e., 1 beat = 4/4 note)
-        step_size = FINE_TUNE_FACTOR if fine_tune else FINE_TUNE_FACTOR * 4
-        new_loop_end = clip.loop_end + (delta * step_size)
-
-        # Ensure the loop end doesn't go below one full step
-        new_loop_end = max(step_size, new_loop_end)
-        action.set_loop_end(clip, new_loop_end)
 
     def use_fine_steps(self):
         if self.shift_button.control_element:
@@ -66,7 +61,7 @@ class LoopLengthComponent(Component, Renderable):
 
     @length_encoder.value
     def length_encoder(self, value, _):
-        self.increment_length(value, fine_tune=self.use_fine_steps())
+        self.increment_length(value, modify_end=self.use_fine_steps())
         self.notify_length_string()
 
     @shift_button.value

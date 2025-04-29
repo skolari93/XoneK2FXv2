@@ -99,7 +99,8 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
         self._first_note = self.DEFAULT_FIRST_NOTE
         self._pattern = self._get_pattern()
         self._note_editor = None
-        self.pitches = [self._pattern.note(0, 0).index]
+        #self.pitches = [self._pattern.note(0, 0).index]
+        self.pitches = list(range(128))  # All possible MIDI notes 0-127
         self._last_page_length = self.page_length
         self._last_page_offset = self.page_offset
         

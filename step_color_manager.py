@@ -50,26 +50,30 @@ class StepColorManager(EventObject):
             self._revert_colors_task.restart()
 
     def get_color_for_step(self, index, visible_steps, clip_notes, visible_page=0):
-        if self._last_beat is not None:
-            if self.clip is None and self.song.is_playing and (index in visible_steps) and (index == self._last_beat*4):
-                return 'NoteEditor.Playhead'
-        if self.clip:
-            if (index in visible_steps):
-                if self.clip.loop_end <= get_value_from_label("1/16")*(index + visible_page * len(visible_steps)) : # only works with 16th notes atm
-                    notes = visible_steps[index].filter_notes(clip_notes)
-                    if len(notes) > 0:
-                        if any((n.mute for n in notes)):
-                            return 'NoteEditor.NotInLoopStepMuted'
-                        else:  # inserted
-                            return 'NoteEditor.NotInLoopStepFilled'
+            if self._last_beat is not None:
+                if self.clip is None and self.song.is_playing and (index in visible_steps) and (index == self._last_beat*4):
+                    return 'NoteEditor.Playhead'
+            if self.clip:
+                if (index in visible_steps):
+                    # Calculate the absolute position of this step in 16th notes
+                    step_position = get_value_from_label("1/16") * (index + visible_page * len(visible_steps))
+                    
+                    # Check if step is before loop start or after loop end
+                    if step_position < self.clip.loop_start or step_position >= self.clip.loop_end:
+                        notes = visible_steps[index].filter_notes(clip_notes)
+                        if len(notes) > 0:
+                            if any((n.mute for n in notes)):
+                                return 'NoteEditor.NotInLoopStepMuted'
+                            else:
+                                return 'NoteEditor.NotInLoopStepFilled'
+                        else:
+                            return 'NoteEditor.NotInLoop'
                     else:
-                        return 'NoteEditor.NotInLoop'
-                else:
-                    notes = visible_steps[index].filter_notes(clip_notes)
-                    if len(notes) > 0:
-                        if any((n.velocity == 127 for n in notes)):
-                            return 'NoteEditor.Accent'
-                return self._colors.get(index, None)
+                        notes = visible_steps[index].filter_notes(clip_notes)
+                        if len(notes) > 0:
+                            if any((n.velocity == 127 for n in notes)):
+                                return 'NoteEditor.Accent'
+                    return self._colors.get(index, None)
 
 
     @listens('current_song_time')
