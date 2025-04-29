@@ -106,13 +106,13 @@ class Skin:
         PlayheadRecord = Rgb.green
 
     class Instrument:
-        PadAction = Rgb.green
+        PadAction = Rgb.red
         NoteBase = Rgb.red
-        NoteScale = Rgb.green
+        NoteScale = Rgb.amber
         NoteNotScale = OFF
         NoteInvalid = OFF
-        NoteInStep = Rgb.red
-        NoteSelected = Rgb.amber
+        NoteInStep = Rgb.green
+        NoteSelected = Rgb.green
         Scroll = OFF
 
     class DrumGroup:

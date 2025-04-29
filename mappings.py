@@ -84,6 +84,7 @@ def create_mappings(cs):
                     dict(
                         component= 'Step_Sequence',
                         step_buttons= 'pads_columns_0_7',
+                        copy_button= 'duplicate_button',
                         matrix= 'pads_columns_8_11_rows_0_1', #bad name for loop matrix
                     )
                 ]
@@ -152,7 +153,6 @@ def create_mappings(cs):
                         'component': 'Step_Sequence',
                         'duration_encoder': 'bottom_2_encoder',
                         'nudge_encoder': 'bottom_1_encoder',                        
-
                         'duration_fine_encoder': 'bottom_2_encoder_with_bottom_2_encoder_shift',
                         #'shift_length_button': 'bottom_2_encoder_shift_button',
                         'loop_copy_button': 'duplicate_button'
@@ -171,10 +171,6 @@ def create_mappings(cs):
                         'volume_encoder':'bottom_3_encoder', 
                         'volume_encoder_touch_button':'bottom_3_encoder_shift_button'
                     },
-                    # {
-                    #     'component': 'Transport',
-                    #     'play_pause_button':'pads_raw[44]_with_shift',
-                    # }
                     {
                         'component': 'Loop_Length',
                         'length_encoder': 'variations_select_encoder',
