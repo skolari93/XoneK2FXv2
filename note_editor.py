@@ -393,7 +393,7 @@ class NoteEditorComponent(NoteEditorComponentBase):
         if not self.is_enabled() or not self._active_steps or not self._has_clip() or not self._can_edit():
             return
 
-        MAX_RATCHET_DIVISIONS = 8
+        MAX_RATCHET_DIVISIONS = 4
         divisions = max(1, min(int(divisions), MAX_RATCHET_DIVISIONS))
 
         for step in self._active_steps:
