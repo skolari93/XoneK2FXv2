@@ -162,10 +162,14 @@ def create_mappings(cs):
                     #     'component': 'Loop_Length',
                     #     'length_encoder': 'loop_length_encoder'
                     # }
+                    # {
+                    #     'component': 'Step_Duplicator',
+                    #     'duplicate_button': 'duplicate_button',
+                    # },
                     {
                         'component': 'Clip_Actions',
-                        'delete_button': 'duplicate_button_with_shift',
-                        'double_button': 'duplicate_button'
+                        #'delete_button': '',
+                        'double_button': 'duplicate_button_with_shift'
                     },
                     {
                         'component': 'Volume_Parameters',

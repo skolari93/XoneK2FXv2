@@ -25,6 +25,7 @@ from .drum_group import DrumGroupComponent
 from .colors import Rgb
 from .volume_parameters import VolumeParametersComponent
 from .k2_button import GREEN
+#from .step_duplicator import StepDuplicatorComponent
 
 PITCH_PROVIDERS = {'drum': 'Drum_Group', 'instrument': 'Instrument'}
 
@@ -192,4 +193,5 @@ class Specification(ControlSurfaceSpecification):
         'Session_Navigation': partial(SessionNavigationComponent, respect_borders=True, snap_track_offset=False),
         'Step_Sequence': StepSequenceComponent, 
         'Instrument': InstrumentComponent, 
+        #'Step_Duplicator': StepDuplicatorComponent
     }

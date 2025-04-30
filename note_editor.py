@@ -54,8 +54,6 @@ class NoteEditorComponent(NoteEditorComponentBase):
         notes = self._time_step(step[0]).filter_notes(self._clip_notes)
         return [note.duration for note in notes]
     
-    def get_duration_range_string(self):
-        return self._get_property_range_string('duration', lambda value_range: (v + self.step_length for v in value_range), str_fmt='{:.1f}'.format)
 
     def set_clip(self, clip):
         super().set_clip(clip)
@@ -64,14 +62,19 @@ class NoteEditorComponent(NoteEditorComponentBase):
 
     def notify_clip_notes(self):
         if liveobj_valid(self._clip) and self._pitches:
-            try:
+            # try:
 
-                # Extract start times from note dicts
-                self._step_start_times = sorted(list({note.start_time for note in notes_dict}))
-            except Exception as e:
-                logger.error(f"Error using get_notes_extended: {str(e)}")
-                self._step_start_times = []
+            #     # Extract start times from note dicts
+            #     self._step_start_times = sorted(list({note.start_time for note in notes_dict}))
+            # except Exception as e:
+            #     logger.error(f"Error using get_notes_extended: {str(e)}")
+            #     self._step_start_times = []
+            
+            notes = get_notes(self._clip, self._pitches, 0.0, maxsize, self._pitch_provider.is_polyphonic)
+            self._step_start_times = sorted(list({n.start_time for n in notes}))
         super().notify_clip_notes()
+
+        
     
     def _on_pad_pressed(self, pad):
         """
@@ -380,7 +383,6 @@ class NoteEditorComponent(NoteEditorComponentBase):
         
             # Update display
             self.__on_clip_notes_changed()
-            self._show_tied_steps_temporary()
 
     def set_ratchet_divisions(self, divisions):
         """
