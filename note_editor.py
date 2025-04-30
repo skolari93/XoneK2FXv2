@@ -68,6 +68,11 @@ class NoteEditorComponent(NoteEditorComponentBase):
                 self._step_start_times = []
         super().notify_clip_notes()
 
+    # @property
+    # def active_steps(self):
+    #     """Return the current active steps for external components to reference"""
+    #     return self._active_steps
+
     def _on_pad_pressed(self, pad):
         """
         Handle pad press events for note editing.
