@@ -25,11 +25,13 @@ class NoteEditorComponent(NoteEditorComponentBase):
         self.register_slot(self._velocity_offset_parameter, self.set_velocity_offset, 'delta')
         
         # Track which steps are selected for note length
-        self._note_length_mode =note_length_mode
+        self._note_length_mode = note_length_mode
         self._held_pad = None
         self._held_pad_index = None
-        self._revert_timer = None  
-
+        self._revert_timer = None
+        
+        # Dictionary to track active step states
+        self._active_step_states = {}
 
     @property
     def step_color_manager(self):
@@ -38,6 +40,11 @@ class NoteEditorComponent(NoteEditorComponentBase):
     @property
     def step_start_times(self):
         return self._step_start_times
+        
+    @property
+    def active_steps(self):
+        """Return the current active steps for external components to reference"""
+        return self._active_steps
 
     def set_velocity_offset(self, delta):
         # Set the new value
@@ -47,7 +54,6 @@ class NoteEditorComponent(NoteEditorComponentBase):
         notes = self._time_step(step[0]).filter_notes(self._clip_notes)
         return [note.duration for note in notes]
     
-
     def get_duration_range_string(self):
         return self._get_property_range_string('duration', lambda value_range: (v + self.step_length for v in value_range), str_fmt='{:.1f}'.format)
 
@@ -59,9 +65,7 @@ class NoteEditorComponent(NoteEditorComponentBase):
     def notify_clip_notes(self):
         if liveobj_valid(self._clip) and self._pitches:
             try:
-                from_pitch = min(self._pitches)
-                pitch_span = max(self._pitches) - from_pitch + 1
-                notes_dict = self._clip.get_notes_extended(from_pitch, pitch_span, 0.0, float(maxsize))
+
                 # Extract start times from note dicts
                 self._step_start_times = sorted(list({note.start_time for note in notes_dict}))
             except Exception as e:
@@ -126,7 +130,14 @@ class NoteEditorComponent(NoteEditorComponentBase):
             super()._on_pad_pressed(pad)
             self._volume_parameters.add_parameter(pad, self._velocity_offset_parameter)
 
-
+    def _refresh_active_steps(self):
+        """Refresh the _active_steps property and notify listeners"""
+        old_active_steps = self._active_steps.copy() if hasattr(self, '_active_steps') else []
+        super()._refresh_active_steps()
+        
+        # If active steps changed, notify
+        if old_active_steps != self._active_steps:
+            self.notify_active_steps()
         
     def _on_pad_released(self, pad, *a, **k):
         """Handle pad release events and clean up references"""
@@ -214,91 +225,6 @@ class NoteEditorComponent(NoteEditorComponentBase):
                 button.channel = 4 if button_column < 4 else 5 # EACH DEVICE NEEDS A SEPERATE TRANSLATION CHANNEL
         self._update_editor_matrix()
 
-    # def _show_velocity(self):
-    #     """Display velocity as a visual bar of illuminated steps"""
-    #     colors = {}
-        
-    #     # Get average or first velocity
-    #     velocities = self.get_velocities()
-    #     velocity = 0
-    #     if velocities:
-    #         velocity = sum(velocities) / len(velocities) if velocities else 0
-        
-    #     # Normalize velocity (0-127) to 0-8 step range
-    #     num_steps_on = int((velocity / 127) * 8)
-        
-    #     for step_index in range(8):
-    #         if step_index < num_steps_on:
-    #             colors[step_index] = 'NoteEditor.Velocity'  # Active steps
-    #         else:
-    #             colors[step_index] = 'NoteEditor.StepEmpty'  # Inactive steps
-                
-    #     self.step_color_manager.show_colors(colors)
-
-    # def _show_velocity_temporary(self):
-    #     """Show velocity display temporarily then revert"""
-    #     self._show_velocity()
-        
-    #     # Reset timer if one is already running
-    #     if self._revert_timer is not None:
-    #         self._revert_timer.cancel()
-            
-    #     # Set timer to revert colors after 0.3 seconds
-    #     self._revert_timer = threading.Timer(0.3, self.step_color_manager.revert_colors)
-    #     self._revert_timer.start()
-        
-    # def show_tied_steps_temporary(self):
-    #     """Method to show tied notes temporarily"""
-    #     colors = {}
-    #     step_length = self.step_length
-        
-    #     # Find active steps with notes
-    #     for step in self.active_steps:
-    #         durations = self.get_durations_from_step(step)
-    #         if not durations:
-    #             continue
-                
-    #         # Calculate how many steps this note spans
-    #         num_steps = max(durations) / step_length
-    #         step_index = int(step[0] / step_length)
-    #         step_index = step_index % self.step_count
-            
-    #         # Always color the starting step
-    #         if num_steps > 1:
-    #             colors[step_index] = 'NoteEditor.StepTied'
-    #         else:
-    #             colors[step_index] = 'NoteEditor.StepPartiallyTied'
-                
-    #         # Color the following tied steps
-    #         for i in range(1, int(num_steps)):
-    #             tied_index = (step_index + i) % self.step_count
-    #             colors[tied_index] = 'NoteEditor.StepTied'
-                
-    #         # If it does not exactly cover a whole number of steps, the last step is partially tied
-    #         if not num_steps.is_integer():
-    #             partial_index = (step_index + int(num_steps)) % self.step_count
-    #             colors[partial_index] = 'NoteEditor.StepPartiallyTied'
-                    
-    #     self._step_color_manager.show_colors(colors)
-    # def get_velocities(self):
-    #     """Returns the velocities of the currently selected notes"""
-    #     if not liveobj_valid(self._clip) or not self._clip_notes:
-    #         return []
-        
-    #     selected_notes = []
-    #     try:
-    #         # Use the newer API to get selected notes
-    #         if hasattr(self._clip, 'get_selected_notes_extended'):
-    #             selected_notes_dict = self._clip.get_selected_notes_extended()
-    #             return [note['velocity'] for note in selected_notes_dict.values()]
-    #         else:
-    #             # Fallback to older API
-    #             selected_notes = self._clip.get_selected_notes()
-    #             return [note[3] for note in selected_notes]
-    #     except Exception as e:
-    #         logger.error(f"Error getting velocities: {str(e)}")
-    #         return []
-
     def _show_tied_steps(self):
         colors = {}
         step_length = self.step_length
@@ -325,7 +251,6 @@ class NoteEditorComponent(NoteEditorComponentBase):
                 
         self.step_color_manager.show_colors(colors)
 
-
     def _show_tied_steps_temporary(self):
         # Erst Farben zeigen
         self._show_tied_steps()
@@ -337,8 +262,6 @@ class NoteEditorComponent(NoteEditorComponentBase):
         # Neuen Timer starten
         self._revert_timer = threading.Timer(0.1, self.step_color_manager.revert_colors) 
         self._revert_timer.start()
-
-
 
     def _create_note_repeats(self, start_time, total_duration):
         """
@@ -397,3 +320,90 @@ class NoteEditorComponent(NoteEditorComponentBase):
             
             # Update display
             self.__on_clip_notes_changed()
+
+    def _create_ratchet_notes(self, start_time, duration, divisions):
+        """
+        Create multiple repeated notes from start_time spanning total_duration,
+        where the original note is divided into the specified number of divisions.
+    
+        Args:
+            start_time: The time to start placing notes
+            duration: The duration of the original note
+            divisions: The number of divisions to create (1 = original note, 2 = two notes, etc.)
+        """
+        if not self._has_clip() or not self._can_edit():
+            return
+        duration = 0.25
+        if divisions <= 0:
+            divisions = 1
+    
+        # Remove any existing notes in the region for selected pitches
+        for pitch in self._pitches:
+            self._clip.remove_notes_extended(
+                from_time=start_time,
+                from_pitch=pitch,
+                time_span=duration,
+                pitch_span=1
+            )
+    
+        # Create ratchet notes
+        new_notes = []
+    
+        # Default settings
+        velocity = 127 if hasattr(self, '_full_velocity') and self._full_velocity.enabled else 100
+    
+        # Calculate the duration of each division
+        division_duration = duration / divisions
+    
+        # Create a note for each division
+        for div_num in range(divisions):
+            div_start_time = start_time + (div_num * division_duration)
+        
+            for pitch in self._pitches:
+                # Create a note that fits this division
+                note = MidiNoteSpecification(
+                    pitch=pitch,
+                    start_time=div_start_time,
+                    duration=division_duration,
+                    velocity=velocity,
+                    mute=False
+                )
+                new_notes.append(note)
+    
+        # Add all the notes at once
+        if new_notes:
+            self._clip.add_new_notes(tuple(new_notes))
+            self._clip.deselect_all_notes()
+        
+            # Extend loop if necessary to see the ratchets
+            action.extend_loop_for_region(self._clip, start_time, duration)
+        
+            # Update display
+            self.__on_clip_notes_changed()
+            self._show_tied_steps_temporary()
+
+    def set_ratchet_divisions(self, divisions):
+        """
+        Set the number of divisions (ratchets) for all existing notes in the selected steps.
+        No ratchets are created if no notes exist in the step.
+
+        Args:
+            divisions: Integer number of divisions to create (1 = no division, 2 = halves, etc.)
+        """
+        if not self.is_enabled() or not self._active_steps or not self._has_clip() or not self._can_edit():
+            return
+
+        MAX_RATCHET_DIVISIONS = 8
+        divisions = max(1, min(int(divisions), MAX_RATCHET_DIVISIONS))
+
+        for step in self._active_steps:
+            step_time = self._get_step_start_time(step)
+
+            from_pitch = min(self._pitches)
+            pitch_span = max(self._pitches) - from_pitch + 1
+            clip_notes = self._clip.get_notes_extended(from_pitch, pitch_span, 0.0, float(maxsize))
+            step_notes = self._time_step(step_time).filter_notes(clip_notes)
+
+            # Only apply ratchets to existing notes
+            for note in step_notes:
+                self._create_ratchet_notes(note.start_time, note.duration, divisions)

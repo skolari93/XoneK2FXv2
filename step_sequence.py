@@ -49,6 +49,9 @@ class StepSequenceComponent(StepSequenceComponentBase):
     def set_nudge_encoder(self, encoder):
         self._note_settings.set_nudge_encoder(encoder)
 
+    def set_ratchet_encoder(self, encoder):
+        self._note_settings.set_ratchet_encoder(encoder)
+
     def set_prev_bank_button(self, button):
         self._loop_selector.prev_bank_button.set_control_element(button)
 
