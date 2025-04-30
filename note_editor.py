@@ -1,6 +1,6 @@
 import math
 from sys import maxsize
-from ableton.v3.base import depends
+from ableton.v3.base import depends, clamp
 from ableton.v3.control_surface import RelativeInternalParameter
 from ableton.v3.control_surface.components.bar_based_sequence import NoteEditorComponent as NoteEditorComponentBase
 from ableton.v3.control_surface.components.note_editor import get_notes
@@ -42,25 +42,7 @@ class NoteEditorComponent(NoteEditorComponentBase):
     def get_durations_from_step(self, step):
         notes = self._time_step(step[0]).filter_notes(self._clip_notes)
         return [note.duration for note in notes]
-        
-    # def get_velocities(self):
-    #     """Returns the velocities of the currently selected notes"""
-    #     if not liveobj_valid(self._clip) or not self._clip_notes:
-    #         return []
-        
-    #     selected_notes = []
-    #     try:
-    #         # Use the newer API to get selected notes
-    #         if hasattr(self._clip, 'get_selected_notes_extended'):
-    #             selected_notes_dict = self._clip.get_selected_notes_extended()
-    #             return [note['velocity'] for note in selected_notes_dict.values()]
-    #         else:
-    #             # Fallback to older API
-    #             selected_notes = self._clip.get_selected_notes()
-    #             return [note[3] for note in selected_notes]
-    #     except Exception as e:
-    #         logger.error(f"Error getting velocities: {str(e)}")
-    #         return []
+    
 
     def get_duration_range_string(self):
         return self._get_property_range_string('duration', lambda value_range: (v + self.step_length for v in value_range), str_fmt='{:.1f}'.format)
@@ -82,12 +64,13 @@ class NoteEditorComponent(NoteEditorComponentBase):
                 logger.error(f"Error using get_notes_extended: {str(e)}")
                 self._step_start_times = []
         super().notify_clip_notes()
-
+    
     def _on_pad_pressed(self, pad):
         """
         Handle pad press events for note editing.
-        First pad defines note start, second defines note length.
+        The first pad defines note start, the second defines note length.
         """
+
         if not self.is_enabled():
             return
 
@@ -98,61 +81,70 @@ class NoteEditorComponent(NoteEditorComponentBase):
         if not self._can_press_or_release_step(pad):
             return
 
-        x, y = pad.coordinate
-        index = x + y * self.matrix.width
-
+        x2, y2 = pad.coordinate  # Current pad (second press)
+        
         if self._held_pad is not None and self._held_pad != pad:
-            # Zweiter Pad: Länge festlegen
-            second_step_index = index
-            first_step_index = self._held_pad_index
+            # The pad that was previously held (first press)
+            x1, y1 = self._held_pad.coordinate
 
-            # Startzeit immer vom kleineren Pad nehmen
-            start_index = min(first_step_index, second_step_index)
-            end_index = max(first_step_index, second_step_index)
+            # Adjusted for transposed matrix (assuming the matrix is transposed)
+            time1 = (y1 + x1 * self.matrix.width) * self.step_length
+            time2 = (y2 + x2 * self.matrix.width) * self.step_length
 
-            first_step_time = start_index * self.step_length
-            duration = (end_index - start_index + 1) * self.step_length
+            # Calculate start and end times
+            start_time = time1
+            end_time = time2 + self.step_length  # Ensure the full second pad is included
 
-            if liveobj_valid(self._clip):
-                pitch = self._pitches[0] if self._pitches else 60
-                velocity = 100
-                mute = False
+            # Duration is simply the difference between start and end times
+            duration = end_time - start_time
 
-                new_note = {
-                    "pitch": pitch,
-                    "first_step_time": first_step_time,
-                    "duration": duration,
-                    "velocity": velocity,
-                    "mute": mute
-                }
-                existing_notes.append(new_note)
-                try:
-                    existing_notes = self._clip.get_notes_extended(0, 128, 0.0, float(maxsize))
-                    existing_notes.append(new_note)
-                    self._clip.replace_notes(existing_notes)
-                    self._clip.deselect_all_notes()
-                    self._clip.select_note(new_note)
-                    logger.info(f"Inserted long note from step {start_index} to {end_index} ({duration} beats)")
-                except Exception as e:
-                    logger.error(f"Note insertion failed: {str(e)}")
-
-            if hasattr(self, 'show_tied_steps_temporary'):
-                self.show_tied_steps_temporary()
-
-            self._volume_parameters.add_parameter(pad, self._velocity_offset_parameter)
-            pad.is_active = True
+            # Set the note's duration property
+            if duration > 0:
+                self._set_note_property("duration", duration)
+                 # probably there needs to be something à la. notify duration change()
 
         else:
-            # Erster Pad: Startpunkt merken
+            # First pad: remember it
             self._held_pad = pad
-            self._held_pad_index = index
 
+            # Mark the pad as active and refresh the steps
             pad.is_active = True
             self._refresh_active_steps()
+            
+            # Call the parent class's function
             super()._on_pad_pressed(pad)
+            
+            # Add velocity parameter for the pad (if required)
             self._volume_parameters.add_parameter(pad, self._velocity_offset_parameter)
 
 
+    def _set_note_property(self, note_property, value):
+        if self.is_enabled():
+            if self._active_steps and self._has_clip() and self._can_edit():
+                self.set_step_notes_property(self._active_steps, note_property, value)
+                self._clip.apply_note_modifications(self._clip_notes)
+                self._update_editor_matrix()
+                self.notify_active_steps()
+
+    def set_step_notes_property(self, steps, property_name, value):
+        notes = self._clip_notes
+        for step in steps:
+            time_step = self._time_step(self._get_step_start_time(step))
+            for note in notes:
+                self._set_single_note_property(time_step, property_name, value, note)
+
+    def _set_single_note_property(self, time_step, property_name, value, note):
+        if time_step.includes_time(note.start_time):
+            if property_name == "pitch":
+                note.pitch = clamp(value, 0, 127)
+            elif property_name == "velocity":
+                note.velocity = clamp(value, 1, 127)
+            elif property_name == "duration":
+                note.duration = max(time_step.length * 0.1, value)
+            elif property_name == "start_time":
+                note.start_time = time_step.clamp(value)
+            else:
+                raise ValueError(f"Unsupported property: {property_name}")
     
     def _on_pad_released(self, pad, *a, **k):
         """Handle pad release events and clean up references"""
@@ -163,6 +155,7 @@ class NoteEditorComponent(NoteEditorComponentBase):
         if pad == self._held_pad:
             self._held_pad = None
             self._held_pad_index = None
+
 
     def _clear_held_state(self):
         """Clear the current held state if needed"""
@@ -286,3 +279,62 @@ class NoteEditorComponent(NoteEditorComponentBase):
     #             colors[partial_index] = 'NoteEditor.StepPartiallyTied'
                     
     #     self._step_color_manager.show_colors(colors)
+    # def get_velocities(self):
+    #     """Returns the velocities of the currently selected notes"""
+    #     if not liveobj_valid(self._clip) or not self._clip_notes:
+    #         return []
+        
+    #     selected_notes = []
+    #     try:
+    #         # Use the newer API to get selected notes
+    #         if hasattr(self._clip, 'get_selected_notes_extended'):
+    #             selected_notes_dict = self._clip.get_selected_notes_extended()
+    #             return [note['velocity'] for note in selected_notes_dict.values()]
+    #         else:
+    #             # Fallback to older API
+    #             selected_notes = self._clip.get_selected_notes()
+    #             return [note[3] for note in selected_notes]
+    #     except Exception as e:
+    #         logger.error(f"Error getting velocities: {str(e)}")
+    #         return []
+
+    def _show_tied_steps(self):
+        colors = {}
+        step_length = self.step_length
+        for step in self.active_steps:
+            durations = self.get_durations_from_step(step)
+            if not durations:
+                continue
+            num_steps = max(durations) / step_length
+            step_index = int(step[0] / step_length)
+            step_index = step_index % self.step_count # it should be 32 for drum...BUG
+            # Always color the starting step
+            if num_steps > 1:
+                colors[step_index] = 'NoteEditor.StepTied'
+            else:
+                colors[step_index] = 'NoteEditor.StepPartiallyTied'
+            
+            # Color the following tied steps
+            for i in range(1, int(num_steps)):
+                colors[step_index + i] = 'NoteEditor.StepTied'
+            
+            # If it does not exactly cover a whole number of steps, the last step is partially tied
+            if not num_steps.is_integer():
+                colors[step_index + int(num_steps)] = 'NoteEditor.StepPartiallyTied'
+                
+        self.step_color_manager.show_colors(colors)
+
+
+    def _show_tied_steps_temporary(self):
+        # Erst Farben zeigen
+        self._show_tied_steps()
+
+        # Wenn schon ein Timer läuft, abbrechen
+        if self._revert_timer is not None:
+            self._revert_timer.cancel()
+
+        # Neuen Timer starten
+        self._revert_timer = threading.Timer(0.3, self.step_color_manager.revert_colors)  # 0.3 Sekunden warten
+        self._revert_timer.start()
+
+    
