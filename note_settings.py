@@ -13,9 +13,6 @@ class NoteSettingsComponent(Component, Renderable):
     transpose_octave_encoder = StepEncoderControl(num_steps=64)
     nudge_encoder = StepEncoderControl(num_steps=64)
     shift_length_button = ButtonControl(color=None)
-    cursor_skin = {'color': 'NoteSettings.CursorButton', 'pressed_color': 'NoteSettings.CursorButtonPressed'}
-    nudge_left_button = ButtonControl(**cursor_skin)
-    nudge_right_button = ButtonControl(**cursor_skin)
 
     def __init__(self, note_editor, *a, **k):
         super().__init__(*a, name='Note_Settings', **k)
@@ -78,14 +75,6 @@ class NoteSettingsComponent(Component, Renderable):
     def nudge_encoder(self, value, _):
         self._nudge_notes(value)
 
-    @nudge_left_button.pressed
-    def nudge_left_button(self, _):
-        self._nudge_notes((-1))
-
-    @nudge_right_button.pressed
-    def nudge_right_button(self, _):
-        self._nudge_notes(1)
-
     def _nudge_notes(self, delta):
         self._note_editor.set_nudge_offset(0.0125*delta)
         self.notify(self.notifications.Notes.nudge, self._note_editor.get_nudge_offset_range_string())
@@ -104,8 +93,6 @@ class NoteSettingsComponent(Component, Renderable):
 
         nudge_offset = self._note_editor.step_length *0.0125#self._note_editor.step_length + 0.1
         #nudge_offset = 0
-        self.nudge_left_button.enabled = can_enable and self._note_editor.can_nudge_by_offset(-nudge_offset)
-        self.nudge_right_button.enabled = can_enable and self._note_editor.can_nudge_by_offset(nudge_offset)
         # HERE
         self.duration_range_string = self._note_editor.get_duration_range_string()
         if self.shift_length_button.is_pressed:

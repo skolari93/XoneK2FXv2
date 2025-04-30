@@ -342,11 +342,11 @@ class NoteEditorComponent(NoteEditorComponentBase):
 
     def _create_note_repeats(self, start_time, total_duration):
         """
-        Create ratcheting notes (multiple repeated notes) from start_time spanning total_duration.
+        Create multiple repeated notes from start_time spanning total_duration.
         
         Args:
-            start_time: The time to start placing ratchet notes
-            total_duration: The total length to fill with ratchet notes
+            start_time: The time to start placing notes
+            total_duration: The total length to fill with notes
         """
         if not self._has_clip() or not self._can_edit():
             return

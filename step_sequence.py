@@ -49,12 +49,6 @@ class StepSequenceComponent(StepSequenceComponentBase):
     def set_nudge_encoder(self, encoder):
         self._note_settings.set_nudge_encoder(encoder)
 
-    def set_nudge_left_button(self, button):
-        self._note_settings.nudge_left_button.set_control_element(button)
-
-    def set_nudge_right_button(self, button):
-        self._note_settings.nudge_right_button.set_control_element(button) 
-
     def set_prev_bank_button(self, button):
         self._loop_selector.prev_bank_button.set_control_element(button)
 
