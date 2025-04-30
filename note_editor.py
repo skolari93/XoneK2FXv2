@@ -1,10 +1,11 @@
 import math
 from sys import maxsize
+from Live.Clip import MidiNoteSpecification
 from ableton.v3.base import depends, clamp
 from ableton.v3.control_surface import RelativeInternalParameter
 from ableton.v3.control_surface.components.bar_based_sequence import NoteEditorComponent as NoteEditorComponentBase
 from ableton.v3.control_surface.components.note_editor import get_notes
-from ableton.v3.live import liveobj_valid
+from ableton.v3.live import liveobj_valid, action
 from .step_color_manager import StepColorManager
 import threading
 import logging
@@ -106,7 +107,8 @@ class NoteEditorComponent(NoteEditorComponentBase):
                     self._set_note_property("duration", duration)
                     self._show_tied_steps_temporary()
                     # probably there needs to be something à la. notify duration change()
-
+                else:
+                    self._create_note_repeats(end_time- self.step_length, abs(duration))
             else:
                 # First pad: remember it
                 self._held_pad = pad
@@ -336,4 +338,62 @@ class NoteEditorComponent(NoteEditorComponentBase):
         self._revert_timer = threading.Timer(0.1, self.step_color_manager.revert_colors) 
         self._revert_timer.start()
 
-    
+
+
+    def _create_note_repeats(self, start_time, total_duration):
+        """
+        Create ratcheting notes (multiple repeated notes) from start_time spanning total_duration.
+        
+        Args:
+            start_time: The time to start placing ratchet notes
+            total_duration: The total length to fill with ratchet notes
+        """
+        if not self._has_clip() or not self._can_edit():
+            return
+            
+        # Calculate how many steps are covered
+        steps_covered = int(total_duration / self.step_length)
+        
+        # Ensure we create at least one note
+        steps_covered = max(1, steps_covered)
+        
+        # Remove any existing notes in the region
+        for pitch in self._pitches:
+            self._clip.remove_notes_extended(
+                from_time=start_time,
+                from_pitch=pitch,
+                time_span=total_duration,
+                pitch_span=1
+            )
+        
+        # Create ratchet notes
+        new_notes = []
+        
+        # Default settings
+        velocity = 127 if hasattr(self, '_full_velocity') and self._full_velocity.enabled else 100
+        
+        # Create a note at each step
+        for step_num in range(steps_covered+1):
+            step_start_time = start_time + (step_num * self.step_length)
+            
+            for pitch in self._pitches:
+                # Create a note that exactly fills each step
+                note = MidiNoteSpecification(
+                    pitch=pitch,
+                    start_time=step_start_time,
+                    duration=self.step_length,
+                    velocity=velocity,
+                    mute=False
+                )
+                new_notes.append(note)
+        
+        # Add all the notes at once
+        if new_notes:
+            self._clip.add_new_notes(tuple(new_notes))
+            self._clip.deselect_all_notes()
+            
+            # Extend loop if necessary to see the ratchets
+            action.extend_loop_for_region(self._clip, start_time, total_duration)
+            
+            # Update display
+            self.__on_clip_notes_changed()
