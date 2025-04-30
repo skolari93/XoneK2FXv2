@@ -13,8 +13,8 @@ from .note_settings import NoteSettingsComponent
   
 GRID_RESOLUTIONS = tuple(reversed(RESOLUTIONS_BASE[:-3]))
 DEFAULT_GRID_RESOLUTION_INDEX = 1
-PLAYHEAD_NOTES = []#list(range(0, 16))#[28, 29, 30, 31, 28, 29, 30, 31, 24, 25, 26, 27, 24, 25, 26, 27]
-PLAYHEAD_CHANNELS = []#list(range(0,15))
+PLAYHEAD_NOTES = []#[28, 29, 30, 31, 28, 29, 30, 31, 24, 25, 26, 27, 24, 25, 26, 27]
+PLAYHEAD_CHANNELS = []#[12]#list(range(0,15))
 from functools import partial
 
 
@@ -63,3 +63,4 @@ class StepSequenceComponent(StepSequenceComponentBase):
     
     def set_matrix(self, matrix):
         self._loop_selector.matrix.set_control_element(matrix)
+        
