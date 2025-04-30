@@ -40,6 +40,9 @@ class StepSequenceComponent(StepSequenceComponentBase):
     def set_shift_length_button(self, button):
         self._note_settings.shift_length_button.set_control_element(button)
 
+    def set_copy_button(self, button):
+        self._note_editor.set_copy_button(button)
+
     def set_transpose_encoder(self, encoder):
         self._note_settings.set_transpose_encoder(encoder)
 

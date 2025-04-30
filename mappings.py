@@ -156,16 +156,12 @@ def create_mappings(cs):
                         'ratchet_encoder': 'bottom_1_encoder',                          
                         'duration_fine_encoder': 'bottom_2_encoder_with_bottom_2_encoder_shift',
                         #'shift_length_button': 'bottom_2_encoder_shift_button',
-                        'loop_copy_button': 'duplicate_button'
+                        'copy_button': 'duplicate_button'
                     },
                     # {
                     #     'component': 'Loop_Length',
                     #     'length_encoder': 'loop_length_encoder'
                     # }
-                    # {
-                    #     'component': 'Step_Duplicator',
-                    #     'duplicate_button': 'duplicate_button',
-                    # },
                     {
                         'component': 'Clip_Actions',
                         #'delete_button': '',
