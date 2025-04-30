@@ -333,7 +333,7 @@ class NoteEditorComponent(NoteEditorComponentBase):
         """
         if not self._has_clip() or not self._can_edit():
             return
-        duration = 0.25
+        #duration = 0.25
         if divisions <= 0:
             divisions = 1
     
@@ -380,14 +380,13 @@ class NoteEditorComponent(NoteEditorComponentBase):
         
             # Update display
             self.__on_clip_notes_changed()
+        logger.debug(f"Ratchet: start={start_time}, duration={duration}, divisions={divisions}")
+        logger.debug(f"division_duration={duration/divisions}")
 
     def set_ratchet_divisions(self, divisions):
         """
-        Set the number of divisions (ratchets) for all existing notes in the selected steps.
-        No ratchets are created if no notes exist in the step.
-
-        Args:
-            divisions: Integer number of divisions to create (1 = no division, 2 = halves, etc.)
+        For each active step, remove existing notes and create `divisions` evenly spaced notes
+        across the step duration (usually one step = 1/16 note).
         """
         if not self.is_enabled() or not self._active_steps or not self._has_clip() or not self._can_edit():
             return
@@ -396,13 +395,50 @@ class NoteEditorComponent(NoteEditorComponentBase):
         divisions = max(1, min(int(divisions), MAX_RATCHET_DIVISIONS))
 
         for step in self._active_steps:
-            step_time = self._get_step_start_time(step)
+            step_start_time = self._get_step_start_time(step)
+            step_duration = self.step_length
+            step_end_time = step_start_time + step_duration
 
-            from_pitch = min(self._pitches)
-            pitch_span = max(self._pitches) - from_pitch + 1
-            clip_notes = self._clip.get_notes_extended(from_pitch, pitch_span, 0.0, float(maxsize))
-            step_notes = self._time_step(step_time).filter_notes(clip_notes)
+            # Clear old notes in this step
+            for pitch in self._pitches:
+                self._clip.remove_notes_extended(
+                    from_time=step_start_time,
+                    from_pitch=pitch,
+                    time_span=step_duration,
+                    pitch_span=1
+                )
 
-            # Only apply ratchets to existing notes
-            for note in step_notes:
-                self._create_ratchet_notes(note.start_time, note.duration, divisions)
+            # Create evenly spaced notes in this step
+            division_duration = step_duration / divisions
+            new_notes = []
+
+            velocity = 127 if hasattr(self, '_full_velocity') and self._full_velocity.enabled else 100
+
+            for div in range(divisions):
+                note_start_time = step_start_time + div * division_duration
+                
+                # For the last division, ensure its end time doesn't exceed step_end_time
+                # by calculating its duration specifically
+                if div == divisions - 1:  # Last division
+                    note_duration = step_end_time - note_start_time
+                else:
+                    note_duration = division_duration
+                    
+                # Ensure we don't have microscopic rounding errors
+                note_duration = min(note_duration, step_end_time - note_start_time)
+                
+                for pitch in self._pitches:
+                    note = MidiNoteSpecification(
+                        pitch=pitch,
+                        start_time=note_start_time,
+                        duration=note_duration,
+                        velocity=velocity,
+                        mute=False
+                    )
+                    new_notes.append(note)
+
+            if new_notes:
+                self._clip.add_new_notes(tuple(new_notes))
+
+        self._clip.deselect_all_notes()
+        self.__on_clip_notes_changed()
