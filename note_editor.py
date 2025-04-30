@@ -26,6 +26,8 @@ class NoteEditorComponent(NoteEditorComponentBase):
         # Track which steps are selected for note length
         self._held_pad = None
         self._held_pad_index = None
+        self._revert_timer = None  
+
 
     @property
     def step_color_manager(self):
@@ -101,6 +103,7 @@ class NoteEditorComponent(NoteEditorComponentBase):
             # Set the note's duration property
             if duration > 0:
                 self._set_note_property("duration", duration)
+                self._show_tied_steps_temporary()
                  # probably there needs to be something à la. notify duration change()
 
         else:
@@ -117,6 +120,17 @@ class NoteEditorComponent(NoteEditorComponentBase):
             # Add velocity parameter for the pad (if required)
             self._volume_parameters.add_parameter(pad, self._velocity_offset_parameter)
 
+
+        
+    def _on_pad_released(self, pad, *a, **k):
+        """Handle pad release events and clean up references"""
+        super()._on_pad_released(pad, *a, **k)
+        self._volume_parameters.remove_parameter(pad, force=True)
+        
+        # Clear held pad reference if this is the held pad
+        if pad == self._held_pad:
+            self._held_pad = None
+            self._held_pad_index = None
 
     def _set_note_property(self, note_property, value):
         if self.is_enabled():
@@ -145,25 +159,6 @@ class NoteEditorComponent(NoteEditorComponentBase):
                 note.start_time = time_step.clamp(value)
             else:
                 raise ValueError(f"Unsupported property: {property_name}")
-    
-    def _on_pad_released(self, pad, *a, **k):
-        """Handle pad release events and clean up references"""
-        super()._on_pad_released(pad, *a, **k)
-        self._volume_parameters.remove_parameter(pad, force=True)
-        
-        # Clear held pad reference if this is the held pad
-        if pad == self._held_pad:
-            self._held_pad = None
-            self._held_pad_index = None
-
-
-    def _clear_held_state(self):
-        """Clear the current held state if needed"""
-        if self._held_pad:
-            self._held_pad.is_active = False
-            self._held_pad = None
-            self._held_pad_index = None
-            self._update_editor_matrix()      
 
     @staticmethod
     def _modify_duration(time_step, duration_offset, note):
@@ -212,7 +207,7 @@ class NoteEditorComponent(NoteEditorComponentBase):
                 # Set channel based on column:
                 button.channel = 4 if button_column < 4 else 5 # EACH DEVICE NEEDS A SEPERATE TRANSLATION CHANNEL
         self._update_editor_matrix()
-            
+
     # def _show_velocity(self):
     #     """Display velocity as a visual bar of illuminated steps"""
     #     colors = {}
@@ -334,7 +329,7 @@ class NoteEditorComponent(NoteEditorComponentBase):
             self._revert_timer.cancel()
 
         # Neuen Timer starten
-        self._revert_timer = threading.Timer(0.3, self.step_color_manager.revert_colors)  # 0.3 Sekunden warten
+        self._revert_timer = threading.Timer(0.1, self.step_color_manager.revert_colors) 
         self._revert_timer.start()
 
     

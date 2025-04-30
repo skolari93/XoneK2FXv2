@@ -25,7 +25,6 @@ class NoteSettingsComponent(Component, Renderable):
         self.register_slot(self._note_editor, self._update_from_property_ranges, 'clip_notes')
 
         self._update_from_property_ranges()
-        self._revert_timer = None  
 
 
     def set_duration_encoder(self, encoder):
