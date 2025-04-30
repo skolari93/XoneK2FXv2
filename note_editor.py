@@ -14,7 +14,7 @@ logger = logging.getLogger("XoneK2FXv2")
 
 class NoteEditorComponent(NoteEditorComponentBase):
     @depends(volume_parameters=None)
-    def __init__(self, volume_parameters=None, *a, **k):
+    def __init__(self, volume_parameters=None, note_length_mode=True, *a, **k):
         super().__init__(translation_channel=STEP_TRANSLATION_CHANNEL, *a, **k)
         self._step_start_times = []
         self._step_color_manager = self.register_disconnectable(StepColorManager(update_method=self._update_editor_matrix))
@@ -24,6 +24,7 @@ class NoteEditorComponent(NoteEditorComponentBase):
         self.register_slot(self._velocity_offset_parameter, self.set_velocity_offset, 'delta')
         
         # Track which steps are selected for note length
+        self._note_length_mode =note_length_mode
         self._held_pad = None
         self._held_pad_index = None
         self._revert_timer = None  
@@ -72,52 +73,55 @@ class NoteEditorComponent(NoteEditorComponentBase):
         Handle pad press events for note editing.
         The first pad defines note start, the second defines note length.
         """
+        if self._note_length_mode:
+            if not self.is_enabled():
+                return
 
-        if not self.is_enabled():
-            return
+            if not self._has_clip():
+                self.set_clip(self._sequencer_clip.create_clip())
+                self._update_from_grid()
 
-        if not self._has_clip():
-            self.set_clip(self._sequencer_clip.create_clip())
-            self._update_from_grid()
+            if not self._can_press_or_release_step(pad):
+                return
 
-        if not self._can_press_or_release_step(pad):
-            return
+            x2, y2 = pad.coordinate  # Current pad (second press)
+            
+            if self._held_pad is not None and self._held_pad != pad:
+                # The pad that was previously held (first press)
+                x1, y1 = self._held_pad.coordinate
 
-        x2, y2 = pad.coordinate  # Current pad (second press)
-        
-        if self._held_pad is not None and self._held_pad != pad:
-            # The pad that was previously held (first press)
-            x1, y1 = self._held_pad.coordinate
+                # Adjusted for transposed matrix (assuming the matrix is transposed)
+                time1 = (y1 + x1 * self.matrix.width) * self.step_length
+                time2 = (y2 + x2 * self.matrix.width) * self.step_length
 
-            # Adjusted for transposed matrix (assuming the matrix is transposed)
-            time1 = (y1 + x1 * self.matrix.width) * self.step_length
-            time2 = (y2 + x2 * self.matrix.width) * self.step_length
+                # Calculate start and end times
+                start_time = time1
+                end_time = time2 + self.step_length  # Ensure the full second pad is included
 
-            # Calculate start and end times
-            start_time = time1
-            end_time = time2 + self.step_length  # Ensure the full second pad is included
+                # Duration is simply the difference between start and end times
+                duration = end_time - start_time
 
-            # Duration is simply the difference between start and end times
-            duration = end_time - start_time
+                # Set the note's duration property
+                if duration > 0:
+                    self._set_note_property("duration", duration)
+                    self._show_tied_steps_temporary()
+                    # probably there needs to be something à la. notify duration change()
 
-            # Set the note's duration property
-            if duration > 0:
-                self._set_note_property("duration", duration)
-                self._show_tied_steps_temporary()
-                 # probably there needs to be something à la. notify duration change()
+            else:
+                # First pad: remember it
+                self._held_pad = pad
 
+                # Mark the pad as active and refresh the steps
+                pad.is_active = True
+                self._refresh_active_steps()
+                
+                # Call the parent class's function
+                super()._on_pad_pressed(pad)
+                
+                # Add velocity parameter for the pad (if required)
+                self._volume_parameters.add_parameter(pad, self._velocity_offset_parameter)
         else:
-            # First pad: remember it
-            self._held_pad = pad
-
-            # Mark the pad as active and refresh the steps
-            pad.is_active = True
-            self._refresh_active_steps()
-            
-            # Call the parent class's function
             super()._on_pad_pressed(pad)
-            
-            # Add velocity parameter for the pad (if required)
             self._volume_parameters.add_parameter(pad, self._velocity_offset_parameter)
 
 
