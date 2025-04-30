@@ -40,11 +40,6 @@ class NoteEditorComponent(NoteEditorComponentBase):
     @property
     def step_start_times(self):
         return self._step_start_times
-        
-    @property
-    def active_steps(self):
-        """Return the current active steps for external components to reference"""
-        return self._active_steps
 
     def set_velocity_offset(self, delta):
         # Set the new value
@@ -62,20 +57,17 @@ class NoteEditorComponent(NoteEditorComponentBase):
 
     def notify_clip_notes(self):
         if liveobj_valid(self._clip) and self._pitches:
-            # try:
-
-            #     # Extract start times from note dicts
-            #     self._step_start_times = sorted(list({note.start_time for note in notes_dict}))
-            # except Exception as e:
-            #     logger.error(f"Error using get_notes_extended: {str(e)}")
-            #     self._step_start_times = []
-            
-            notes = get_notes(self._clip, self._pitches, 0.0, maxsize, self._pitch_provider.is_polyphonic)
-            self._step_start_times = sorted(list({n.start_time for n in notes}))
+            try:
+                from_pitch = min(self._pitches)
+                pitch_span = max(self._pitches) - from_pitch + 1
+                notes_dict = self._clip.get_notes_extended(from_pitch, pitch_span, 0.0, float(maxsize))
+                # Extract start times from note dicts
+                self._step_start_times = sorted(list({note.start_time for note in notes_dict}))
+            except Exception as e:
+                logger.error(f"Error using get_notes_extended: {str(e)}")
+                self._step_start_times = []
         super().notify_clip_notes()
 
-        
-    
     def _on_pad_pressed(self, pad):
         """
         Handle pad press events for note editing.
