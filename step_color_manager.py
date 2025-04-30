@@ -1,4 +1,3 @@
-
 from functools import partial
 from ableton.v3.base import EventObject, depends, listens, task
 from ableton.v3.control_surface import ACTIVE_PARAMETER_TIMEOUT

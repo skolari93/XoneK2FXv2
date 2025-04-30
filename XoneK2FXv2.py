@@ -13,7 +13,7 @@ from .session import SessionComponent
 from .fx_mixer import FXMixerComponent
 from .master_mixer import MasterMixerComponent
 from .mixer import MixerComponent
-from ableton.v3.control_surface.components import ViewControlComponent, SessionRingComponent, SessionNavigationComponent #,StepSequenceComponent, GRID_RESOLUTIONS
+from ableton.v3.control_surface.components import ViewControlComponent, SessionRingComponent, SessionNavigationComponent # GRID_RESOLUTIONS
 from functools import partial
 from .loop_length import LoopLengthComponent
 from .clip_actions import ClipActionsComponent

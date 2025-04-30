@@ -1,8 +1,3 @@
-# Decompiled with PyLingual (https://pylingual.io)
-# Internal filename: ..\..\..\output\Live\win_64_static\Release\python-bundle\MIDI Remote Scripts\Move\step_sequence.py
-# Bytecode version: 3.11a7e (3495)
-# Source timestamp: 2025-04-10 07:23:45 UTC (1744269825)
-
 from ableton.v3.control_surface.components import GRID_RESOLUTIONS as RESOLUTIONS_BASE
 from ableton.v3.control_surface.components import StepSequenceComponent as StepSequenceComponentBase
 from ableton.v3.control_surface.components.bar_based_sequence import PlayheadComponent
@@ -31,6 +26,9 @@ class StepSequenceComponent(StepSequenceComponentBase):
     def note_settings(self):
         return self._note_settings
 
+    def set_copy_button(self, button):
+        self._note_editor.set_copy_button(button)
+
     def set_duration_encoder(self, encoder):
         self._note_settings.set_duration_encoder(encoder)
     
@@ -39,9 +37,6 @@ class StepSequenceComponent(StepSequenceComponentBase):
 
     def set_shift_length_button(self, button):
         self._note_settings.shift_length_button.set_control_element(button)
-
-    def set_copy_button(self, button):
-        self._note_editor.set_copy_button(button)
 
     def set_transpose_encoder(self, encoder):
         self._note_settings.set_transpose_encoder(encoder)

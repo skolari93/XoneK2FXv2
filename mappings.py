@@ -128,8 +128,6 @@ def create_mappings(cs):
                         'session_record_button':"pads_raw[34]",
                         'arrangement_record_button':"pads_raw[46]",
                         'new_button': 'pads_raw[20]'
-                        
-        
                     },
                     {
                         'component': 'Undo_Redo',
