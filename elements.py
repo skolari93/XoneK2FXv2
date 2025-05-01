@@ -256,6 +256,7 @@ class Elements(ElementsBase):
         )
 
         self.add_modified_control(control=self.mixer_gain_encoders, modifier=self.shift_button)
+        self.add_modified_control(control=self.mixer_solo_buttons, modifier=self.shift_button)
 
-        self.add_matrix(create_duplicated_list(48, 52), "mixer_crossfade_assign_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
+        #self.add_matrix(create_duplicated_list(48, 52), "mixer_crossfade_assign_buttons", channels=combined_button_channels, element_factory=create_k2_button, name_factory=None, msg_type=MIDI_NOTE_TYPE, button_type="small")
 
