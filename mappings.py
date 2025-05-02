@@ -47,13 +47,6 @@ def create_mappings(cs):
             crossfade_cycle_buttons='mixer_solo_buttons_with_shift',
             pan_controls='mixer_gain_encoders_with_shift'
         ),
-        'ViewControl': dict(
-            scene_encoder='scene_select_encoder',
-        ),
-        'Session': dict(
-            launch_scene_and_advance='launch_scene_button',
-        ),
-
 
         'Note_Modes': dict(
             instrument = dict(
@@ -105,13 +98,18 @@ def create_mappings(cs):
                 modes= [
                     {
                         'component': 'Session',
-                        #'launch_scene_and_advance':'launch_scene_button',
                         'scene_launch_buttons':"scene_launch_buttons",
                         'stop_all_clips_button':"pads_raw[47]",
                         'clip_launch_buttons':"pads_rows_0_2_cols_0_7",
                         'stop_track_clip_buttons':"pads_rows_3_cols_0_7",
                         'clip_slot_select_button' : 'shift_button',
-                        'copy_button': 'duplicate_button'
+                        'copy_button': 'duplicate_button',
+                        'launch_scene_and_advance':'launch_scene_button',
+
+                    },
+                    {
+                        'component': 'ViewControl',
+                        'scene_encoder':'bottom_6_encoder',
                     },
                     {
                         'component': 'Session_Navigation',
@@ -138,9 +136,9 @@ def create_mappings(cs):
                     },
                     {
                         'component':'MasterMixer',
-                        'variations_launch_button': 'variations_launch_button',
-                        'variations_overwrite_button': 'variations_launch_button_with_shift',
-                        'variations_select_encoder': 'variations_select_encoder'
+                        'variations_launch_button': 'bottom_5_encoder_shift_button',
+                        'variations_overwrite_button': 'bottom_5_encoder_shift_button_with_shift',
+                        'variations_select_encoder': 'bottom_5_encoder'
                     }
                     
                 ],
@@ -174,8 +172,8 @@ def create_mappings(cs):
                     },
                     {
                         'component': 'Loop_Length',
-                        'length_encoder': 'variations_select_encoder',
-                        'shift_button': 'variations_launch_button'
+                        'length_encoder': 'bottom_5_encoder',
+                        'shift_button': 'bottom_5_encoder_shift_button'
                     },
                     {
                         'component':'Accent',

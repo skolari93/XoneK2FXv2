@@ -79,15 +79,15 @@ class Elements(ElementsBase):
         self.add_encoder(21, 'bottom_2_encoder', channel=MIXERCHANNEL1, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment) 
         self.add_encoder(20, 'bottom_3_encoder', channel=MIXERCHANNEL2, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment) 
         self.add_encoder(21, 'bottom_4_encoder', channel=MIXERCHANNEL2, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
-        self.add_encoder(20, 'variations_select_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
-        self.add_encoder(21, 'scene_select_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+        self.add_encoder(20, 'bottom_5_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
+        self.add_encoder(21, 'bottom_6_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
 
         # push encoder buttons
         self.add_button(13, 'bottom_1_encoder_shift_button', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
         self.add_button(14, 'bottom_2_encoder_shift_button', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
         self.add_button(13, 'bottom_3_encoder_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
         self.add_button(14, 'bottom_4_encoder_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
-        self.add_button(13, 'variations_launch_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
+        self.add_button(13, 'bottom_5_encoder_shift_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
         self.add_button(14, 'launch_scene_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
 
         # pads
@@ -200,7 +200,7 @@ class Elements(ElementsBase):
 
         # variations
         self.add_modified_control(control=(self.variations_recall_button), modifier=(self.shift_button))
-        self.add_modified_control(control=(self.variations_launch_button), modifier=(self.shift_button))
+        self.add_modified_control(control=(self.bottom_5_encoder_shift_button), modifier=(self.shift_button))
 
         ########### Tracks Mixer  K2.1 + K2.2
         combined_button_channels = [[MIXERCHANNEL1, MIXERCHANNEL1, MIXERCHANNEL1, MIXERCHANNEL1], [MIXERCHANNEL2, MIXERCHANNEL2, MIXERCHANNEL2, MIXERCHANNEL2]]
