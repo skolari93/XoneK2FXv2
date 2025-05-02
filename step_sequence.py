@@ -47,6 +47,9 @@ class StepSequenceComponent(StepSequenceComponentBase):
     def set_nudge_encoder(self, encoder):
         self._note_settings.set_nudge_encoder(encoder)
 
+    def set_nudge_coarse_encoder(self, encoder):
+        self._note_settings.set_nudge_coarse_encoder(encoder)
+
     def set_ratchet_encoder(self, encoder):
         self._note_settings.set_ratchet_encoder(encoder)
 

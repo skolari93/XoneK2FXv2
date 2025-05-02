@@ -61,13 +61,13 @@ def create_mappings(cs):
                     dict(
                         component= 'Instrument',
                         matrix='pads_rows_2_3',
-                        octave_encoder='bottom_4_encoder'
+                        #octave_encoder='bottom_4_encoder'
                     ),
                     dict(
                         component= 'Step_Sequence',
                         step_buttons= 'pads_columns_0_7_rows_0_1',
                         matrix= 'pads_columns_8_11_rows_0_1', #bad name for loop matrix
-                        #transpose_encoder= 'bottom_4_encoder',
+                        transpose_encoder= 'bottom_4_encoder',
                         transpose_octave_encoder= 'bottom_4_encoder_with_bottom_4_encoder_shift',
                     )
                 ]
@@ -86,6 +86,8 @@ def create_mappings(cs):
                         step_buttons= 'pads_columns_0_7',
                         copy_button= 'duplicate_button',
                         matrix= 'pads_columns_8_11_rows_0_1', #bad name for loop matrix
+                        ratchet_encoder= 'bottom_4_encoder',                          
+
                     )
                 ]
 
@@ -150,8 +152,8 @@ def create_mappings(cs):
                     {
                         'component': 'Step_Sequence',
                         'duration_encoder': 'bottom_2_encoder',
-                        #'nudge_encoder': 'bottom_1_encoder',
-                        'ratchet_encoder': 'bottom_1_encoder',                          
+                        'nudge_encoder': 'bottom_1_encoder',
+                        'nudge_coarse_encoder': 'bottom_1_encoder_with_bottom_1_encoder_shift',
                         'duration_fine_encoder': 'bottom_2_encoder_with_bottom_2_encoder_shift',
                         #'shift_length_button': 'bottom_2_encoder_shift_button',
                         'copy_button': 'duplicate_button'

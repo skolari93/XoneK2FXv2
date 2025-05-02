@@ -83,7 +83,7 @@ class Elements(ElementsBase):
         self.add_encoder(21, 'scene_select_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
 
         # push encoder buttons
-        self.add_button(13, 'transpose_shift', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
+        self.add_button(13, 'bottom_1_encoder_shift_button', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
         self.add_button(14, 'bottom_2_encoder_shift_button', channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE)
         self.add_button(13, 'bottom_3_encoder_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
         self.add_button(14, 'bottom_4_encoder_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
@@ -117,6 +117,7 @@ class Elements(ElementsBase):
 
 
         # modified controls
+        self.add_modified_control(control=self.bottom_1_encoder, modifier=self.bottom_1_encoder_shift_button)
         self.add_modified_control(control=self.bottom_2_encoder, modifier=self.bottom_2_encoder_shift_button)
         self.add_modified_control(control=self.bottom_4_encoder, modifier=self.bottom_4_encoder_shift_button)
         self.add_modified_control(control=self.capture_midi_button, modifier=self.shift_button)
