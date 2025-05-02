@@ -29,6 +29,9 @@ class StepSequenceComponent(StepSequenceComponentBase):
     def set_copy_button(self, button):
         self._note_editor.set_copy_button(button)
 
+    def set_note_displacement_encoder(self, encoder):
+        self._note_editor.set_note_displacement_encoder(encoder)
+
     def set_duration_encoder(self, encoder):
         self._note_settings.set_duration_encoder(encoder)
     
@@ -47,8 +50,6 @@ class StepSequenceComponent(StepSequenceComponentBase):
     def set_nudge_encoder(self, encoder):
         self._note_settings.set_nudge_encoder(encoder)
 
-    def set_nudge_coarse_encoder(self, encoder):
-        self._note_settings.set_nudge_coarse_encoder(encoder)
 
     def set_ratchet_encoder(self, encoder):
         self._note_settings.set_ratchet_encoder(encoder)

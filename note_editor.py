@@ -4,8 +4,9 @@ from Live.Clip import MidiNoteSpecification
 from ableton.v3.base import depends, clamp
 from ableton.v3.control_surface import RelativeInternalParameter
 from ableton.v3.control_surface.components.bar_based_sequence import NoteEditorComponent as NoteEditorComponentBase
-from ableton.v3.control_surface.components.note_editor import get_notes
 from ableton.v3.live import liveobj_valid, action
+from ableton.v3.control_surface.controls import StepEncoderControl
+
 from .step_color_manager import StepColorManager
 import threading
 import logging
@@ -14,6 +15,10 @@ STEP_TRANSLATION_CHANNEL = 3
 logger = logging.getLogger("XoneK2FXv2")
 
 class NoteEditorComponent(NoteEditorComponentBase):
+
+    note_displacement_encoder = StepEncoderControl(num_steps=64)
+
+
     @depends(volume_parameters=None)
     def __init__(self, volume_parameters=None, note_length_mode=True, *a, **k):
         super().__init__(translation_channel=STEP_TRANSLATION_CHANNEL, *a, **k)
@@ -49,6 +54,12 @@ class NoteEditorComponent(NoteEditorComponentBase):
         notes = self._time_step(step[0]).filter_notes(self._clip_notes)
         return [note.duration for note in notes]
     
+    def set_note_displacement_encoder(self, encoder):
+        self.note_displacement_encoder.set_control_element(encoder)
+        
+    @note_displacement_encoder.value
+    def note_displacement_encoder(self, value, _):
+        self.displacement_notes_by_step(value)
 
     def set_clip(self, clip):
         super().set_clip(clip)
@@ -455,3 +466,68 @@ class NoteEditorComponent(NoteEditorComponentBase):
         self._clip.deselect_all_notes()
         self.__on_clip_notes_changed()
         logger.debug(f"Applied ratchet with {divisions} divisions to all pitches in selected steps")
+
+    
+    def displacement_notes_by_step(self, value):
+        """
+        Shifts selected notes by exactly one step, bypassing the nudge mechanism.
+        Direction is determined by value: positive for forward, negative for backward.
+        
+        Args:
+            value: Direction value (-1 for backward, 1 for forward)
+        """
+        if not self._has_clip() or not self._active_steps:
+            return
+        
+        # Don't do anything if value is 0
+        if value == 0:
+            return
+            
+        # Determine direction based on value sign
+        forward = value > 0
+        
+        clip = self._clip
+        step_length = self.step_length
+        
+        # Calculate the offset (positive for forward, negative for backward)
+        offset = step_length if forward else -step_length
+        
+        # 1. Collect all notes from active steps
+        active_notes = []
+        for step in self._active_steps:
+            time = self._get_step_start_time(step)
+            time_step = self._time_step(time)
+            step_notes = time_step.filter_notes(self._clip_notes)
+            active_notes.extend(step_notes)
+        
+        if not active_notes:
+            return
+        
+        # 2. Create new specifications for the shifted notes
+        new_notes = []
+        
+        for note in active_notes:
+            # Ensure we're not shifting notes to negative time
+            new_start_time = max(0, note.start_time + offset)
+            
+            # Create the new note with shifted position
+            new_note = MidiNoteSpecification(
+                pitch=note.pitch,
+                start_time=new_start_time,
+                duration=note.duration,
+                velocity=note.velocity,
+                mute=note.mute
+            )
+            new_notes.append(new_note)
+        
+        # 3. Delete the original notes from each step
+        for step in self._active_steps:
+            self._delete_notes_in_step(step)
+        
+        # 4. Add the new notes to the clip
+        if new_notes:
+            clip.add_new_notes(tuple(new_notes))
+            
+        # 5. Update the UI
+        self.__on_clip_notes_changed()
+        

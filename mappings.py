@@ -153,7 +153,7 @@ def create_mappings(cs):
                         'component': 'Step_Sequence',
                         'duration_encoder': 'bottom_2_encoder',
                         'nudge_encoder': 'bottom_1_encoder',
-                        'nudge_coarse_encoder': 'bottom_1_encoder_with_bottom_1_encoder_shift',
+                        'note_displacement_encoder': 'bottom_1_encoder_with_bottom_1_encoder_shift',
                         'duration_fine_encoder': 'bottom_2_encoder_with_bottom_2_encoder_shift',
                         #'shift_length_button': 'bottom_2_encoder_shift_button',
                         'copy_button': 'duplicate_button'
