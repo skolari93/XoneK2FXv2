@@ -1,4 +1,4 @@
-from ableton.v3.base import EventObject, MultiSlot, depends, find_if, index_if, listenable_property, listens, task
+from ableton.v3.base import EventObject, MultiSlot, depends, find_if, listenable_property, listens, task
 from ableton.v3.control_surface import LiveObjSkinEntry
 from ableton.v3.control_surface.components import Pageable, PageComponent, PitchProvider, PlayableComponent
 from ableton.v3.control_surface.controls import ButtonControl, StepEncoderControl
@@ -11,6 +11,7 @@ import logging
 logger = logging.getLogger("XoneK2FXv2")
 
 class NoteLayout(EventObject, Renderable):
+
     @depends(song=None)
     def __init__(self, song=None, preferences=None, *a, **k):
         super().__init__(*a, **k)
@@ -55,8 +56,8 @@ class NoteLayout(EventObject, Renderable):
         self.notify_scale_mode(self._scale_mode)
 
     def toggle_scale_mode(self):
-        self._scale_mode = not self._scale_mode
-
+        self.scale_mode = not self._scale_mode
+    
     def _get_scale_from_name(self, name):
         return find_if(lambda scale: scale.name == name, SCALES) or DEFAULT_SCALE
 
@@ -71,12 +72,15 @@ class NoteLayout(EventObject, Renderable):
 
     @listens('scale_mode')
     def __on_scale_mode_changed(self):
-        self.toggle_scale_mode()
-        self.notify_scale(self._scale_mode)
+        # Instead of toggling, just update the internal state
+        self._scale_mode = self._song.scale_mode
+        # Notify listeners of the change
+        self.notify_scale_mode(self._scale_mode)
 
 class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable, PitchProvider):
     delete_button = ButtonControl(color=None)
     octave_encoder = StepEncoderControl(num_steps=64)
+    scale_mode_button = ButtonControl()
 
     is_polyphonic = True
     
@@ -121,6 +125,13 @@ class InstrumentComponent(PlayableComponent, PageComponent, Pageable, Renderable
         self._chord_detection_task.kill()
         
         self._update_pattern()
+
+    def set_scale_mode_button(self, button):
+        self.scale_mode_button.set_control_element(button)
+
+    @scale_mode_button.pressed
+    def scale_mode_button(self, _):
+        self._note_layout.toggle_scale_mode()
 
     @property
     def note_layout(self):

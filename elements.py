@@ -88,7 +88,7 @@ class Elements(ElementsBase):
         self.add_button(13, 'bottom_3_encoder_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
         self.add_button(14, 'bottom_4_encoder_shift_button', channel=MIXERCHANNEL2, msg_type=MIDI_NOTE_TYPE)
         self.add_button(13, 'bottom_5_encoder_shift_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
-        self.add_button(14, 'launch_scene_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
+        self.add_button(14, 'bottom_6_encoder_shift_button', channel=FXCHANNEL, msg_type=MIDI_NOTE_TYPE)
 
         # pads
 
@@ -124,6 +124,8 @@ class Elements(ElementsBase):
         self.add_modified_control(control=self.pads_raw[44], modifier=self.shift_button)
         self.add_modified_control(control=self.duplicate_button, modifier=self.shift_button)
         self.add_modified_control(control=self.big_3_button, modifier=self.shift_button)
+        self.add_modified_control(control=self.bottom_6_encoder_shift_button, modifier=self.shift_button)
+
         #self.add_element("prev_bank_button", create_k2_button, 12, channel=MIXERCHANNEL1, msg_type=MIDI_NOTE_TYPE, button_type="big")
 
         ########## FX + Master Mixer: K2.3 
@@ -192,8 +194,15 @@ class Elements(ElementsBase):
         self.add_encoder(11, 'cue_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.Absolute)
 
         # Tempo
-        self.add_encoder(3, 'tempo_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.AccelTwoCompliment)
-        self.add_modified_control(control=(self.tempo_encoder), modifier=(self.shift_button))
+        self.add_encoder_matrix(
+            [[3]],
+            base_name="master_gain_encoder",
+            channels=FXCHANNEL,
+            is_feedback_enabled=IS_FEEDBACK_ENABLED,
+            needs_takeover=True,
+            map_mode=MapMode.AccelTwoCompliment,
+        )
+        self.add_modified_control(control=(self.master_gain_encoder), modifier=(self.shift_button))
 
         # crossfader
         self.add_encoder(15, 'crossfader_encoder', channel=FXCHANNEL, is_feedback_enabled=IS_FEEDBACK_ENABLED, needs_takeover=True, map_mode=MapMode.Absolute)

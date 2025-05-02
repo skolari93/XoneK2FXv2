@@ -25,6 +25,8 @@ def create_mappings(cs):
             volume_controls='master_volume_fader',
             crossfader_control='crossfader_encoder',
             prehear_volume_control='cue_encoder',
+            gain_controls='master_gain_encoder',
+            pan_controls='master_gain_encoder_with_shift',
             variations_recall_button='variations_recall_button',
             variations_stash_button='variations_recall_button_with_shift',
         ),
@@ -52,7 +54,8 @@ def create_mappings(cs):
                     dict(
                         component= 'Instrument',
                         matrix='pads_rows_2_3',
-                        octave_encoder='bottom_6_encoder'
+                        octave_encoder='bottom_6_encoder',
+                        scale_mode_button= 'bottom_6_encoder_shift_button_with_shift'
                     ),
                     dict(
                         component= 'Step_Sequence',
@@ -102,7 +105,7 @@ def create_mappings(cs):
                         'stop_track_clip_buttons':"pads_rows_3_cols_0_7",
                         'clip_slot_select_button' : 'shift_button',
                         'copy_button': 'duplicate_button',
-                        'launch_scene_and_advance':'launch_scene_button',
+                        'launch_scene_and_advance':'bottom_6_encoder_shift_button',
 
                     },
                     {
