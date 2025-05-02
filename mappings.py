@@ -6,8 +6,6 @@ def create_mappings(cs):
         'Transport': dict(
             #play_pause_button='pads_raw[44]',
             #play_button='play_button_with_shift',
-            tempo_coarse_encoder="tempo_encoder",
-            tempo_fine_encoder="tempo_encoder_with_shift",
             capture_midi_button="capture_midi_button",
         ),
         'FXMixer': dict(
@@ -35,7 +33,7 @@ def create_mappings(cs):
             #double_button='delete_button'
         ),
         'Mixer': dict(
-            solo_buttons='mixer_solo_buttons',
+            solo_buttons='mixer_arm_buttons_with_shift',
             mute_buttons='mixer_mute_buttons',
             arm_buttons='mixer_arm_buttons',
             track_select_buttons='mixer_track_select_buttons',
@@ -44,7 +42,7 @@ def create_mappings(cs):
             send_c_controls='mixer_send_c_encoders',
             volume_controls='mixer_volume_faders',
             gain_controls='mixer_gain_encoders',
-            crossfade_cycle_buttons='mixer_solo_buttons_with_shift',
+            crossfade_cycle_buttons='mixer_crossfade_assign_buttons',
             pan_controls='mixer_gain_encoders_with_shift'
         ),
 
@@ -54,7 +52,7 @@ def create_mappings(cs):
                     dict(
                         component= 'Instrument',
                         matrix='pads_rows_2_3',
-                        #octave_encoder='bottom_4_encoder'
+                        octave_encoder='bottom_6_encoder'
                     ),
                     dict(
                         component= 'Step_Sequence',
@@ -72,7 +70,7 @@ def create_mappings(cs):
                         matrix='pads_drum',
                         copy_button= 'duplicate_button',
                         mute_button='shift_button',
-                        scroll_encoder='bottom_4_encoder'
+                        scroll_encoder='bottom_6_encoder'
                     ),
                     dict(
                         component= 'Step_Sequence',
@@ -113,8 +111,8 @@ def create_mappings(cs):
                     },
                     {
                         'component': 'Session_Navigation',
-                        'vertical_encoder': 'bottom_3_encoder',
-                        'horizontal_encoder': 'bottom_4_encoder',
+                        'horizontal_encoder': 'bottom_3_encoder',
+                        'vertical_encoder': 'bottom_4_encoder',
                     },
                     {
                         'component': 'Transport',
@@ -122,6 +120,11 @@ def create_mappings(cs):
                         'stop_button': 'pads_raw[45]',
                         'automation_arm_button':"pads_raw[32]",
                         're_enable_automation_button': "pads_raw[33]",
+                        'metronome_button':"big_3_button_with_shift",
+                        'tap_tempo_button':"big_3_button",
+                        'tempo_coarse_encoder': "bottom_2_encoder",
+                        'tempo_fine_encoder': "bottom_2_encoder_with_bottom_2_encoder_shift",
+
                     },
                     {
                         'component': 'Recording',
@@ -139,7 +142,11 @@ def create_mappings(cs):
                         'variations_launch_button': 'bottom_5_encoder_shift_button',
                         'variations_overwrite_button': 'bottom_5_encoder_shift_button_with_shift',
                         'variations_select_encoder': 'bottom_5_encoder'
-                    }
+                    },
+                    {
+                        'component': 'Clip_Actions',
+                        'delete_button': 'pads_raw[8]',
+                    },
                     
                 ],
                 
@@ -153,13 +160,8 @@ def create_mappings(cs):
                         'nudge_encoder': 'bottom_1_encoder',
                         'note_displacement_encoder': 'bottom_1_encoder_with_bottom_1_encoder_shift',
                         'duration_fine_encoder': 'bottom_2_encoder_with_bottom_2_encoder_shift',
-                        #'shift_length_button': 'bottom_2_encoder_shift_button',
                         'copy_button': 'duplicate_button'
                     },
-                    # {
-                    #     'component': 'Loop_Length',
-                    #     'length_encoder': 'loop_length_encoder'
-                    # }
                     {
                         'component': 'Clip_Actions',
                         #'delete_button': '',
