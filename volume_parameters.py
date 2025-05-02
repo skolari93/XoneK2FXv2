@@ -6,7 +6,7 @@ from .control import ParameterControl
 ENCODER_SENSITIVITY = 5.0
 class VolumeParametersComponent(Component):
     volume_encoder = ParameterControl(default_sensitivity=ENCODER_SENSITIVITY)#StepEncoderControl(num_steps=64)#ParameterControl()
-    volume_encoder_touch_button = ButtonControl(color=None)
+    volume_encoder_shift_button = ButtonControl(color=None)
 
     def __init__(self, *a, **k):
         super().__init__(*a, name='Volume_Parameters', **k)
@@ -14,8 +14,8 @@ class VolumeParametersComponent(Component):
         self._parameters_pending_removal = []
         self._update_volume_encoder()
 
-    @volume_encoder_touch_button.released
-    def volume_encoder_touch_button(self, _):
+    @volume_encoder_shift_button.released
+    def volume_encoder_shift_button(self, _):
         self._tasks.add(task.run(self._remove_pending_parameters))
 
     def add_parameter(self, control, parameter):
@@ -26,7 +26,7 @@ class VolumeParametersComponent(Component):
             self._update_volume_encoder()
 
     def remove_parameter(self, control, force=False):
-        if not force and self.volume_encoder_touch_button.is_pressed:
+        if not force and self.volume_encoder_shift_button.is_pressed:
             self._parameters_pending_removal.append(control)
         elif control in self._parameters:
             del self._parameters[control]
