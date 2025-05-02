@@ -2,14 +2,11 @@
 ☐ volume meter mode / outputmeters
 ☐ load utility when it is not in track
 ☐ Monitoring toggle [auto to off]
-☐ clip change not working
 ☐ clip stop in  session session : buttons dissapear
 ☐ note length is not shown correctly when drum rack. i hav to get number of steps 32 and 16 somehow. Loopselect page should be adaptive. now it is always 8 per page.
 ☐ parameter automations for returns.
-☐ solo and xfade change. shift should be solo
 playhead works via note feedback. noow note feedback is broken.
 
 either nodes component does not work or the notes stuff. very strange
-note length bug. it goes  0.1 then 1.1 not back to 1 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ####
 note length mode. i can only trigger active steps. as steps are written on release. it should be done on pressed delayed

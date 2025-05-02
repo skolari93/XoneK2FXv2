@@ -191,16 +191,21 @@ class NoteEditorComponent(NoteEditorComponentBase):
     @staticmethod
     def _modify_duration(time_step, duration_offset, note):
         threshold = 0.1
-        # Ensure the duration doesn't go below the threshold
+        target_min_duration = 0.25
+
         if note.duration < threshold:
             note.duration = threshold
+        elif note.duration < target_min_duration and duration_offset == 0.25:
+            # If the duration is below 0.25 and the offset is 0.25, go directly to 0.25
+            note.duration = target_min_duration
         else:
-            # Increase duration, respecting the threshold and the offset
+            # Regular logic: increase duration while respecting the threshold
             note.duration = max(note.duration + duration_offset, threshold)
 
-            # Special case: if the duration is exactly threshold and the offset is positive, set it to 0.25
+            # Optional: handle special case
             if note.duration == threshold and duration_offset > 0:
-                note.duration = 0.25
+                note.duration = target_min_duration
+
 
     def _visible_page(self):
         """Returns the current page number (0-indexed) based on the current page_time.
